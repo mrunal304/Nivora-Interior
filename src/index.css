@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --green-deep: #1c2b1a;
+  --green-mid: #243522;
+  --green-light: #2e4a2c;
+  --gold: #b8966a;
+  --gold-light: #d4b896;
+  --cream: #f5f0e8;
+  --alabaster: #ede8df;
+  --charcoal: #3a3a3a;
+  --soft-grey: #7a7a7a;
+  --off-white: #faf8f4;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Jost', sans-serif;
+  background-color: var(--green-deep);
+  color: var(--cream);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--green-deep);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--green-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 3px;
+}
+
+@layer utilities {
+  .text-gold { color: var(--gold); }
+  .text-gold-light { color: var(--gold-light); }
+  .text-cream { color: var(--cream); }
+  .text-soft-grey { color: var(--soft-grey); }
+  .bg-green-deep { background-color: var(--green-deep); }
+  .bg-green-mid { background-color: var(--green-mid); }
+  .bg-green-light { background-color: var(--green-light); }
+  .bg-cream { background-color: var(--cream); }
+  .bg-alabaster { background-color: var(--alabaster); }
+  .border-gold { border-color: var(--gold); }
+  .font-serif { font-family: 'Cormorant Garamond', serif; }
+  .font-sans { font-family: 'Jost', sans-serif; }
+}
