@@ -542,33 +542,155 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Services Preview */}
-      <section className="pb-32 px-6 max-w-7xl mx-auto">
-        <FadeIn className="text-center mb-16">
-          <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">What We Do</p>
-          <h2 className="font-serif text-4xl md:text-5xl text-[#f5f0e8] font-light">Our Services</h2>
+      {/* Services */}
+      <section style={{ backgroundColor: '#1e3320', padding: '5rem 1.5rem' }}>
+        <style>{`
+          .svc-card-explore-line {
+            display: inline-block;
+            width: 24px;
+            height: 0.5px;
+            background: rgba(200,169,110,0.45);
+            transition: width 0.35s ease, background 0.35s ease;
+            verticalAlign: middle;
+          }
+          .svc-card:hover .svc-card-explore-line {
+            width: 48px;
+            background: #c8a96e;
+          }
+          .svc-card:hover .svc-card-img {
+            transform: scale(1.05);
+          }
+          .svc-card-img {
+            transition: transform 0.7s ease;
+          }
+        `}</style>
+
+        {/* Header */}
+        <FadeIn>
+          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+            <p style={{
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 300,
+              fontSize: 10,
+              letterSpacing: '0.4em',
+              textTransform: 'uppercase',
+              color: '#c8a96e',
+              marginBottom: '0.75rem',
+            }}>What We Do</p>
+            <h2 style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontWeight: 300,
+              fontSize: 'clamp(2rem, 4vw, 3rem)',
+              color: '#f5f0e8',
+              lineHeight: 1.1,
+            }}>Our Services</h2>
+          </div>
         </FadeIn>
-        <div className="grid md:grid-cols-3 gap-6">
+
+        {/* 3-col grid */}
+        <div style={{
+          maxWidth: 1200,
+          margin: '0 auto',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 0,
+          border: '1px solid rgba(200,169,110,0.18)',
+        }}>
           {services.map((s, i) => (
             <FadeIn key={s.title} delay={i * 0.15}>
-              <Link to={s.href} className="group block relative overflow-hidden">
-                <div className="aspect-[4/5] overflow-hidden">
+              <Link
+                to={s.href}
+                className="svc-card"
+                style={{
+                  display: 'block',
+                  height: 420,
+                  position: 'relative',
+                  overflow: 'hidden',
+                  borderLeft: i > 0 ? '2px solid rgba(200,169,110,0.22)' : 'none',
+                  textDecoration: 'none',
+                  flexDirection: 'column',
+                }}
+              >
+                {/* Featured pill — middle card only */}
+                {i === 1 && (
+                  <div style={{
+                    position: 'absolute',
+                    top: 16,
+                    left: 16,
+                    zIndex: 10,
+                    border: '0.5px solid #c8a96e',
+                    padding: '3px 10px',
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 300,
+                    fontSize: 9,
+                    letterSpacing: '0.25em',
+                    textTransform: 'uppercase',
+                    color: '#c8a96e',
+                    backgroundColor: 'rgba(30,51,32,0.55)',
+                    backdropFilter: 'blur(4px)',
+                  }}>Featured</div>
+                )}
+
+                {/* Image area */}
+                <div style={{ position: 'absolute', inset: 0, bottom: 48, overflow: 'hidden' }}>
                   <img
                     src={s.img}
                     alt={s.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="svc-card-img"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-[#1c2b1a]/50 group-hover:bg-[#1c2b1a]/30 transition-all duration-500" />
+                  {/* gradient overlay */}
+                  <div style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(to bottom, rgba(20,40,20,0.1) 30%, rgba(15,30,15,0.88) 100%)',
+                  }} />
+                  {/* title + descriptor over image */}
+                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.25rem 1.25rem 1rem' }}>
+                    <h3 style={{
+                      fontFamily: "'Cormorant Garamond', serif",
+                      fontWeight: 300,
+                      fontSize: '1.6rem',
+                      color: '#f5f0e8',
+                      lineHeight: 1.15,
+                      marginBottom: '0.3rem',
+                    }}>{s.title}</h3>
+                    <p style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontWeight: 300,
+                      fontSize: 11,
+                      color: 'rgba(245,240,232,0.6)',
+                      lineHeight: 1.5,
+                      margin: 0,
+                    }}>{s.desc.split('—')[0].trim()}</p>
+                  </div>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <h3 className="font-serif text-2xl text-[#f5f0e8] mb-3 font-light">{s.title}</h3>
-                  <p className="text-[#f5f0e8]/60 text-sm leading-relaxed font-light mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    {s.desc}
-                  </p>
-                  <span className="text-[#b8966a] text-xs tracking-[0.2em] uppercase flex items-center gap-2">
-                    Explore <ArrowRight size={12} />
-                  </span>
+
+                {/* Footer bar */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: 48,
+                  backgroundColor: '#1a2a1a',
+                  borderTop: '0.5px solid rgba(200,169,110,0.35)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '0 1.25rem',
+                  gap: 10,
+                }}>
+                  <span style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 300,
+                    fontSize: 10,
+                    letterSpacing: '0.3em',
+                    textTransform: 'uppercase',
+                    color: '#c8a96e',
+                  }}>Explore</span>
+                  <span className="svc-card-explore-line" />
+                  <ArrowRight size={11} color="#c8a96e" />
                 </div>
               </Link>
             </FadeIn>
