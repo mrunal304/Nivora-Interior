@@ -20,7 +20,6 @@ const igPosts = [
 const stats = [
   { value: '2+', label: 'Years of Experience' },
   { value: '2', label: 'Cities — Mumbai & Pune' },
-  { value: '100%', label: 'End-to-End Solutions' },
 ]
 
 const services = [
