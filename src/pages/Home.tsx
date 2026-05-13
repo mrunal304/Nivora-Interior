@@ -714,7 +714,7 @@ export default function Home() {
       </section>
 
       {/* Portfolio Preview */}
-      <section className="py-32 bg-[#1c2b1a]">
+      <section className="pt-20 pb-32 bg-[#1c2b1a]">
         <div className="max-w-7xl mx-auto px-6">
           <FadeIn className="text-center mb-16">
             <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Selected Work</p>
