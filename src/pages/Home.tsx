@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, ChevronDown, Compass, Eye, Wrench, Sparkles, KeyRound } from 'lucide-react'
+import { ArrowRight, ChevronDown, Compass, Eye, Wrench, Sparkles, Key } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
 import { useState, useRef, useEffect } from 'react'
 import { projects } from '../data/projects'
@@ -124,10 +124,10 @@ function BeforeAfterSlider() {
 
 function ProcessSection() {
   const gridSteps = [
-    { icon: <Compass size={18} color="#a18661" />, title: 'Discover', text: 'A free consultation to understand your lifestyle and budget.' },
-    { icon: <Eye size={18} color="#a18661" />, title: 'Visualise', text: '3D renders and mood boards before a single thing is moved.' },
-    { icon: <Wrench size={18} color="#a18661" />, title: 'Execute', text: 'Master craftsmen, clear timelines, on-site precision.' },
-    { icon: <Sparkles size={18} color="#a18661" />, title: 'Reveal', text: 'A styled, ready-to-move-in space that exceeds expectations.' },
+    { icon: <Compass size={18} strokeWidth={1.5} color="#a18661" />, title: 'Discover', text: 'A free consultation to understand your lifestyle and budget.' },
+    { icon: <Eye size={18} strokeWidth={1.5} color="#a18661" />, title: 'Visualise', text: '3D renders and mood boards before a single thing is moved.' },
+    { icon: <Wrench size={18} strokeWidth={1.5} color="#a18661" />, title: 'Execute', text: 'Master craftsmen, clear timelines, on-site precision.' },
+    { icon: <Sparkles size={18} strokeWidth={1.5} color="#a18661" />, title: 'Reveal', text: 'A styled, ready-to-move-in space that exceeds expectations.' },
   ]
 
   return (
@@ -136,37 +136,57 @@ function ProcessSection() {
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.6 }}
-      style={{ background: '#F5F2ED', overflow: 'hidden' }}
+      style={{ background: '#F5F2ED', overflow: 'hidden', position: 'relative' }}
     >
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '80px 40px' }}>
+      {/* FIX 9 — subtle grain texture */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        pointerEvents: 'none',
+        zIndex: 0,
+        opacity: 0.025,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+        backgroundRepeat: 'repeat',
+        backgroundSize: '200px 200px',
+      }} />
+
+      {/* FIX 4 — breathing room + z-index above grain */}
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '80px 40px', position: 'relative', zIndex: 1 }}>
         <div
           className="process-outer-row"
           style={{
             display: 'flex',
             flexDirection: 'row',
             minHeight: 600,
-            alignItems: 'stretch',
+            alignItems: 'center',  /* FIX 1 — was stretch */
             gap: 80,
           }}
         >
-          {/* ── LEFT COLUMN: 50% ── */}
+          {/* ── LEFT COLUMN: 50% ── FIX 1 */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
             className="process-left-col"
-            style={{ flex: '0 0 50%', position: 'relative' }}
+            style={{
+              flex: '0 0 50%',
+              position: 'relative',
+              height: '100%',
+              maxHeight: 580,
+              overflow: 'hidden',
+              alignSelf: 'center',
+            }}
           >
-            {/* Photo 1 — larger, top-left, sits behind */}
+            {/* Photo 1 — dominant, top-left */}
             <div
               className="process-photo1-wrap"
               style={{
                 position: 'absolute',
                 top: 0,
                 left: 0,
-                width: '62%',
-                height: '75%',
+                width: '60%',
+                height: '68%',
                 border: '1.5px solid #a18661',
                 borderRadius: 0,
                 overflow: 'hidden',
@@ -180,15 +200,15 @@ function ProcessSection() {
               />
             </div>
 
-            {/* Photo 2 — smaller, bottom-right, overlaps Photo 1 */}
+            {/* Photo 2 — FIX 2: reduced, peeks from bottom-right */}
             <div
               className="process-photo2-wrap"
               style={{
                 position: 'absolute',
                 bottom: 0,
                 right: 0,
-                width: '58%',
-                height: '65%',
+                width: '52%',
+                height: '55%',
                 border: '1.5px solid #a18661',
                 borderRadius: 0,
                 overflow: 'hidden',
@@ -205,7 +225,7 @@ function ProcessSection() {
             </div>
           </motion.div>
 
-          {/* ── RIGHT COLUMN: 50% ── */}
+          {/* ── RIGHT COLUMN: 50% ── FIX 3 */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -217,6 +237,8 @@ function ProcessSection() {
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
+              alignSelf: 'center',
+              paddingTop: 0,
             }}
           >
             {/* Eyebrow */}
@@ -227,6 +249,7 @@ function ProcessSection() {
               color: '#a18661',
               textTransform: 'uppercase',
               marginBottom: 10,
+              marginTop: 0,
             }}>
               HOW WE WORK
             </p>
@@ -241,6 +264,7 @@ function ProcessSection() {
                 lineHeight: 1.05,
                 color: '#21291a',
                 marginBottom: 8,
+                marginTop: 0,
               }}
             >
               Our Process
@@ -254,6 +278,7 @@ function ProcessSection() {
               color: '#6D5A41',
               lineHeight: 1.7,
               marginBottom: 32,
+              marginTop: 0,
             }}>
               From first conversation to final reveal — a seamless, end-to-end journey.
             </p>
@@ -278,11 +303,12 @@ function ProcessSection() {
                   style={{ display: 'flex', flexDirection: 'column', gap: 6 }}
                 >
                   {step.icon}
+                  {/* FIX 6 — heavier weight, larger size */}
                   <h3 style={{
                     fontFamily: "'Cormorant Garamond', serif",
                     fontStyle: 'italic',
-                    fontWeight: 500,
-                    fontSize: 22,
+                    fontWeight: 600,
+                    fontSize: 24,
                     color: '#21291a',
                     margin: 0,
                     lineHeight: 1.2,
@@ -303,7 +329,7 @@ function ProcessSection() {
               ))}
             </div>
 
-            {/* Step 5 — full-width row */}
+            {/* Step 5 — FIX 5: Handover row */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -311,22 +337,27 @@ function ProcessSection() {
               transition={{ duration: 0.45, delay: 0.62 }}
               style={{
                 display: 'flex',
+                flexDirection: 'row',
                 alignItems: 'flex-start',
-                gap: 10,
-                paddingTop: 16,
-                borderTop: '1px solid rgba(161,134,97,0.25)',
+                gap: 12,
+                paddingTop: 18,
+                borderTop: '1px solid rgba(161,134,97,0.22)',
+                width: '100%',
                 marginBottom: 20,
               }}
             >
-              <KeyRound size={18} color="#a18661" style={{ flexShrink: 0, marginTop: 3 }} />
-              <div>
+              {/* FIX 7 — Key (not KeyRound), normalised strokeWidth */}
+              <Key size={18} strokeWidth={1.5} color="#a18661" style={{ flexShrink: 0, marginTop: 4 }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                {/* FIX 6 — same weight increase */}
                 <h3 style={{
                   fontFamily: "'Cormorant Garamond', serif",
                   fontStyle: 'italic',
-                  fontWeight: 500,
-                  fontSize: 22,
+                  fontWeight: 600,
+                  fontSize: 24,
                   color: '#21291a',
-                  margin: '0 0 4px',
+                  margin: 0,
+                  padding: 0,
                   lineHeight: 1.2,
                 }}>
                   Handover
@@ -338,6 +369,7 @@ function ProcessSection() {
                   color: '#6D5A41',
                   lineHeight: 1.6,
                   margin: 0,
+                  padding: 0,
                 }}>
                   Your space, fully ready. A relationship that continues beyond delivery.
                 </p>
@@ -351,45 +383,49 @@ function ProcessSection() {
               letterSpacing: '0.3em',
               color: '#6D5A41',
               textTransform: 'uppercase',
-              marginBottom: 14,
+              marginBottom: 16,
+              marginTop: 0,
             }}>
               END-TO-END &nbsp;·&nbsp; TRANSPARENT &nbsp;·&nbsp; HASSLE-FREE
             </p>
 
-            {/* CTA Button */}
-            <div>
-              <Link
-                to="/quote"
-                className="process-cta-btn"
-                style={{
-                  display: 'inline-block',
-                  fontFamily: "'Cinzel', serif",
-                  fontSize: 9,
-                  letterSpacing: '0.2em',
-                  textTransform: 'uppercase',
-                  background: '#21291a',
-                  color: '#F5F2ED',
-                  padding: '15px 32px',
-                  border: 'none',
-                  borderRadius: 1,
-                  textDecoration: 'none',
-                  cursor: 'pointer',
-                  transition: 'background 0.3s ease, color 0.3s ease',
-                }}
-                onMouseEnter={e => {
-                  const el = e.currentTarget as HTMLAnchorElement
-                  el.style.background = '#a18661'
-                  el.style.color = '#21291a'
-                }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget as HTMLAnchorElement
-                  el.style.background = '#21291a'
-                  el.style.color = '#F5F2ED'
-                }}
-              >
-                BOOK FREE CONSULTATION
-              </Link>
-            </div>
+            {/* FIX 8 — full-width button */}
+            <Link
+              to="/quote"
+              className="process-cta-btn"
+              style={{
+                display: 'block',
+                width: '100%',
+                maxWidth: '100%',
+                boxSizing: 'border-box',
+                textAlign: 'center',
+                fontFamily: "'Cinzel', serif",
+                fontSize: 9,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                background: '#21291a',
+                color: '#F5F2ED',
+                padding: '15px 32px',
+                border: 'none',
+                borderRadius: 1,
+                textDecoration: 'none',
+                cursor: 'pointer',
+                marginTop: 0,
+                transition: 'background 0.3s ease, color 0.3s ease',
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLAnchorElement
+                el.style.background = '#a18661'
+                el.style.color = '#21291a'
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLAnchorElement
+                el.style.background = '#21291a'
+                el.style.color = '#F5F2ED'
+              }}
+            >
+              BOOK FREE CONSULTATION
+            </Link>
           </motion.div>
         </div>
       </div>
@@ -406,6 +442,7 @@ function ProcessSection() {
             flex: 0 0 auto !important;
             width: 100% !important;
             height: 280px !important;
+            max-height: 280px !important;
             margin-bottom: 32px;
           }
           .process-photo1-wrap {
