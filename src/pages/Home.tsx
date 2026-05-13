@@ -714,7 +714,7 @@ export default function Home() {
       </section>
 
       {/* Portfolio Preview */}
-      <section className="py-32 bg-[#131f12]">
+      <section className="py-32 bg-[#1c2b1a]">
         <div className="max-w-7xl mx-auto px-6">
           <FadeIn className="text-center mb-16">
             <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Selected Work</p>
@@ -724,7 +724,7 @@ export default function Home() {
             {featured.map((p, i) => (
               <FadeIn key={p.id} delay={i * 0.08}>
                 <Link to={`/portfolio/${p.id}`} className="group relative block overflow-hidden">
-                  <div className={`overflow-hidden ${i === 0 || i === 5 ? 'aspect-square' : 'aspect-[4/5]'}`}>
+                  <div className="overflow-hidden" style={{ height: 380 }}>
                     <img
                       src={p.coverImage}
                       alt={p.name}
