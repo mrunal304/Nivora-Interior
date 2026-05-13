@@ -17,10 +17,7 @@ const igPosts = [
   'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600&q=80',
 ]
 
-const stats = [
-  { value: '2+', label: 'Years of Experience' },
-  { value: '2', label: 'Cities — Mumbai & Pune' },
-]
+const stats: { value: string; label: string }[] = []
 
 const services = [
   {
