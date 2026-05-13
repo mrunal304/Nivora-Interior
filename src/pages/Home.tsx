@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { ArrowRight, ChevronDown } from 'lucide-react'
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import { ArrowRight } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
 import ProcessSection from '../components/ProcessSection'
 import { useState, useRef, useEffect } from 'react'
@@ -124,82 +124,338 @@ function BeforeAfterSlider() {
 }
 
 
+function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
+  const rawY = useTransform(scrollYProgress, [0, 1], ['0%', '22%'])
+  const parallaxY = useSpring(rawY, { stiffness: 60, damping: 20 })
+
+  return (
+    <section
+      ref={sectionRef}
+      style={{ position: 'relative', height: '100vh', minHeight: 700, overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+    >
+      {/* Parallax background */}
+      <motion.div
+        style={{ y: parallaxY, position: 'absolute', inset: '-12% 0', zIndex: 0 }}
+      >
+        <img
+          src={heroImg}
+          alt="NIVORA Interiors"
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%', display: 'block' }}
+          loading="eager"
+        />
+      </motion.div>
+
+      {/* Layered gradient overlay */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 1,
+        background: 'linear-gradient(to bottom, rgba(20,32,18,0.35) 0%, rgba(20,32,18,0.55) 40%, rgba(20,32,18,0.78) 75%, rgba(20,32,18,0.92) 100%)',
+      }} />
+
+      {/* Subtle vignette — edges */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 2,
+        background: 'radial-gradient(ellipse at center, transparent 50%, rgba(10,18,9,0.45) 100%)',
+        pointerEvents: 'none',
+      }} />
+
+      {/* Vertical studio label — left */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, delay: 1.2 }}
+        style={{
+          position: 'absolute', left: 36, top: '50%', zIndex: 10,
+          transform: 'translateY(-50%) rotate(-90deg)',
+          transformOrigin: 'center center',
+          fontFamily: "'Cinzel', serif",
+          fontSize: 9,
+          letterSpacing: '0.35em',
+          color: 'rgba(184,150,106,0.45)',
+          textTransform: 'uppercase',
+          whiteSpace: 'nowrap',
+        }}
+        className="hidden lg:block"
+      >
+        Boutique Interior Studio
+      </motion.div>
+
+      {/* Vertical year label — right */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, delay: 1.2 }}
+        style={{
+          position: 'absolute', right: 36, top: '50%', zIndex: 10,
+          transform: 'translateY(-50%) rotate(90deg)',
+          transformOrigin: 'center center',
+          fontFamily: "'Cinzel', serif",
+          fontSize: 9,
+          letterSpacing: '0.35em',
+          color: 'rgba(184,150,106,0.45)',
+          textTransform: 'uppercase',
+          whiteSpace: 'nowrap',
+        }}
+        className="hidden lg:block"
+      >
+        Mumbai &nbsp;&amp;&nbsp; Pune
+      </motion.div>
+
+      {/* Centre content */}
+      <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '0 24px', maxWidth: 860, margin: '0 auto', width: '100%' }}>
+
+        {/* Location eyebrow */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: 'easeOut' }}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginBottom: 32 }}
+        >
+          <div style={{ width: 40, height: 1, background: 'rgba(184,150,106,0.5)' }} />
+          <span style={{
+            fontFamily: "'Cinzel', serif",
+            fontSize: 10,
+            letterSpacing: '0.45em',
+            color: '#b8966a',
+            textTransform: 'uppercase',
+          }}>
+            Mumbai &nbsp;·&nbsp; Pune
+          </span>
+          <div style={{ width: 40, height: 1, background: 'rgba(184,150,106,0.5)' }} />
+        </motion.div>
+
+        {/* Main headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 36 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.1, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontWeight: 300,
+            fontSize: 'clamp(46px, 7vw, 88px)',
+            lineHeight: 1.05,
+            color: '#f5f0e8',
+            letterSpacing: '-0.01em',
+            marginBottom: 8,
+          }}
+        >
+          Thoughtfully Designed
+        </motion.h1>
+        <motion.h1
+          initial={{ opacity: 0, y: 36 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.1, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontWeight: 300,
+            fontSize: 'clamp(46px, 7vw, 88px)',
+            lineHeight: 1.05,
+            letterSpacing: '-0.01em',
+            marginBottom: 32,
+          }}
+        >
+          <span style={{ color: '#f5f0e8' }}>Interiors —&nbsp;</span>
+          <em style={{ color: '#b8966a', fontStyle: 'italic' }}>That Feel Effortless</em>
+        </motion.h1>
+
+        {/* Supporting copy */}
+        <motion.p
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.48, ease: 'easeOut' }}
+          style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontWeight: 300,
+            fontSize: 'clamp(15px, 1.6vw, 18px)',
+            color: 'rgba(245,240,232,0.58)',
+            lineHeight: 1.8,
+            maxWidth: 520,
+            margin: '0 auto 48px',
+          }}
+        >
+          We design homes and workspaces that are beautiful, functional, and built for everyday living.
+        </motion.p>
+
+        {/* CTA buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.65 }}
+          style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}
+        >
+          <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.25 }}>
+            <Link
+              to="/quote"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 10,
+                fontFamily: "'Cinzel', serif",
+                fontSize: 10,
+                letterSpacing: '0.22em',
+                textTransform: 'uppercase',
+                background: '#b8966a',
+                color: '#1c2b1a',
+                padding: '17px 40px',
+                textDecoration: 'none',
+                transition: 'background 0.3s ease, box-shadow 0.3s ease',
+                boxShadow: '0 4px 24px rgba(184,150,106,0.18)',
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLAnchorElement).style.background = '#cda97e'
+                ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 8px 32px rgba(184,150,106,0.3)'
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLAnchorElement).style.background = '#b8966a'
+                ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 4px 24px rgba(184,150,106,0.18)'
+              }}
+            >
+              Book Free Consultation
+            </Link>
+          </motion.div>
+
+          <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.25 }}>
+            <Link
+              to="/portfolio"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 10,
+                fontFamily: "'Cinzel', serif",
+                fontSize: 10,
+                letterSpacing: '0.22em',
+                textTransform: 'uppercase',
+                background: 'transparent',
+                color: 'rgba(245,240,232,0.85)',
+                padding: '16px 40px',
+                border: '1px solid rgba(245,240,232,0.28)',
+                textDecoration: 'none',
+                transition: 'border-color 0.3s ease, color 0.3s ease',
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLAnchorElement
+                el.style.borderColor = 'rgba(184,150,106,0.7)'
+                el.style.color = '#b8966a'
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLAnchorElement
+                el.style.borderColor = 'rgba(245,240,232,0.28)'
+                el.style.color = 'rgba(245,240,232,0.85)'
+              }}
+            >
+              View Projects <ArrowRight size={13} strokeWidth={1.5} />
+            </Link>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Stats strip */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 1.0 }}
+        style={{
+          position: 'absolute',
+          bottom: 64,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 10,
+          display: 'flex',
+          gap: 0,
+          width: '100%',
+          maxWidth: 680,
+          padding: '0 24px',
+          justifyContent: 'center',
+        }}
+        className="hero-stats"
+      >
+        {stats.map((s, i) => (
+          <div
+            key={s.label}
+            style={{
+              textAlign: 'center',
+              flex: '1 1 0',
+              padding: '0 16px',
+              borderLeft: i > 0 ? '1px solid rgba(184,150,106,0.2)' : 'none',
+            }}
+          >
+            <div style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: 28,
+              fontWeight: 300,
+              color: '#b8966a',
+              lineHeight: 1,
+              marginBottom: 6,
+            }}>
+              {s.value}
+            </div>
+            <div style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 10,
+              fontWeight: 300,
+              letterSpacing: '0.12em',
+              color: 'rgba(245,240,232,0.38)',
+              textTransform: 'uppercase',
+            }}>
+              {s.label}
+            </div>
+          </div>
+        ))}
+      </motion.div>
+
+      {/* Scroll indicator — animated line */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.6, duration: 0.8 }}
+        style={{
+          position: 'absolute',
+          bottom: 24,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 10,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 8,
+        }}
+      >
+        <span style={{
+          fontFamily: "'Cinzel', serif",
+          fontSize: 8,
+          letterSpacing: '0.4em',
+          color: 'rgba(184,150,106,0.5)',
+          textTransform: 'uppercase',
+        }}>
+          Scroll
+        </span>
+        <div style={{ position: 'relative', width: 1, height: 40, background: 'rgba(184,150,106,0.15)', overflow: 'hidden' }}>
+          <motion.div
+            animate={{ y: ['-100%', '200%'] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.3 }}
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '50%', background: 'rgba(184,150,106,0.7)' }}
+          />
+        </div>
+      </motion.div>
+
+      {/* Responsive stats hide on small screens */}
+      <style>{`
+        @media (max-width: 640px) {
+          .hero-stats { display: none !important; }
+        }
+      `}</style>
+    </section>
+  )
+}
+
 export default function Home() {
   const featured = projects.slice(0, 6)
 
   return (
     <div className="bg-[#1c2b1a]">
       {/* Hero */}
-      <section className="relative h-screen min-h-[700px] flex flex-col items-center justify-center overflow-hidden">
-        <img
-          src={heroImg}
-          alt="NIVORA Interiors"
-          className="absolute inset-0 w-full h-full object-cover"
-          loading="eager"
-        />
-        <div className="absolute inset-0 bg-[#1c2b1a]/65" />
-
-        <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-          <motion.p
-            initial={{ opacity: 0, letterSpacing: '0.5em' }}
-            animate={{ opacity: 1, letterSpacing: '0.3em' }}
-            transition={{ duration: 1, ease: 'easeOut' }}
-            className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-8"
-          >
-            Mumbai &nbsp;|&nbsp; Pune
-          </motion.p>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-            className="font-serif text-5xl md:text-7xl text-[#f5f0e8] leading-[1.1] mb-8 font-light"
-          >
-            Thoughtfully Designed Interiors
-            <br />
-            <em className="text-[#b8966a] not-italic">That Feel Effortless</em> to Live In
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="text-[#f5f0e8]/60 text-base md:text-lg font-light max-w-xl mx-auto mb-12 leading-relaxed"
-          >
-            We design homes and workspaces that are beautiful, functional, and built for everyday living.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.7 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <Link
-              to="/quote"
-              className="inline-flex items-center justify-center gap-2 bg-[#b8966a] text-[#1c2b1a] text-xs tracking-[0.2em] uppercase px-10 py-4 hover:bg-[#d4b896] transition-all duration-300 font-medium"
-            >
-              Book Free Consultation
-            </Link>
-            <Link
-              to="/portfolio"
-              className="inline-flex items-center justify-center gap-2 border border-[#f5f0e8]/40 text-[#f5f0e8] text-xs tracking-[0.2em] uppercase px-10 py-4 hover:border-[#b8966a] hover:text-[#b8966a] transition-all duration-300"
-            >
-              View Projects <ArrowRight size={14} />
-            </Link>
-          </motion.div>
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[#b8966a]/60"
-        >
-          <span className="text-[9px] tracking-[0.3em] uppercase">Scroll</span>
-          <ChevronDown size={16} className="animate-bounce" />
-        </motion.div>
-      </section>
+      <HeroSection />
 
       {/* Brand Statement */}
       <section className="py-32 px-6 max-w-4xl mx-auto text-center">
