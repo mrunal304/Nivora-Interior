@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, ChevronDown, Compass, Eye, Wrench, Sparkles, Key } from 'lucide-react'
+import { ArrowRight, ChevronDown, Compass, Eye, Wrench, Sparkles, KeyRound } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
 import { useState, useRef, useEffect } from 'react'
 import { projects } from '../data/projects'
@@ -44,38 +44,6 @@ const services = [
   },
 ]
 
-const processSteps = [
-  {
-    step: '01',
-    title: 'Discover',
-    icon: 'compass',
-    desc: 'We begin by listening — understanding how you live, what you value, and what your space needs to do for you.',
-  },
-  {
-    step: '02',
-    title: 'Visualise',
-    icon: 'eye',
-    desc: 'Concepts, mood boards, material palettes, and 3D walkthroughs that make the vision tangible before a single thing is moved.',
-  },
-  {
-    step: '03',
-    title: 'Execute',
-    icon: 'wrench',
-    desc: 'Precise project management with trusted craftspeople, clear timelines, and constant communication.',
-  },
-  {
-    step: '04',
-    title: 'Reveal',
-    icon: 'sparkles',
-    desc: 'The handover. A finished space that surprises — even though you approved every detail.',
-  },
-  {
-    step: '05',
-    title: 'Handover',
-    icon: 'key',
-    desc: 'Deep-cleaned, styled, and truly ready. Your space, exactly as you imagined it.',
-  },
-]
 
 const testimonials = [
   {
@@ -151,6 +119,345 @@ function BeforeAfterSlider() {
       <span className="absolute top-4 left-4 text-xs tracking-[0.2em] uppercase text-[#f5f0e8]/80 bg-[#1c2b1a]/60 px-3 py-1.5 backdrop-blur-sm">Before</span>
       <span className="absolute top-4 right-4 text-xs tracking-[0.2em] uppercase text-[#f5f0e8]/80 bg-[#1c2b1a]/60 px-3 py-1.5 backdrop-blur-sm">After</span>
     </div>
+  )
+}
+
+const PROCESS_STEPS = [
+  {
+    icon: <Compass size={18} color="#a18661" />,
+    title: 'Discover',
+    text: 'A free consultation to understand your lifestyle, your budget, and what your space truly needs to do for you.',
+  },
+  {
+    icon: <Eye size={18} color="#a18661" />,
+    title: 'Visualise',
+    text: 'Detailed 3D renders, mood boards, and material palettes — so you see your home clearly before we build a single thing.',
+  },
+  {
+    icon: <Wrench size={18} color="#a18661" />,
+    title: 'Execute',
+    text: 'Our master craftsmen bring the design to life with precision, managed on-site with meticulous care and clear timelines.',
+  },
+  {
+    icon: <Sparkles size={18} color="#a18661" />,
+    title: 'Reveal',
+    text: 'The handover. A deep-cleaned, styled, and ready-to-move-in space that surprises — even though you approved every detail.',
+  },
+  {
+    icon: <KeyRound size={18} color="#a18661" />,
+    title: 'Handover',
+    text: 'Your space, fully ready. A finished interior built for real living — and a relationship we hope continues well beyond delivery.',
+  },
+]
+
+function ProcessSection() {
+  return (
+    <motion.section
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6 }}
+      style={{
+        background: '#F5F2ED',
+        paddingTop: 120,
+        paddingBottom: 120,
+        overflow: 'hidden',
+      }}
+    >
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 40px' }}>
+        {/* Two-column grid */}
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 80,
+            alignItems: 'flex-start',
+          }}
+        >
+          {/* ── LEFT: Photo Collage ── */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            style={{
+              flex: '0 0 42%',
+              position: 'relative',
+              minHeight: 580,
+            }}
+            className="process-left-col"
+          >
+            {/* Photo 1 */}
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: 320,
+                height: 400,
+                border: '1.5px solid #a18661',
+                borderRadius: 0,
+                overflow: 'hidden',
+              }}
+              className="process-photo1"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=700&q=85"
+                alt="NIVORA interior — living space"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                loading="lazy"
+              />
+            </div>
+
+            {/* Photo 2 — overlapping */}
+            <div
+              style={{
+                position: 'absolute',
+                top: 200,
+                left: 140,
+                width: 240,
+                height: 300,
+                border: '1.5px solid #a18661',
+                borderRadius: 0,
+                overflow: 'hidden',
+                boxShadow: '-8px 8px 40px rgba(33,41,26,0.15)',
+                zIndex: 2,
+              }}
+              className="process-photo2"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=85"
+                alt="NIVORA interior — workspace"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                loading="lazy"
+              />
+            </div>
+
+            {/* Gold accent square */}
+            <div
+              style={{
+                position: 'absolute',
+                top: 198,
+                left: 138,
+                width: 12,
+                height: 12,
+                background: '#a18661',
+                zIndex: 10,
+              }}
+            />
+
+            {/* Studio label */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                fontFamily: "'Cinzel', serif",
+                fontSize: 8,
+                letterSpacing: '0.3em',
+                color: '#6D5A41',
+                textTransform: 'uppercase',
+              }}
+            >
+              NIVORA INTERIORS &nbsp;·&nbsp; MUMBAI &amp; PUNE
+            </div>
+          </motion.div>
+
+          {/* ── RIGHT: Steps ── */}
+          <div style={{ flex: '1 1 0', minWidth: 0 }}>
+            {/* Eyebrow + Heading */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+            >
+              <p style={{
+                fontFamily: "'Cinzel', serif",
+                fontSize: 10,
+                letterSpacing: '0.4em',
+                color: '#a18661',
+                textTransform: 'uppercase',
+                marginBottom: 16,
+              }}>
+                HOW WE WORK
+              </p>
+              <h2 style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontWeight: 600,
+                fontSize: 64,
+                lineHeight: 1.0,
+                color: '#21291a',
+                marginBottom: 52,
+              }}
+                className="process-heading"
+              >
+                Our Process
+              </h2>
+            </motion.div>
+
+            {/* Steps */}
+            <div>
+              {PROCESS_STEPS.map((step, i) => {
+                const isLast = i === PROCESS_STEPS.length - 1
+                return (
+                  <motion.div
+                    key={step.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    className="process-step"
+                    style={{
+                      paddingTop: 28,
+                      paddingBottom: 28,
+                      paddingLeft: 28,
+                      borderLeft: '2px solid rgba(161,134,97,0.35)',
+                      position: 'relative',
+                      transition: 'border-left-color 0.4s ease',
+                      cursor: 'default',
+                    }}
+                    onMouseEnter={e => {
+                      (e.currentTarget as HTMLDivElement).style.borderLeftColor = '#a18661'
+                    }}
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLDivElement).style.borderLeftColor = 'rgba(161,134,97,0.35)'
+                    }}
+                  >
+                    {/* Header row: icon + title */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
+                      {step.icon}
+                      <h3
+                        className="process-step-title"
+                        style={{
+                          fontFamily: "'Cormorant Garamond', serif",
+                          fontStyle: 'italic',
+                          fontWeight: 500,
+                          fontSize: 32,
+                          color: '#21291a',
+                          lineHeight: 1.2,
+                          transition: 'color 0.3s',
+                        }}
+                      >
+                        {step.title}
+                      </h3>
+                    </div>
+
+                    {/* Description */}
+                    <p style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontWeight: 300,
+                      fontSize: 15,
+                      lineHeight: 1.9,
+                      color: '#6D5A41',
+                      maxWidth: 560,
+                      marginTop: 0,
+                    }}>
+                      {step.text}
+                    </p>
+
+                    {/* Divider (not on last step) */}
+                    {!isLast && (
+                      <div style={{
+                        height: 1,
+                        background: 'rgba(161,134,97,0.2)',
+                        width: 'calc(100% + 28px)',
+                        marginLeft: -28,
+                      } as React.CSSProperties} />
+                    )}
+                  </motion.div>
+                )
+              })}
+            </div>
+
+            {/* Tagline */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.6 }}
+              style={{ marginTop: 40 }}
+            >
+              <p style={{
+                fontFamily: "'Cinzel', serif",
+                fontSize: 9,
+                letterSpacing: '0.35em',
+                color: '#6D5A41',
+                textTransform: 'uppercase',
+                marginBottom: 20,
+              }}>
+                END-TO-END &nbsp;·&nbsp; TRANSPARENT &nbsp;·&nbsp; HASSLE-FREE
+              </p>
+
+              {/* CTA Button */}
+              <Link
+                to="/quote"
+                className="process-cta-btn"
+                style={{
+                  display: 'inline-block',
+                  fontFamily: "'Cinzel', serif",
+                  fontSize: 9,
+                  letterSpacing: '0.25em',
+                  textTransform: 'uppercase',
+                  background: '#21291a',
+                  color: '#F5F2ED',
+                  padding: '16px 36px',
+                  border: 'none',
+                  borderRadius: 1,
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                  transition: 'background 0.3s, color 0.3s',
+                }}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLAnchorElement
+                  el.style.background = '#a18661'
+                  el.style.color = '#21291a'
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLAnchorElement
+                  el.style.background = '#21291a'
+                  el.style.color = '#F5F2ED'
+                }}
+              >
+                BOOK FREE CONSULTATION
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+
+      {/* Responsive styles */}
+      <style>{`
+        @media (max-width: 768px) {
+          .process-left-col {
+            flex: 0 0 100% !important;
+            min-height: 280px !important;
+            min-width: 100% !important;
+            margin-bottom: 48px;
+          }
+          .process-photo1 {
+            width: 100% !important;
+            height: 260px !important;
+            position: relative !important;
+            top: auto !important;
+            left: auto !important;
+          }
+          .process-photo2 {
+            display: none !important;
+          }
+          .process-heading {
+            font-size: 44px !important;
+          }
+          .process-step-title {
+            font-size: 26px !important;
+          }
+          .process-cta-btn {
+            display: block !important;
+            text-align: center !important;
+          }
+        }
+      `}</style>
+    </motion.section>
   )
 }
 
@@ -280,239 +587,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Process — Light Editorial */}
-      <section style={{ background: '#F5F2ED' }} className="py-24 md:py-32 overflow-hidden">
-        <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
-          <div className="flex flex-col md:flex-row gap-14 md:gap-16 items-start">
-
-            {/* LEFT — Photo Collage */}
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-              className="w-full md:w-[40%] shrink-0"
-            >
-              <div className="relative" style={{ height: 420 }}>
-                {/* Photo 1 */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: 260,
-                    height: 320,
-                    border: '1px solid #a18661',
-                    borderRadius: 2,
-                    overflow: 'hidden',
-                  }}
-                >
-                  <img
-                    src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80"
-                    alt="Interior process"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    loading="lazy"
-                  />
-                </div>
-                {/* Photo 2 — overlapping */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 140,
-                    left: 80,
-                    width: 200,
-                    height: 260,
-                    border: '1px solid #a18661',
-                    borderRadius: 2,
-                    overflow: 'hidden',
-                    zIndex: 2,
-                  }}
-                >
-                  <img
-                    src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80"
-                    alt="Interior workspace"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    loading="lazy"
-                  />
-                </div>
-                {/* Gold accent square at overlap corner */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 138,
-                    left: 78,
-                    width: 10,
-                    height: 10,
-                    background: '#a18661',
-                    zIndex: 3,
-                  }}
-                />
-              </div>
-            </motion.div>
-
-            {/* RIGHT — Step List */}
-            <div className="w-full md:w-[60%]">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-              >
-                <p style={{
-                  fontFamily: "'Montserrat', sans-serif",
-                  fontSize: 9,
-                  letterSpacing: '0.3em',
-                  color: '#6D5A41',
-                  textTransform: 'uppercase',
-                  marginBottom: 14,
-                }}>
-                  How We Work
-                </p>
-                <h2 style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: 48,
-                  color: '#21291a',
-                  fontWeight: 400,
-                  lineHeight: 1.15,
-                  marginBottom: 36,
-                }}>
-                  Our Process
-                </h2>
-              </motion.div>
-
-              {/* Steps */}
-              <div>
-                {processSteps.map((step, i) => {
-                  const icons: Record<string, React.ReactNode> = {
-                    compass: <Compass size={18} color="#a18661" />,
-                    eye: <Eye size={18} color="#a18661" />,
-                    wrench: <Wrench size={18} color="#a18661" />,
-                    sparkles: <Sparkles size={18} color="#a18661" />,
-                    key: <Key size={18} color="#a18661" />,
-                  }
-                  const isLast = i === processSteps.length - 1
-                  return (
-                    <motion.div
-                      key={step.step}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: '-40px' }}
-                      transition={{ duration: 0.6, delay: i * 0.12, ease: [0.25, 0.1, 0.25, 1] }}
-                    >
-                      <div style={{
-                        paddingLeft: 20,
-                        borderLeft: '3px solid #a18661',
-                        marginBottom: 32,
-                        position: 'relative',
-                      }}>
-                        {/* Ghost number */}
-                        <span style={{
-                          position: 'absolute',
-                          left: -10,
-                          top: -16,
-                          fontFamily: "'Playfair Display', serif",
-                          fontStyle: 'italic',
-                          fontSize: 72,
-                          color: 'rgba(161,134,97,0.10)',
-                          lineHeight: 1,
-                          zIndex: 0,
-                          pointerEvents: 'none',
-                          userSelect: 'none',
-                        }}>
-                          {step.step}
-                        </span>
-                        {/* Icon + Title row */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8, position: 'relative', zIndex: 1 }}>
-                          {icons[step.icon]}
-                          <h3 style={{
-                            fontFamily: "'Playfair Display', serif",
-                            fontSize: 22,
-                            color: '#21291a',
-                            fontWeight: 400,
-                            lineHeight: 1.3,
-                          }}>
-                            {step.title}
-                          </h3>
-                        </div>
-                        {/* Description */}
-                        <p style={{
-                          fontFamily: "'Lora', serif",
-                          fontSize: 15,
-                          color: '#6D5A41',
-                          lineHeight: 1.8,
-                          position: 'relative',
-                          zIndex: 1,
-                        }}>
-                          {step.desc}
-                        </p>
-                        {/* Divider */}
-                        {!isLast && (
-                          <div style={{
-                            width: '100%',
-                            height: 1,
-                            background: 'rgba(161,134,97,0.3)',
-                            marginTop: 24,
-                          }} />
-                        )}
-                      </div>
-                    </motion.div>
-                  )
-                })}
-              </div>
-
-              {/* Tagline */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: 0.6 }}
-              >
-                <p style={{
-                  fontFamily: "'Montserrat', sans-serif",
-                  fontSize: 9,
-                  letterSpacing: '0.35em',
-                  color: '#6D5A41',
-                  textTransform: 'uppercase',
-                  marginBottom: 28,
-                }}>
-                  END-TO-END &nbsp;·&nbsp; TRANSPARENT &nbsp;·&nbsp; HASSLE-FREE
-                </p>
-                <Link
-                  to="/quote"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 8,
-                    background: '#21291a',
-                    color: '#F5F2ED',
-                    fontFamily: "'Montserrat', sans-serif",
-                    fontSize: 10,
-                    letterSpacing: '0.18em',
-                    textTransform: 'uppercase',
-                    padding: '14px 28px',
-                    borderRadius: 2,
-                    textDecoration: 'none',
-                    transition: 'background 0.3s ease, color 0.3s ease',
-                  }}
-                  onMouseEnter={e => {
-                    const el = e.currentTarget
-                    el.style.background = '#a18661'
-                    el.style.color = '#21291a'
-                  }}
-                  onMouseLeave={e => {
-                    const el = e.currentTarget
-                    el.style.background = '#21291a'
-                    el.style.color = '#F5F2ED'
-                  }}
-                >
-                  Book Free Consultation
-                </Link>
-              </motion.div>
-            </div>
-
-          </div>
-        </div>
-      </section>
+      {/* Process — Light Editorial Rebuild */}
+      <ProcessSection />
 
       {/* Before / After */}
       <section className="py-32 px-6 max-w-6xl mx-auto">
