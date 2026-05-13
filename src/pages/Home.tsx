@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, ChevronDown } from 'lucide-react'
+import { ArrowRight, ChevronDown, Compass, Eye, Wrench, Sparkles, Key } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
 import { useState, useRef, useEffect } from 'react'
 import { projects } from '../data/projects'
@@ -44,26 +44,36 @@ const services = [
   },
 ]
 
-const process = [
+const processSteps = [
   {
     step: '01',
     title: 'Discover',
+    icon: 'compass',
     desc: 'We begin by listening — understanding how you live, what you value, and what your space needs to do for you.',
   },
   {
     step: '02',
     title: 'Visualise',
+    icon: 'eye',
     desc: 'Concepts, mood boards, material palettes, and 3D walkthroughs that make the vision tangible before a single thing is moved.',
   },
   {
     step: '03',
     title: 'Execute',
+    icon: 'wrench',
     desc: 'Precise project management with trusted craftspeople, clear timelines, and constant communication.',
   },
   {
     step: '04',
     title: 'Reveal',
+    icon: 'sparkles',
     desc: 'The handover. A finished space that surprises — even though you approved every detail.',
+  },
+  {
+    step: '05',
+    title: 'Handover',
+    icon: 'key',
+    desc: 'Deep-cleaned, styled, and truly ready. Your space, exactly as you imagined it.',
   },
 ]
 
@@ -270,27 +280,236 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Process */}
-      <section className="py-32 bg-[#131f12]">
-        <div className="max-w-7xl mx-auto px-6">
-          <FadeIn className="text-center mb-6">
-            <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">How We Work</p>
-            <h2 className="font-serif text-4xl md:text-5xl text-[#f5f0e8] font-light">Our Process</h2>
-          </FadeIn>
-          <FadeIn delay={0.1} className="text-center mb-20">
-            <p className="text-[#f5f0e8]/40 text-sm tracking-[0.2em] uppercase">End-to-end. Transparent. Hassle-free.</p>
-          </FadeIn>
-          <div className="grid md:grid-cols-4 gap-8 md:gap-4 relative">
-            <div className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-px bg-[#b8966a]/20" />
-            {process.map((p, i) => (
-              <FadeIn key={p.step} delay={i * 0.15} className="text-center relative">
-                <div className="w-16 h-16 border border-[#b8966a]/40 rounded-full flex items-center justify-center mx-auto mb-6 relative bg-[#131f12]">
-                  <span className="font-serif text-xl text-[#b8966a]">{p.step}</span>
+      {/* Process — Light Editorial */}
+      <section style={{ background: '#F5F2ED' }} className="py-24 md:py-32 overflow-hidden">
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
+          <div className="flex flex-col md:flex-row gap-14 md:gap-16 items-start">
+
+            {/* LEFT — Photo Collage */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+              className="w-full md:w-[40%] shrink-0"
+            >
+              <div className="relative" style={{ height: 420 }}>
+                {/* Photo 1 */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: 260,
+                    height: 320,
+                    border: '1px solid #a18661',
+                    borderRadius: 2,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80"
+                    alt="Interior process"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    loading="lazy"
+                  />
                 </div>
-                <h3 className="font-serif text-2xl text-[#f5f0e8] mb-3 font-light">{p.title}</h3>
-                <p className="text-[#f5f0e8]/45 text-sm leading-relaxed font-light">{p.desc}</p>
-              </FadeIn>
-            ))}
+                {/* Photo 2 — overlapping */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 140,
+                    left: 80,
+                    width: 200,
+                    height: 260,
+                    border: '1px solid #a18661',
+                    borderRadius: 2,
+                    overflow: 'hidden',
+                    zIndex: 2,
+                  }}
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80"
+                    alt="Interior workspace"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    loading="lazy"
+                  />
+                </div>
+                {/* Gold accent square at overlap corner */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 138,
+                    left: 78,
+                    width: 10,
+                    height: 10,
+                    background: '#a18661',
+                    zIndex: 3,
+                  }}
+                />
+              </div>
+            </motion.div>
+
+            {/* RIGHT — Step List */}
+            <div className="w-full md:w-[60%]">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                <p style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 9,
+                  letterSpacing: '0.3em',
+                  color: '#6D5A41',
+                  textTransform: 'uppercase',
+                  marginBottom: 14,
+                }}>
+                  How We Work
+                </p>
+                <h2 style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: 48,
+                  color: '#21291a',
+                  fontWeight: 400,
+                  lineHeight: 1.15,
+                  marginBottom: 36,
+                }}>
+                  Our Process
+                </h2>
+              </motion.div>
+
+              {/* Steps */}
+              <div>
+                {processSteps.map((step, i) => {
+                  const icons: Record<string, React.ReactNode> = {
+                    compass: <Compass size={18} color="#a18661" />,
+                    eye: <Eye size={18} color="#a18661" />,
+                    wrench: <Wrench size={18} color="#a18661" />,
+                    sparkles: <Sparkles size={18} color="#a18661" />,
+                    key: <Key size={18} color="#a18661" />,
+                  }
+                  const isLast = i === processSteps.length - 1
+                  return (
+                    <motion.div
+                      key={step.step}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-40px' }}
+                      transition={{ duration: 0.6, delay: i * 0.12, ease: [0.25, 0.1, 0.25, 1] }}
+                    >
+                      <div style={{
+                        paddingLeft: 20,
+                        borderLeft: '3px solid #a18661',
+                        marginBottom: 32,
+                        position: 'relative',
+                      }}>
+                        {/* Ghost number */}
+                        <span style={{
+                          position: 'absolute',
+                          left: -10,
+                          top: -16,
+                          fontFamily: "'Playfair Display', serif",
+                          fontStyle: 'italic',
+                          fontSize: 72,
+                          color: 'rgba(161,134,97,0.10)',
+                          lineHeight: 1,
+                          zIndex: 0,
+                          pointerEvents: 'none',
+                          userSelect: 'none',
+                        }}>
+                          {step.step}
+                        </span>
+                        {/* Icon + Title row */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8, position: 'relative', zIndex: 1 }}>
+                          {icons[step.icon]}
+                          <h3 style={{
+                            fontFamily: "'Playfair Display', serif",
+                            fontSize: 22,
+                            color: '#21291a',
+                            fontWeight: 400,
+                            lineHeight: 1.3,
+                          }}>
+                            {step.title}
+                          </h3>
+                        </div>
+                        {/* Description */}
+                        <p style={{
+                          fontFamily: "'Lora', serif",
+                          fontSize: 15,
+                          color: '#6D5A41',
+                          lineHeight: 1.8,
+                          position: 'relative',
+                          zIndex: 1,
+                        }}>
+                          {step.desc}
+                        </p>
+                        {/* Divider */}
+                        {!isLast && (
+                          <div style={{
+                            width: '100%',
+                            height: 1,
+                            background: 'rgba(161,134,97,0.3)',
+                            marginTop: 24,
+                          }} />
+                        )}
+                      </div>
+                    </motion.div>
+                  )
+                })}
+              </div>
+
+              {/* Tagline */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.6 }}
+              >
+                <p style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 9,
+                  letterSpacing: '0.35em',
+                  color: '#6D5A41',
+                  textTransform: 'uppercase',
+                  marginBottom: 28,
+                }}>
+                  END-TO-END &nbsp;·&nbsp; TRANSPARENT &nbsp;·&nbsp; HASSLE-FREE
+                </p>
+                <Link
+                  to="/quote"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    background: '#21291a',
+                    color: '#F5F2ED',
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: 10,
+                    letterSpacing: '0.18em',
+                    textTransform: 'uppercase',
+                    padding: '14px 28px',
+                    borderRadius: 2,
+                    textDecoration: 'none',
+                    transition: 'background 0.3s ease, color 0.3s ease',
+                  }}
+                  onMouseEnter={e => {
+                    const el = e.currentTarget
+                    el.style.background = '#a18661'
+                    el.style.color = '#21291a'
+                  }}
+                  onMouseLeave={e => {
+                    const el = e.currentTarget
+                    el.style.background = '#21291a'
+                    el.style.color = '#F5F2ED'
+                  }}
+                >
+                  Book Free Consultation
+                </Link>
+              </motion.div>
+            </div>
+
           </div>
         </div>
       </section>
