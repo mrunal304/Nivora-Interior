@@ -124,6 +124,7 @@ function HeroSection() {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
   const rawY = useTransform(scrollYProgress, [0, 1], ['0%', '22%'])
   const parallaxY = useSpring(rawY, { stiffness: 60, damping: 20 })
+  const [activeCity, setActiveCity] = useState<'Mumbai' | 'Pune'>('Mumbai')
 
   return (
     <section
@@ -200,24 +201,34 @@ function HeroSection() {
       {/* Centre content */}
       <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '0 24px', maxWidth: 860, margin: '0 auto', width: '100%' }}>
 
-        {/* Location eyebrow */}
+        {/* Location tabs */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginBottom: 32 }}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 28, marginBottom: 32 }}
         >
-          <div style={{ width: 40, height: 1, background: 'rgba(184,150,106,0.5)' }} />
-          <span style={{
-            fontFamily: "'Cinzel', serif",
-            fontSize: 10,
-            letterSpacing: '0.45em',
-            color: '#b8966a',
-            textTransform: 'uppercase',
-          }}>
-            Mumbai &nbsp;·&nbsp; Pune
-          </span>
-          <div style={{ width: 40, height: 1, background: 'rgba(184,150,106,0.5)' }} />
+          {(['Mumbai', 'Pune'] as const).map(city => (
+            <button
+              key={city}
+              onClick={() => setActiveCity(city)}
+              style={{
+                background: 'none',
+                border: 'none',
+                borderBottom: activeCity === city ? '2px solid #C9A96E' : '2px solid transparent',
+                paddingBottom: 6,
+                fontFamily: "'Cinzel', serif",
+                fontSize: 10,
+                letterSpacing: '0.45em',
+                textTransform: 'uppercase',
+                color: activeCity === city ? '#ffffff' : 'rgba(255,255,255,0.5)',
+                cursor: 'pointer',
+                transition: 'color 0.3s ease, border-color 0.3s ease',
+              }}
+            >
+              {city}
+            </button>
+          ))}
         </motion.div>
 
         {/* Main headline */}
@@ -251,7 +262,7 @@ function HeroSection() {
           }}
         >
           <span style={{ color: '#f5f0e8' }}>Interiors —&nbsp;</span>
-          <em style={{ color: '#b8966a', fontStyle: 'italic' }}>That Feel Effortless</em>
+          <em className="hero-italic-reveal" style={{ color: '#b8966a', fontStyle: 'italic' }}>That Feel Effortless</em>
         </motion.h1>
 
         {/* Supporting copy */}
@@ -290,20 +301,20 @@ function HeroSection() {
                 fontSize: 10,
                 letterSpacing: '0.22em',
                 textTransform: 'uppercase',
-                background: '#b8966a',
-                color: '#3b4a35',
+                background: '#2E4A30',
+                color: '#ffffff',
                 padding: '17px 40px',
                 textDecoration: 'none',
                 transition: 'background 0.3s ease, box-shadow 0.3s ease',
-                boxShadow: '0 4px 24px rgba(184,150,106,0.18)',
+                boxShadow: '0 4px 24px rgba(46,74,48,0.3)',
               }}
               onMouseEnter={e => {
-                (e.currentTarget as HTMLAnchorElement).style.background = '#cda97e'
-                ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 8px 32px rgba(184,150,106,0.3)'
+                (e.currentTarget as HTMLAnchorElement).style.background = '#3a5e3c'
+                ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 8px 32px rgba(46,74,48,0.45)'
               }}
               onMouseLeave={e => {
-                (e.currentTarget as HTMLAnchorElement).style.background = '#b8966a'
-                ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 4px 24px rgba(184,150,106,0.18)'
+                (e.currentTarget as HTMLAnchorElement).style.background = '#2E4A30'
+                ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 4px 24px rgba(46,74,48,0.3)'
               }}
             >
               Book Free Consultation
@@ -404,6 +415,7 @@ function HeroSection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.6, duration: 0.8 }}
+        className="scroll-indicator-bounce"
         style={{
           position: 'absolute',
           bottom: 24,
@@ -434,10 +446,26 @@ function HeroSection() {
         </div>
       </motion.div>
 
-      {/* Responsive stats hide on small screens */}
+      {/* Responsive stats hide on small screens + hero keyframes */}
       <style>{`
         @media (max-width: 640px) {
           .hero-stats { display: none !important; }
+        }
+        @keyframes heroItalicReveal {
+          from { opacity: 0; transform: translateY(12px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero-italic-reveal {
+          display: inline-block;
+          opacity: 0;
+          animation: heroItalicReveal 0.6s ease-out 0.3s forwards;
+        }
+        @keyframes scrollBounce {
+          0%, 100% { transform: translateX(-50%) translateY(0); }
+          50%       { transform: translateX(-50%) translateY(6px); }
+        }
+        .scroll-indicator-bounce {
+          animation: scrollBounce 2s ease-in-out infinite;
         }
       `}</style>
     </section>
