@@ -9,7 +9,7 @@ export default function ProjectDetail() {
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-[#1c2b1a] flex items-center justify-center">
+      <div className="min-h-screen bg-[#3b4a35] flex items-center justify-center">
         <div className="text-center">
           <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">404</p>
           <h1 className="font-serif text-4xl text-[#f5f0e8] font-light mb-6">Project Not Found</h1>
@@ -22,11 +22,11 @@ export default function ProjectDetail() {
   }
 
   return (
-    <div className="bg-[#1c2b1a] pt-20">
+    <div className="bg-[#3b4a35] pt-20">
       {/* Hero */}
       <div className="relative h-[70vh] overflow-hidden">
         <img src={project.images[0]} alt={project.name} className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-[#1c2b1a]/50" />
+        <div className="absolute inset-0 bg-[#3b4a35]/50" />
         <div className="absolute bottom-0 left-0 right-0 p-12 max-w-7xl mx-auto">
           <FadeIn>
             <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-3">{project.category} · {project.year}</p>
@@ -83,7 +83,7 @@ export default function ProjectDetail() {
           <h2 className="font-serif text-4xl text-[#f5f0e8] font-light mb-6">Ready to design your space?</h2>
           <Link
             to="/quote"
-            className="inline-flex items-center gap-2 bg-[#b8966a] text-[#1c2b1a] text-xs tracking-[0.2em] uppercase px-10 py-4 hover:bg-[#d4b896] transition-all duration-300 font-medium"
+            className="inline-flex items-center gap-2 bg-[#b8966a] text-[#3b4a35] text-xs tracking-[0.2em] uppercase px-10 py-4 hover:bg-[#d4b896] transition-all duration-300 font-medium"
           >
             Book a Free Consultation
           </Link>

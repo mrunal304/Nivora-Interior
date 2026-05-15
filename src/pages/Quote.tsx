@@ -21,7 +21,7 @@ export default function Quote() {
   }
 
   return (
-    <div className="bg-[#1c2b1a] pt-20 min-h-screen">
+    <div className="bg-[#3b4a35] pt-20 min-h-screen">
       {/* Header */}
       <section className="relative py-28 px-6 overflow-hidden">
         <div className="absolute inset-0 opacity-8">
@@ -82,7 +82,7 @@ export default function Quote() {
                     onClick={() => set('location', l)}
                     className={`text-xs tracking-[0.15em] uppercase px-6 py-3 transition-all duration-300 ${
                       form.location === l
-                        ? 'bg-[#b8966a] text-[#1c2b1a]'
+                        ? 'bg-[#b8966a] text-[#3b4a35]'
                         : 'border border-[#f5f0e8]/15 text-[#f5f0e8]/40 hover:border-[#b8966a] hover:text-[#b8966a]'
                     }`}
                   >
@@ -103,7 +103,7 @@ export default function Quote() {
                     onClick={() => set('projectType', t)}
                     className={`text-xs tracking-[0.15em] uppercase px-6 py-3 transition-all duration-300 ${
                       form.projectType === t
-                        ? 'bg-[#b8966a] text-[#1c2b1a]'
+                        ? 'bg-[#b8966a] text-[#3b4a35]'
                         : 'border border-[#f5f0e8]/15 text-[#f5f0e8]/40 hover:border-[#b8966a] hover:text-[#b8966a]'
                     }`}
                   >
@@ -124,7 +124,7 @@ export default function Quote() {
                     onClick={() => set('budget', b)}
                     className={`text-xs tracking-[0.15em] uppercase px-6 py-3 transition-all duration-300 ${
                       form.budget === b
-                        ? 'bg-[#b8966a] text-[#1c2b1a]'
+                        ? 'bg-[#b8966a] text-[#3b4a35]'
                         : 'border border-[#f5f0e8]/15 text-[#f5f0e8]/40 hover:border-[#b8966a] hover:text-[#b8966a]'
                     }`}
                   >
@@ -148,7 +148,7 @@ export default function Quote() {
 
             <button
               type="submit"
-              className="w-full bg-[#b8966a] text-[#1c2b1a] text-sm tracking-[0.25em] uppercase py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium flex items-center justify-center gap-3 mt-4"
+              className="w-full bg-[#b8966a] text-[#3b4a35] text-sm tracking-[0.25em] uppercase py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium flex items-center justify-center gap-3 mt-4"
             >
               Claim My Free Layout Design <ArrowRight size={15} />
             </button>

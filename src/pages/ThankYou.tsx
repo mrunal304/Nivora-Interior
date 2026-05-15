@@ -5,7 +5,7 @@ import FadeIn from '../components/FadeIn'
 
 export default function ThankYou() {
   return (
-    <div className="bg-[#1c2b1a] min-h-screen pt-20 flex items-center">
+    <div className="bg-[#3b4a35] min-h-screen pt-20 flex items-center">
       <div className="max-w-3xl mx-auto px-6 py-32 text-center">
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
@@ -49,13 +49,13 @@ export default function ThankYou() {
         </FadeIn>
 
         <FadeIn delay={0.7}>
-          <div className="bg-[#243522] p-8 mb-12">
+          <div className="bg-[#485c3f] p-8 mb-12">
             <p className="text-[#b8966a] text-[10px] tracking-[0.3em] uppercase mb-3">Free Download</p>
             <h3 className="font-serif text-2xl text-[#f5f0e8] font-light mb-3">2026 Interior Trend Guide</h3>
             <p className="text-[#f5f0e8]/40 text-sm font-light mb-6 leading-relaxed">
               While you wait, explore our curated guide to the interior trends shaping refined living spaces this year.
             </p>
-            <button className="inline-flex items-center gap-2 border border-[#b8966a] text-[#b8966a] text-xs tracking-[0.2em] uppercase px-8 py-3 hover:bg-[#b8966a] hover:text-[#1c2b1a] transition-all duration-300">
+            <button className="inline-flex items-center gap-2 border border-[#b8966a] text-[#b8966a] text-xs tracking-[0.2em] uppercase px-8 py-3 hover:bg-[#b8966a] hover:text-[#3b4a35] transition-all duration-300">
               Download Guide <ArrowRight size={13} />
             </button>
           </div>
@@ -71,7 +71,7 @@ export default function ThankYou() {
             </Link>
             <Link
               to="/portfolio"
-              className="inline-flex items-center justify-center gap-2 bg-[#b8966a] text-[#1c2b1a] text-xs tracking-[0.2em] uppercase px-8 py-4 hover:bg-[#d4b896] transition-all duration-300 font-medium"
+              className="inline-flex items-center justify-center gap-2 bg-[#b8966a] text-[#3b4a35] text-xs tracking-[0.2em] uppercase px-8 py-4 hover:bg-[#d4b896] transition-all duration-300 font-medium"
             >
               Explore Our Work <ArrowRight size={13} />
             </Link>

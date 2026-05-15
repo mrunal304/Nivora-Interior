@@ -4,7 +4,7 @@ import { Phone, Mail, MapPin, MessageCircle, ArrowRight } from 'lucide-react'
 
 export default function Contact() {
   return (
-    <div className="bg-[#1c2b1a] pt-20">
+    <div className="bg-[#3b4a35] pt-20">
       <section className="py-28 px-6 text-center max-w-3xl mx-auto">
         <FadeIn>
           <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Reach Out</p>
@@ -144,7 +144,7 @@ export default function Contact() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-[#b8966a] text-[#1c2b1a] text-xs tracking-[0.25em] uppercase py-4 hover:bg-[#d4b896] transition-all duration-300 font-medium flex items-center justify-center gap-3"
+                  className="w-full bg-[#b8966a] text-[#3b4a35] text-xs tracking-[0.25em] uppercase py-4 hover:bg-[#d4b896] transition-all duration-300 font-medium flex items-center justify-center gap-3"
                 >
                   Send Message <ArrowRight size={14} />
                 </button>
@@ -160,7 +160,7 @@ export default function Contact() {
           </p>
           <Link
             to="/quote"
-            className="inline-flex items-center gap-2 border border-[#b8966a] text-[#b8966a] text-xs tracking-[0.2em] uppercase px-10 py-4 hover:bg-[#b8966a] hover:text-[#1c2b1a] transition-all duration-300"
+            className="inline-flex items-center gap-2 border border-[#b8966a] text-[#b8966a] text-xs tracking-[0.2em] uppercase px-10 py-4 hover:bg-[#b8966a] hover:text-[#3b4a35] transition-all duration-300"
           >
             Get a Free Quote <ArrowRight size={13} />
           </Link>

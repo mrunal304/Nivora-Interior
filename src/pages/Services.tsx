@@ -32,7 +32,7 @@ const categories = [
 
 export default function Services() {
   return (
-    <div className="bg-[#1c2b1a] pt-20">
+    <div className="bg-[#3b4a35] pt-20">
       <section className="py-28 px-6 text-center max-w-3xl mx-auto">
         <FadeIn>
           <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">What We Offer</p>
@@ -46,7 +46,7 @@ export default function Services() {
       {categories.map((cat, i) => (
         <section
           key={cat.id}
-          className={`py-20 ${i % 2 === 1 ? 'bg-[#131f12]' : ''}`}
+          className={`py-20 ${i % 2 === 1 ? 'bg-[#2f3c29]' : ''}`}
         >
           <div className="max-w-7xl mx-auto px-6">
             <div className={`grid lg:grid-cols-2 gap-16 items-center ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
@@ -74,7 +74,7 @@ export default function Services() {
                 </ul>
                 <Link
                   to={`/services/${cat.id}`}
-                  className="inline-flex items-center gap-2 border border-[#b8966a] text-[#b8966a] text-xs tracking-[0.2em] uppercase px-8 py-4 hover:bg-[#b8966a] hover:text-[#1c2b1a] transition-all duration-300"
+                  className="inline-flex items-center gap-2 border border-[#b8966a] text-[#b8966a] text-xs tracking-[0.2em] uppercase px-8 py-4 hover:bg-[#b8966a] hover:text-[#3b4a35] transition-all duration-300"
                 >
                   Explore {cat.title} <ArrowRight size={13} />
                 </Link>
@@ -95,7 +95,7 @@ export default function Services() {
           </p>
           <Link
             to="/quote"
-            className="inline-flex items-center gap-2 bg-[#b8966a] text-[#1c2b1a] text-xs tracking-[0.2em] uppercase px-12 py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium"
+            className="inline-flex items-center gap-2 bg-[#b8966a] text-[#3b4a35] text-xs tracking-[0.2em] uppercase px-12 py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium"
           >
             Book Free Consultation <ArrowRight size={13} />
           </Link>

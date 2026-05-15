@@ -4,9 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        'green-deep': '#1c2b1a',
-        'green-mid': '#243522',
-        'green-light': '#2e4a2c',
+        'green-deep': '#3b4a35',
+        'green-mid': '#485c3f',
+        'green-light': '#526647',
         gold: '#b8966a',
         'gold-light': '#d4b896',
         cream: '#f5f0e8',

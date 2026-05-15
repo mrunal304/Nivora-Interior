@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import WhatsAppButton from './components/WhatsAppButton'
+import IntroOverlay from './components/IntroOverlay'
 import Home from './pages/Home'
 import Portfolio from './pages/Portfolio'
 import Services from './pages/Services'
@@ -34,6 +35,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <BrowserRouter>
+      <IntroOverlay />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout><Home /></Layout>} />

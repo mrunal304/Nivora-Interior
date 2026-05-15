@@ -29,7 +29,7 @@ const studioImg = 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?
 
 export default function About() {
   return (
-    <div className="bg-[#1c2b1a] pt-20">
+    <div className="bg-[#3b4a35] pt-20">
       {/* Header */}
       <section className="relative py-36 px-6 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
@@ -50,7 +50,7 @@ export default function About() {
       </section>
 
       {/* Who We Are */}
-      <section className="py-24 bg-[#131f12]">
+      <section className="py-24 bg-[#2f3c29]">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
           <FadeIn direction="right">
             <div className="overflow-hidden">
@@ -90,7 +90,7 @@ export default function About() {
       </section>
 
       {/* What We Design */}
-      <section className="py-24 bg-[#131f12]">
+      <section className="py-24 bg-[#2f3c29]">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-start">
           <FadeIn>
             <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-6">What We Design</p>
@@ -141,7 +141,7 @@ export default function About() {
       </section>
 
       {/* Founder */}
-      <section className="py-24 bg-[#131f12]">
+      <section className="py-24 bg-[#2f3c29]">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
           <FadeIn delay={0.2}>
             <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-6">The Founder</p>
@@ -185,7 +185,7 @@ export default function About() {
           </p>
           <Link
             to="/quote"
-            className="inline-flex items-center gap-2 bg-[#b8966a] text-[#1c2b1a] text-xs tracking-[0.2em] uppercase px-12 py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium"
+            className="inline-flex items-center gap-2 bg-[#b8966a] text-[#3b4a35] text-xs tracking-[0.2em] uppercase px-12 py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium"
           >
             Book Free Consultation <ArrowRight size={13} />
           </Link>

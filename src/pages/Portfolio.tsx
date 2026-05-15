@@ -20,7 +20,7 @@ export default function Portfolio() {
   const filtered = active === 'all' ? projects : projects.filter(p => p.category === active)
 
   return (
-    <div className="bg-[#1c2b1a] pt-20">
+    <div className="bg-[#3b4a35] pt-20">
       {/* Header */}
       <section className="py-28 px-6 text-center max-w-3xl mx-auto">
         <FadeIn>
@@ -40,7 +40,7 @@ export default function Portfolio() {
             onClick={() => setActive(c.id)}
             className={`text-xs tracking-[0.2em] uppercase px-6 py-3 transition-all duration-300 ${
               active === c.id
-                ? 'bg-[#b8966a] text-[#1c2b1a]'
+                ? 'bg-[#b8966a] text-[#3b4a35]'
                 : 'border border-[#f5f0e8]/20 text-[#f5f0e8]/50 hover:border-[#b8966a] hover:text-[#b8966a]'
             }`}
           >
@@ -69,7 +69,7 @@ export default function Portfolio() {
                     className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-[#1c2b1a]/0 group-hover:bg-[#1c2b1a]/70 transition-all duration-500" />
+                  <div className="absolute inset-0 bg-[#3b4a35]/0 group-hover:bg-[#3b4a35]/70 transition-all duration-500" />
                   <div className="absolute inset-0 flex flex-col items-start justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     <p className="text-[#b8966a] text-[10px] tracking-[0.2em] uppercase mb-2">
                       {p.category}

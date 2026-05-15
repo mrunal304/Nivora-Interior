@@ -66,7 +66,7 @@ export default function Testimonials() {
       <section className="py-28 px-6 text-center max-w-3xl mx-auto">
         <FadeIn>
           <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Client Stories</p>
-          <h1 className="font-serif text-5xl md:text-7xl text-[#1c2b1a] font-light mb-6">What Clients Say</h1>
+          <h1 className="font-serif text-5xl md:text-7xl text-[#3b4a35] font-light mb-6">What Clients Say</h1>
           <p className="text-[#3a3a3a]/50 font-light leading-relaxed">
             Every project is a relationship. These are the words of people who trusted us with their spaces.
           </p>
@@ -79,11 +79,11 @@ export default function Testimonials() {
           {testimonials.map((t, i) => (
             <FadeIn key={i} delay={(i % 3) * 0.1} className="break-inside-avoid">
               <div className="bg-[#ede8df] p-8 border-l-2 border-[#b8966a]/30 hover:border-[#b8966a] transition-all duration-500">
-                <p className="font-serif text-lg text-[#1c2b1a]/80 leading-relaxed font-light mb-8">
+                <p className="font-serif text-lg text-[#3b4a35]/80 leading-relaxed font-light mb-8">
                   "{t.text}"
                 </p>
                 <div>
-                  <p className="text-[#1c2b1a] text-sm font-light tracking-wide">{t.name}</p>
+                  <p className="text-[#3b4a35] text-sm font-light tracking-wide">{t.name}</p>
                   <p className="text-[#3a3a3a]/40 text-xs tracking-wider mt-1">{t.location}</p>
                   <p className="text-[#b8966a] text-[10px] tracking-[0.2em] uppercase mt-2">{t.project}</p>
                 </div>
@@ -93,14 +93,14 @@ export default function Testimonials() {
         </div>
 
         <FadeIn className="text-center mt-24">
-          <div className="bg-[#1c2b1a] py-20 px-6">
+          <div className="bg-[#3b4a35] py-20 px-6">
             <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Your Turn</p>
             <h2 className="font-serif text-4xl text-[#f5f0e8] font-light mb-6">
               Ready to create your story?
             </h2>
             <Link
               to="/quote"
-              className="inline-flex items-center gap-2 bg-[#b8966a] text-[#1c2b1a] text-xs tracking-[0.2em] uppercase px-12 py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium"
+              className="inline-flex items-center gap-2 bg-[#b8966a] text-[#3b4a35] text-xs tracking-[0.2em] uppercase px-12 py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium"
             >
               Book Free Consultation <ArrowRight size={13} />
             </Link>

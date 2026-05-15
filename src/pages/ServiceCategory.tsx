@@ -31,7 +31,7 @@ export default function ServiceCategory() {
 
   if (!meta) {
     return (
-      <div className="min-h-screen bg-[#1c2b1a] flex items-center justify-center">
+      <div className="min-h-screen bg-[#3b4a35] flex items-center justify-center">
         <div className="text-center">
           <h1 className="font-serif text-4xl text-[#f5f0e8] font-light mb-6">Category Not Found</h1>
           <Link to="/services" className="text-[#b8966a] text-xs tracking-[0.2em] uppercase hover:text-[#d4b896]">
@@ -43,11 +43,11 @@ export default function ServiceCategory() {
   }
 
   return (
-    <div className="bg-[#1c2b1a] pt-20">
+    <div className="bg-[#3b4a35] pt-20">
       {/* Hero */}
       <div className="relative h-[50vh] overflow-hidden">
         <img src={meta.hero} alt={meta.title} className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-[#1c2b1a]/60" />
+        <div className="absolute inset-0 bg-[#3b4a35]/60" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <FadeIn>
             <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Services</p>
@@ -90,7 +90,7 @@ export default function ServiceCategory() {
         <FadeIn className="text-center mt-24">
           <Link
             to="/quote"
-            className="inline-flex items-center gap-2 bg-[#b8966a] text-[#1c2b1a] text-xs tracking-[0.2em] uppercase px-12 py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium"
+            className="inline-flex items-center gap-2 bg-[#b8966a] text-[#3b4a35] text-xs tracking-[0.2em] uppercase px-12 py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium"
           >
             Start Your Project <ArrowRight size={13} />
           </Link>

@@ -28,7 +28,7 @@ export default function Navbar() {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? 'bg-[#1c2b1a]/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
+          scrolled ? 'bg-[#3b4a35]/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-20">
@@ -58,7 +58,7 @@ export default function Navbar() {
 
           <Link
             to="/quote"
-            className="hidden lg:inline-flex items-center gap-2 border border-[#b8966a] text-[#b8966a] text-xs tracking-[0.2em] uppercase px-6 py-3 hover:bg-[#b8966a] hover:text-[#1c2b1a] transition-all duration-300"
+            className="hidden lg:inline-flex items-center gap-2 border border-[#b8966a] text-[#b8966a] text-xs tracking-[0.2em] uppercase px-6 py-3 hover:bg-[#b8966a] hover:text-[#3b4a35] transition-all duration-300"
           >
             Enquire Now
           </Link>
@@ -75,7 +75,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       <div
-        className={`fixed inset-0 z-40 bg-[#1c2b1a] flex flex-col justify-center items-center gap-8 transition-all duration-500 ${
+        className={`fixed inset-0 z-40 bg-[#3b4a35] flex flex-col justify-center items-center gap-8 transition-all duration-500 ${
           open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
@@ -90,7 +90,7 @@ export default function Navbar() {
         ))}
         <Link
           to="/quote"
-          className="mt-4 border border-[#b8966a] text-[#b8966a] text-xs tracking-[0.2em] uppercase px-10 py-4 hover:bg-[#b8966a] hover:text-[#1c2b1a] transition-all duration-300"
+          className="mt-4 border border-[#b8966a] text-[#b8966a] text-xs tracking-[0.2em] uppercase px-10 py-4 hover:bg-[#b8966a] hover:text-[#3b4a35] transition-all duration-300"
         >
           Enquire Now
         </Link>

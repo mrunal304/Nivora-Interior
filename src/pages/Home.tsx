@@ -104,16 +104,16 @@ function BeforeAfterSlider() {
       <div className="absolute top-0 bottom-0 flex items-center justify-center" style={{ left: `${pos}%`, transform: 'translateX(-50%)' }}>
         <div className="w-0.5 h-full bg-[#b8966a]" />
         <div className="absolute w-10 h-10 rounded-full bg-[#b8966a] flex items-center justify-center shadow-lg">
-          <svg className="w-5 h-5 text-[#1c2b1a]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <svg className="w-5 h-5 text-[#3b4a35]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path d="M15 19l-7-7 7-7" />
           </svg>
-          <svg className="w-5 h-5 text-[#1c2b1a] -ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <svg className="w-5 h-5 text-[#3b4a35] -ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path d="M9 5l7 7-7 7" />
           </svg>
         </div>
       </div>
-      <span className="absolute top-4 left-4 text-xs tracking-[0.2em] uppercase text-[#f5f0e8]/80 bg-[#1c2b1a]/60 px-3 py-1.5 backdrop-blur-sm">Before</span>
-      <span className="absolute top-4 right-4 text-xs tracking-[0.2em] uppercase text-[#f5f0e8]/80 bg-[#1c2b1a]/60 px-3 py-1.5 backdrop-blur-sm">After</span>
+      <span className="absolute top-4 left-4 text-xs tracking-[0.2em] uppercase text-[#f5f0e8]/80 bg-[#3b4a35]/60 px-3 py-1.5 backdrop-blur-sm">Before</span>
+      <span className="absolute top-4 right-4 text-xs tracking-[0.2em] uppercase text-[#f5f0e8]/80 bg-[#3b4a35]/60 px-3 py-1.5 backdrop-blur-sm">After</span>
     </div>
   )
 }
@@ -291,7 +291,7 @@ function HeroSection() {
                 letterSpacing: '0.22em',
                 textTransform: 'uppercase',
                 background: '#b8966a',
-                color: '#1c2b1a',
+                color: '#3b4a35',
                 padding: '17px 40px',
                 textDecoration: 'none',
                 transition: 'background 0.3s ease, box-shadow 0.3s ease',
@@ -448,7 +448,7 @@ export default function Home() {
   const featured = projects.slice(0, 6)
 
   return (
-    <div className="bg-[#1c2b1a]">
+    <div className="bg-[#3b4a35]">
       {/* Hero */}
       <HeroSection />
 
@@ -543,7 +543,7 @@ export default function Home() {
       </section>
 
       {/* Services */}
-      <section style={{ backgroundColor: '#1e3320', padding: '5rem 1.5rem' }}>
+      <section style={{ backgroundColor: '#3b4a35', padding: '5rem 1.5rem' }}>
         <style>{`
           .svc-card-explore-line {
             display: inline-block;
@@ -674,7 +674,7 @@ export default function Home() {
                   left: 0,
                   right: 0,
                   height: 48,
-                  backgroundColor: '#1a2a1a',
+                  backgroundColor: '#2f3c29',
                   borderTop: '0.5px solid rgba(200,169,110,0.35)',
                   display: 'flex',
                   alignItems: 'center',
@@ -714,7 +714,7 @@ export default function Home() {
       </section>
 
       {/* Portfolio Preview */}
-      <section className="pt-20 pb-32 bg-[#1c2b1a]">
+      <section className="pt-20 pb-32 bg-[#3b4a35]">
         <div className="max-w-7xl mx-auto px-6">
           <FadeIn className="text-center mb-16">
             <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Selected Work</p>
@@ -731,7 +731,7 @@ export default function Home() {
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-[#1c2b1a]/0 group-hover:bg-[#1c2b1a]/60 transition-all duration-500" />
+                    <div className="absolute inset-0 bg-[#3b4a35]/0 group-hover:bg-[#3b4a35]/60 transition-all duration-500" />
                     <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                       <h3 className="font-serif text-xl text-[#f5f0e8] font-light">{p.name}</h3>
                       <p className="text-[#b8966a] text-xs tracking-wider mt-1">{p.location}</p>
@@ -744,7 +744,7 @@ export default function Home() {
           <FadeIn delay={0.3} className="text-center mt-14">
             <Link
               to="/portfolio"
-              className="inline-flex items-center gap-3 border border-[#b8966a] text-[#b8966a] text-xs tracking-[0.2em] uppercase px-10 py-4 hover:bg-[#b8966a] hover:text-[#1c2b1a] transition-all duration-300"
+              className="inline-flex items-center gap-3 border border-[#b8966a] text-[#b8966a] text-xs tracking-[0.2em] uppercase px-10 py-4 hover:bg-[#b8966a] hover:text-[#3b4a35] transition-all duration-300"
             >
               View Full Portfolio <ArrowRight size={13} />
             </Link>
@@ -781,7 +781,7 @@ export default function Home() {
       </section>
 
       {/* Stats */}
-      <section className="py-24 bg-[#131f12] border-y border-[#b8966a]/10">
+      <section className="py-24 bg-[#2f3c29] border-y border-[#b8966a]/10">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12">
           {stats.map((s, i) => (
             <FadeIn key={i} delay={i * 0.1} className="text-center">
@@ -821,7 +821,7 @@ export default function Home() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-32 bg-[#243522] relative overflow-hidden">
+      <section className="py-32 bg-[#485c3f] relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="w-full h-full" style={{ backgroundImage: 'radial-gradient(circle at 30% 50%, #b8966a 0%, transparent 60%)' }} />
         </div>
@@ -836,7 +836,7 @@ export default function Home() {
             </p>
             <Link
               to="/quote"
-              className="inline-flex items-center gap-3 bg-[#b8966a] text-[#1c2b1a] text-xs tracking-[0.25em] uppercase px-12 py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium"
+              className="inline-flex items-center gap-3 bg-[#b8966a] text-[#3b4a35] text-xs tracking-[0.25em] uppercase px-12 py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium"
             >
               Claim My Free Offer Now <ArrowRight size={14} />
             </Link>
