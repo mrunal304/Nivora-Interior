@@ -23,18 +23,21 @@ const services = [
   {
     title: 'Residential Interiors',
     desc: 'Homes that feel deeply personal — designed around how you actually live, not how homes are supposed to look.',
+    hoverDesc: 'Crafting homes that feel deeply personal and enduringly beautiful.',
     href: '/services/residential',
     img: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80',
   },
   {
     title: 'Commercial Interiors',
     desc: 'Workspaces, cafés, showrooms, and hospitality spaces that make an immediate impression and sustain it.',
+    hoverDesc: 'Designing spaces that make an immediate impression and sustain it.',
     href: '/services/commercial',
     img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80',
   },
   {
     title: 'Architecture',
     desc: 'Complete architectural design services — from concept and planning to structure, façade, and landscape.',
+    hoverDesc: 'From concept to façade — spaces built to endure and inspire.',
     href: '/services/architecture',
     img: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600&q=80',
   },
@@ -595,17 +598,71 @@ export default function Home() {
             height: 0.5px;
             background: rgba(200,169,110,0.45);
             transition: width 0.35s ease, background 0.35s ease;
-            verticalAlign: middle;
+            vertical-align: middle;
           }
           .svc-card:hover .svc-card-explore-line {
             width: 48px;
-            background: #c8a96e;
+            background: #C9A96E;
           }
           .svc-card:hover .svc-card-img {
             transform: scale(1.05);
           }
           .svc-card-img {
             transition: transform 0.7s ease;
+          }
+          .svc-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+            pointer-events: none;
+          }
+          .svc-card:hover .svc-card-overlay {
+            opacity: 1;
+          }
+          .svc-card-hover-desc {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0 1.25rem 1.25rem;
+            z-index: 3;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+          }
+          .svc-card:hover .svc-card-hover-desc {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          .svc-card-explore-text {
+            position: relative;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(200,169,110,0.7);
+            transition: color 0.25s ease;
+          }
+          .svc-card-explore-text::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #C9A96E;
+            transition: width 0.25s ease;
+          }
+          .svc-card:hover .svc-card-explore-text {
+            color: #C9A96E;
+          }
+          .svc-card:hover .svc-card-explore-text::after {
+            width: 100%;
           }
         `}</style>
 
@@ -647,12 +704,11 @@ export default function Home() {
                 className="svc-card"
                 style={{
                   display: 'block',
-                  height: 420,
+                  height: 480,
                   position: 'relative',
                   overflow: 'hidden',
                   borderLeft: i > 0 ? '2px solid rgba(200,169,110,0.22)' : 'none',
                   textDecoration: 'none',
-                  flexDirection: 'column',
                 }}
               >
                 {/* Featured pill — middle card only */}
@@ -662,21 +718,20 @@ export default function Home() {
                     top: 16,
                     left: 16,
                     zIndex: 10,
-                    border: '0.5px solid #c8a96e',
-                    padding: '3px 10px',
+                    border: '1px solid #C9A96E',
+                    padding: '4px 12px',
                     fontFamily: "'Inter', sans-serif",
-                    fontWeight: 300,
-                    fontSize: 9,
-                    letterSpacing: '0.25em',
+                    fontWeight: 400,
+                    fontSize: 10,
+                    letterSpacing: '1.5px',
                     textTransform: 'uppercase',
-                    color: '#c8a96e',
-                    backgroundColor: 'rgba(30,51,32,0.55)',
-                    backdropFilter: 'blur(4px)',
+                    color: '#C9A96E',
+                    backgroundColor: '#1A2E1B',
                   }}>Featured</div>
                 )}
 
-                {/* Image area */}
-                <div style={{ position: 'absolute', inset: 0, bottom: 48, overflow: 'hidden' }}>
+                {/* Image + overlays */}
+                <div style={{ position: 'absolute', inset: 0, bottom: 52, overflow: 'hidden' }}>
                   <img
                     src={s.img}
                     alt={s.title}
@@ -684,14 +739,17 @@ export default function Home() {
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                     loading="lazy"
                   />
-                  {/* gradient overlay */}
+                  {/* permanent gradient */}
                   <div style={{
                     position: 'absolute',
                     inset: 0,
                     background: 'linear-gradient(to bottom, rgba(20,40,20,0.1) 30%, rgba(15,30,15,0.88) 100%)',
+                    zIndex: 1,
                   }} />
-                  {/* title + descriptor over image */}
-                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.25rem 1.25rem 1rem' }}>
+                  {/* hover dark overlay */}
+                  <div className="svc-card-overlay" />
+                  {/* title + short desc — always visible */}
+                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.25rem 1.25rem 1rem', zIndex: 4 }}>
                     <h3 style={{
                       fontFamily: "'Cormorant Garamond', serif",
                       fontWeight: 300,
@@ -709,6 +767,18 @@ export default function Home() {
                       margin: 0,
                     }}>{s.desc.split('—')[0].trim()}</p>
                   </div>
+                  {/* hover slide-up description */}
+                  <div className="svc-card-hover-desc">
+                    <p style={{
+                      fontFamily: "'Cormorant Garamond', serif",
+                      fontWeight: 300,
+                      fontStyle: 'italic',
+                      fontSize: '1.05rem',
+                      color: 'rgba(245,240,232,0.92)',
+                      lineHeight: 1.55,
+                      margin: 0,
+                    }}>{s.hoverDesc}</p>
+                  </div>
                 </div>
 
                 {/* Footer bar */}
@@ -717,7 +787,7 @@ export default function Home() {
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  height: 48,
+                  height: 52,
                   backgroundColor: '#3b4a35',
                   borderTop: '0.5px solid rgba(200,169,110,0.35)',
                   display: 'flex',
@@ -725,16 +795,9 @@ export default function Home() {
                   padding: '0 1.25rem',
                   gap: 10,
                 }}>
-                  <span style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontWeight: 300,
-                    fontSize: 10,
-                    letterSpacing: '0.3em',
-                    textTransform: 'uppercase',
-                    color: '#c8a96e',
-                  }}>Explore</span>
+                  <span className="svc-card-explore-text">Explore</span>
                   <span className="svc-card-explore-line" />
-                  <ArrowRight size={11} color="#c8a96e" />
+                  <ArrowRight size={11} color="#C9A96E" />
                 </div>
               </Link>
             </FadeIn>
