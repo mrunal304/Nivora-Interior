@@ -49,7 +49,7 @@ export default function ThankYou() {
         </FadeIn>
 
         <FadeIn delay={0.7}>
-          <div className="bg-[#485c3f] p-8 mb-12">
+          <div className="bg-[#3b4a35] p-8 mb-12">
             <p className="text-[#b8966a] text-[10px] tracking-[0.3em] uppercase mb-3">Free Download</p>
             <h3 className="font-serif text-2xl text-[#f5f0e8] font-light mb-3">2026 Interior Trend Guide</h3>
             <p className="text-[#f5f0e8]/40 text-sm font-light mb-6 leading-relaxed">

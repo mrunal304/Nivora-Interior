@@ -109,7 +109,7 @@ export default function ProcessSection() {
                 e.currentTarget.style.display = 'none'
                 if (e.currentTarget.parentElement)
                   e.currentTarget.parentElement.style.background =
-                    'linear-gradient(145deg, #3d4f2e 0%, #21291a 100%)'
+                    'linear-gradient(145deg, #3b4a35 0%, #3b4a35 100%)'
               }}
             />
           </div>
@@ -147,7 +147,7 @@ export default function ProcessSection() {
             fontWeight: 600,
             fontSize: 58,
             lineHeight: 1.05,
-            color: '#21291a',
+            color: '#3b4a35',
             margin: '0 0 10px',
           }}
             className="ps-heading"
@@ -189,7 +189,7 @@ export default function ProcessSection() {
                   fontStyle: 'italic',
                   fontWeight: 600,
                   fontSize: 28,
-                  color: '#21291a',
+                  color: '#3b4a35',
                   margin: '0 0 8px',
                   lineHeight: 1.1,
                 }}>
@@ -237,7 +237,7 @@ export default function ProcessSection() {
                 fontStyle: 'italic',
                 fontWeight: 600,
                 fontSize: 28,
-                color: '#21291a',
+                color: '#3b4a35',
                 margin: 0,
                 lineHeight: 1.1,
               }}>
@@ -279,7 +279,7 @@ export default function ProcessSection() {
                 fontSize: 10,
                 letterSpacing: '0.25em',
                 textTransform: 'uppercase',
-                background: '#21291a',
+                background: '#3b4a35',
                 color: '#F5F2ED',
                 padding: '16px 36px',
                 border: 'none',
@@ -291,10 +291,10 @@ export default function ProcessSection() {
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.background = '#a18661'
-                e.currentTarget.style.color = '#21291a'
+                e.currentTarget.style.color = '#3b4a35'
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.background = '#21291a'
+                e.currentTarget.style.background = '#3b4a35'
                 e.currentTarget.style.color = '#F5F2ED'
               }}
             >

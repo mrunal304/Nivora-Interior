@@ -674,7 +674,7 @@ export default function Home() {
                   left: 0,
                   right: 0,
                   height: 48,
-                  backgroundColor: '#2f3c29',
+                  backgroundColor: '#3b4a35',
                   borderTop: '0.5px solid rgba(200,169,110,0.35)',
                   display: 'flex',
                   alignItems: 'center',
@@ -781,7 +781,7 @@ export default function Home() {
       </section>
 
       {/* Stats */}
-      <section className="py-24 bg-[#2f3c29] border-y border-[#b8966a]/10">
+      <section className="py-24 bg-[#3b4a35] border-y border-[#b8966a]/10">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12">
           {stats.map((s, i) => (
             <FadeIn key={i} delay={i * 0.1} className="text-center">
@@ -821,7 +821,7 @@ export default function Home() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-32 bg-[#485c3f] relative overflow-hidden">
+      <section className="py-32 bg-[#3b4a35] relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="w-full h-full" style={{ backgroundImage: 'radial-gradient(circle at 30% 50%, #b8966a 0%, transparent 60%)' }} />
         </div>

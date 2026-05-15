@@ -5,8 +5,8 @@ export default {
     extend: {
       colors: {
         'green-deep': '#3b4a35',
-        'green-mid': '#485c3f',
-        'green-light': '#526647',
+        'green-mid': '#3b4a35',
+        'green-light': '#3b4a35',
         gold: '#b8966a',
         'gold-light': '#d4b896',
         cream: '#f5f0e8',

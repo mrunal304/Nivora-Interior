@@ -50,7 +50,7 @@ export default function About() {
       </section>
 
       {/* Who We Are */}
-      <section className="py-24 bg-[#2f3c29]">
+      <section className="py-24 bg-[#3b4a35]">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
           <FadeIn direction="right">
             <div className="overflow-hidden">
@@ -90,7 +90,7 @@ export default function About() {
       </section>
 
       {/* What We Design */}
-      <section className="py-24 bg-[#2f3c29]">
+      <section className="py-24 bg-[#3b4a35]">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-start">
           <FadeIn>
             <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-6">What We Design</p>
@@ -141,7 +141,7 @@ export default function About() {
       </section>
 
       {/* Founder */}
-      <section className="py-24 bg-[#2f3c29]">
+      <section className="py-24 bg-[#3b4a35]">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
           <FadeIn delay={0.2}>
             <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-6">The Founder</p>

@@ -46,7 +46,7 @@ export default function Services() {
       {categories.map((cat, i) => (
         <section
           key={cat.id}
-          className={`py-20 ${i % 2 === 1 ? 'bg-[#2f3c29]' : ''}`}
+          className={`py-20 ${i % 2 === 1 ? 'bg-[#3b4a35]' : ''}`}
         >
           <div className="max-w-7xl mx-auto px-6">
             <div className={`grid lg:grid-cols-2 gap-16 items-center ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
