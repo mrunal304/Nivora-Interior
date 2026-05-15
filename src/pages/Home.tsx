@@ -780,18 +780,6 @@ export default function Home() {
         </FadeIn>
       </section>
 
-      {/* Stats */}
-      <section className="py-24 bg-[#3b4a35] border-y border-[#b8966a]/10">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12">
-          {stats.map((s, i) => (
-            <FadeIn key={i} delay={i * 0.1} className="text-center">
-              <p className="font-serif text-5xl text-[#b8966a] font-light mb-3">{s.value}</p>
-              <p className="text-[#f5f0e8]/40 text-xs tracking-[0.2em] uppercase">{s.label}</p>
-            </FadeIn>
-          ))}
-        </div>
-      </section>
-
       {/* Instagram */}
       <section className="py-32 px-6 max-w-7xl mx-auto">
         <FadeIn className="text-center mb-4">
