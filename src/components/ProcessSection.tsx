@@ -1,28 +1,69 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Compass, Eye, Wrench, Sparkles, Key } from 'lucide-react'
 
 const PHOTO_1 = 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=85'
 const PHOTO_2 = 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=700&q=85'
 
+const IconDiscover = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="8.5" cy="8.5" r="5.5" stroke="#C9A96E" strokeWidth="1.1"/>
+    <line x1="12.9" y1="12.9" x2="17" y2="17" stroke="#C9A96E" strokeWidth="1.1" strokeLinecap="round"/>
+    <line x1="8.5" y1="5.5" x2="8.5" y2="11.5" stroke="#C9A96E" strokeWidth="1" strokeLinecap="round" strokeDasharray="1.5 1.5"/>
+    <line x1="5.5" y1="8.5" x2="11.5" y2="8.5" stroke="#C9A96E" strokeWidth="1" strokeLinecap="round" strokeDasharray="1.5 1.5"/>
+  </svg>
+)
+
+const IconVisualise = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 10C2 10 5.5 4.5 10 4.5S18 10 18 10s-3.5 5.5-8 5.5S2 10 2 10z" stroke="#C9A96E" strokeWidth="1.1" strokeLinejoin="round"/>
+    <circle cx="10" cy="10" r="2.2" stroke="#C9A96E" strokeWidth="1"/>
+  </svg>
+)
+
+const IconExecute = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M13.5 2.5a4.5 4.5 0 0 1 1.2 7.2L6.2 18.2a1.8 1.8 0 0 1-2.5-2.5l8.5-8.5A4.5 4.5 0 0 1 13.5 2.5z" stroke="#C9A96E" strokeWidth="1.1" strokeLinejoin="round"/>
+    <line x1="11" y1="5" x2="15" y2="9" stroke="#C9A96E" strokeWidth="1" strokeLinecap="round"/>
+  </svg>
+)
+
+const IconReveal = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 2L11.8 8.2L18 10L11.8 11.8L10 18L8.2 11.8L2 10L8.2 8.2Z" stroke="#C9A96E" strokeWidth="1.1" strokeLinejoin="round"/>
+  </svg>
+)
+
+const IconHandover = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="7.5" cy="7.5" r="4" stroke="#C9A96E" strokeWidth="1.1"/>
+    <line x1="10.4" y1="10.4" x2="18" y2="18" stroke="#C9A96E" strokeWidth="1.1" strokeLinecap="round"/>
+    <line x1="14" y1="14" x2="16.5" y2="11.5" stroke="#C9A96E" strokeWidth="1" strokeLinecap="round"/>
+    <line x1="16" y1="16" x2="18" y2="13.5" stroke="#C9A96E" strokeWidth="1" strokeLinecap="round"/>
+  </svg>
+)
+
 const GRID_STEPS = [
   {
-    icon: <Compass size={20} strokeWidth={1.5} color="#a18661" />,
+    num: '01',
+    icon: <IconDiscover />,
     title: 'Discover',
     text: 'A free consultation to understand your lifestyle and budget.',
   },
   {
-    icon: <Eye size={20} strokeWidth={1.5} color="#a18661" />,
+    num: '02',
+    icon: <IconVisualise />,
     title: 'Visualise',
     text: '3D renders and mood boards before a single thing is moved.',
   },
   {
-    icon: <Wrench size={20} strokeWidth={1.5} color="#a18661" />,
+    num: '03',
+    icon: <IconExecute />,
     title: 'Execute',
     text: 'Master craftsmen, clear timelines, on-site precision.',
   },
   {
-    icon: <Sparkles size={20} strokeWidth={1.5} color="#a18661" />,
+    num: '04',
+    icon: <IconReveal />,
     title: 'Reveal',
     text: 'A styled, ready-to-move-in space that exceeds expectations.',
   },
@@ -37,7 +78,6 @@ export default function ProcessSection() {
       transition={{ duration: 0.6 }}
       style={{ background: '#F5F2ED', width: '100%', padding: '100px 0' }}
     >
-      {/* Inner container */}
       <div
         style={{
           maxWidth: 1200,
@@ -59,7 +99,6 @@ export default function ProcessSection() {
           style={{ flex: '0 0 45%', position: 'relative', height: 500 }}
           className="ps-left"
         >
-          {/* Photo 1 — top-left, dominant */}
           <div
             style={{
               position: 'absolute',
@@ -86,7 +125,6 @@ export default function ProcessSection() {
             />
           </div>
 
-          {/* Photo 2 — bottom-right, peeks behind */}
           <div
             style={{
               position: 'absolute',
@@ -182,18 +220,104 @@ export default function ProcessSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.45, delay: 0.25 + i * 0.08 }}
+                style={{ position: 'relative' }}
               >
-                <div style={{ display: 'block', marginBottom: 10 }}>{step.icon}</div>
+                {/* Faint editorial step number */}
+                <span style={{
+                  position: 'absolute',
+                  top: -10,
+                  right: 0,
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontWeight: 700,
+                  fontSize: 72,
+                  lineHeight: 1,
+                  color: '#2E4A30',
+                  opacity: 0.06,
+                  pointerEvents: 'none',
+                  userSelect: 'none',
+                  zIndex: 0,
+                }}>
+                  {step.num}
+                </span>
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{ display: 'block', marginBottom: 10 }}>{step.icon}</div>
+                  <h3 style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontStyle: 'italic',
+                    fontWeight: 600,
+                    fontSize: 28,
+                    color: '#3b4a35',
+                    margin: '0 0 8px',
+                    lineHeight: 1.1,
+                  }}>
+                    {step.title}
+                  </h3>
+                  <p style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontWeight: 300,
+                    fontSize: 14,
+                    color: '#6D5A41',
+                    lineHeight: 1.7,
+                    margin: 0,
+                  }}>
+                    {step.text}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Handover — full-width premium step */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.45, delay: 0.57 }}
+            style={{
+              paddingTop: 24,
+              marginBottom: 28,
+              position: 'relative',
+            }}
+          >
+            {/* Full-width gold rule */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '1px',
+              backgroundColor: 'rgba(201,169,110,0.3)',
+            }} />
+            {/* Step 05 background number */}
+            <span style={{
+              position: 'absolute',
+              top: 4,
+              right: 0,
+              fontFamily: "'Cormorant Garamond', serif",
+              fontWeight: 700,
+              fontSize: 72,
+              lineHeight: 1,
+              color: '#2E4A30',
+              opacity: 0.06,
+              pointerEvents: 'none',
+              userSelect: 'none',
+              zIndex: 0,
+            }}>
+              05
+            </span>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: 14, position: 'relative', zIndex: 1 }}>
+              <IconHandover />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 <h3 style={{
                   fontFamily: "'Cormorant Garamond', serif",
                   fontStyle: 'italic',
                   fontWeight: 600,
                   fontSize: 28,
                   color: '#3b4a35',
-                  margin: '0 0 8px',
+                  margin: 0,
                   lineHeight: 1.1,
                 }}>
-                  {step.title}
+                  Handover
                 </h3>
                 <p style={{
                   fontFamily: "'DM Sans', sans-serif",
@@ -203,56 +327,9 @@ export default function ProcessSection() {
                   lineHeight: 1.7,
                   margin: 0,
                 }}>
-                  {step.text}
+                  Your space, fully ready. A relationship that continues beyond delivery.
                 </p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Handover — full-width row */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.45, delay: 0.57 }}
-            style={{
-              borderTop: '1px solid rgba(161,134,97,0.3)',
-              paddingTop: 24,
-              marginBottom: 28,
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-              gap: 14,
-            }}
-          >
-            <Key
-              size={20}
-              strokeWidth={1.5}
-              color="#a18661"
-              style={{ flexShrink: 0, marginTop: 6 }}
-            />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <h3 style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontStyle: 'italic',
-                fontWeight: 600,
-                fontSize: 28,
-                color: '#3b4a35',
-                margin: 0,
-                lineHeight: 1.1,
-              }}>
-                Handover
-              </h3>
-              <p style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontWeight: 300,
-                fontSize: 14,
-                color: '#6D5A41',
-                lineHeight: 1.7,
-                margin: 0,
-              }}>
-                Your space, fully ready. A relationship that continues beyond delivery.
-              </p>
+              </div>
             </div>
           </motion.div>
 
@@ -277,25 +354,23 @@ export default function ProcessSection() {
                 display: 'inline-block',
                 fontFamily: "'Cinzel', serif",
                 fontSize: 10,
-                letterSpacing: '0.25em',
+                letterSpacing: '0.3em',
                 textTransform: 'uppercase',
-                background: '#3b4a35',
-                color: '#F5F2ED',
+                background: '#2E4A30',
+                color: '#ffffff',
                 padding: '16px 36px',
                 border: 'none',
                 borderRadius: 1,
                 textDecoration: 'none',
                 cursor: 'pointer',
-                transition: 'background 0.3s ease, color 0.3s ease',
+                transition: 'background 0.3s ease',
                 width: 'auto',
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.background = '#a18661'
-                e.currentTarget.style.color = '#3b4a35'
+                e.currentTarget.style.background = '#3a5e3c'
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.background = '#3b4a35'
-                e.currentTarget.style.color = '#F5F2ED'
+                e.currentTarget.style.background = '#2E4A30'
               }}
             >
               BOOK FREE CONSULTATION
