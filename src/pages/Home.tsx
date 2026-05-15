@@ -481,89 +481,105 @@ export default function Home() {
       <HeroSection />
 
       {/* Philosophy */}
-      <section style={{ backgroundColor: '#f7f4ef' }} className="py-24 px-6">
-        <div className="max-w-3xl mx-auto text-center">
+      <section style={{ backgroundColor: '#f7f4ef', padding: '80px 1.5rem' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', gap: '4rem', alignItems: 'center', flexWrap: 'wrap' }}>
 
-          {/* Label with flanking rules */}
-          <FadeIn>
-            <div className="flex items-center justify-center gap-4 mb-12">
-              <div style={{ height: '0.5px', backgroundColor: '#b8966a', flex: 1, maxWidth: 80 }} />
-              <span style={{
+          {/* Left — text block (55%) */}
+          <div style={{ flex: '0 0 55%', minWidth: 280 }}>
+
+            {/* Label with flanking rules */}
+            <FadeIn>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: '2.5rem' }}>
+                <div style={{ height: '0.5px', backgroundColor: '#b8966a', width: 60 }} />
+                <span style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 300,
+                  fontSize: 10,
+                  letterSpacing: '0.35em',
+                  color: '#b8966a',
+                  textTransform: 'uppercase',
+                  whiteSpace: 'nowrap',
+                }}>Our Philosophy</span>
+                <div style={{ height: '0.5px', backgroundColor: '#b8966a', width: 60 }} />
+              </div>
+            </FadeIn>
+
+            {/* Quote */}
+            <FadeIn delay={0.1}>
+              <p style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: 'clamp(1.8rem, 3.2vw, 2.75rem)',
+                fontWeight: 300,
+                lineHeight: 1.25,
+                color: '#3b2f1e',
+                marginBottom: '1.75rem',
+              }}>
+                "Design is not just seen —{' '}
+                <em style={{ color: '#8b6914', fontStyle: 'italic' }}>it is experienced.</em>"
+              </p>
+            </FadeIn>
+
+            {/* Body */}
+            <FadeIn delay={0.2}>
+              <p style={{
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: 300,
-                fontSize: 10,
-                letterSpacing: '0.35em',
-                color: '#b8966a',
-                textTransform: 'uppercase',
-              }}>Our Philosophy</span>
-              <div style={{ height: '0.5px', backgroundColor: '#b8966a', flex: 1, maxWidth: 80 }} />
-            </div>
-          </FadeIn>
+                fontSize: '0.9375rem',
+                lineHeight: 1.85,
+                color: '#6b5240',
+                marginBottom: '2.5rem',
+              }}>
+                At NIVORA, every project begins with understanding — how you move through a space, what you need from it, and what makes it feel unmistakably yours. We work with refined materials, considered proportions, and timeless palettes to create interiors that hold their beauty for years, not seasons.
+              </p>
+            </FadeIn>
 
-          {/* Quote */}
-          <FadeIn delay={0.1}>
-            <p style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: 'clamp(2rem, 4vw, 3rem)',
-              fontWeight: 300,
-              lineHeight: 1.25,
-              color: '#3b2f1e',
-              marginBottom: '2rem',
-            }}>
-              "Design is not just seen —{' '}
-              <em style={{ color: '#8b6914', fontStyle: 'italic' }}>it is experienced.</em>"
-            </p>
-          </FadeIn>
-
-          {/* Body */}
-          <FadeIn delay={0.2}>
-            <p style={{
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 300,
-              fontSize: '0.9375rem',
-              lineHeight: 1.85,
-              color: '#6b5240',
-              maxWidth: '560px',
-              margin: '0 auto 3.5rem',
-            }}>
-              At NIVORA, every project begins with understanding — how you move through a space, what you need from it, and what makes it feel unmistakably yours. We work with refined materials, considered proportions, and timeless palettes to create interiors that hold their beauty for years, not seasons.
-            </p>
-          </FadeIn>
-
-          {/* Stats row */}
-          <FadeIn delay={0.3}>
-            <div style={{
-              borderTop: '0.5px solid #c9b99a',
-              display: 'flex',
-              justifyContent: 'center',
-              flexWrap: 'wrap',
-            }}>
-              {stats.map((s, i) => (
-                <div key={s.value} style={{
-                  flex: '1 1 120px',
-                  maxWidth: 180,
-                  padding: '1.75rem 1.5rem 0',
+            {/* Divider + brand values */}
+            <FadeIn delay={0.3}>
+              <div style={{ borderTop: '0.5px solid #c9b99a', paddingTop: '1.5rem' }}>
+                <p style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 300,
+                  fontSize: 11,
+                  letterSpacing: '3px',
+                  color: '#C9A96E',
                   textAlign: 'center',
-                  borderLeft: i > 0 ? '0.5px solid #c9b99a' : 'none',
+                  textTransform: 'uppercase',
                 }}>
-                  <div style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontWeight: 400,
-                    fontSize: 'clamp(2rem, 3vw, 2.75rem)',
-                    color: '#3b2f1e',
-                    lineHeight: 1,
-                    marginBottom: '0.5rem',
-                  }}>{s.value}</div>
-                  <div style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontWeight: 300,
-                    fontSize: 10,
-                    letterSpacing: '0.25em',
-                    textTransform: 'uppercase',
-                    color: '#8b6914',
-                  }}>{s.label}</div>
-                </div>
-              ))}
+                  Timeless &nbsp;<span style={{ fontSize: 8 }}>◆</span>&nbsp; Functional &nbsp;<span style={{ fontSize: 8 }}>◆</span>&nbsp; Personal
+                </p>
+              </div>
+            </FadeIn>
+
+          </div>
+
+          {/* Right — editorial photo (45%) */}
+          <FadeIn delay={0.2} direction="left" className="flex-1" style={{ minWidth: 240 }}>
+            <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+              {/* Offset gold frame */}
+              <div style={{
+                position: 'absolute',
+                top: 8,
+                left: 8,
+                right: -8,
+                bottom: -8,
+                border: '1px solid #C9A96E',
+                pointerEvents: 'none',
+                zIndex: 0,
+              }} />
+              {/* Photo */}
+              <div style={{ position: 'relative', zIndex: 1, overflow: 'hidden' }}>
+                <img
+                  src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=700&q=85"
+                  alt="NIVORA Studio — editorial"
+                  style={{
+                    width: '100%',
+                    aspectRatio: '3/4',
+                    objectFit: 'cover',
+                    display: 'block',
+                  }}
+                  loading="lazy"
+                />
+              </div>
             </div>
           </FadeIn>
 
