@@ -15,6 +15,8 @@ const igPosts = [
   'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=600&q=80',
   'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80',
   'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600&q=80',
+  'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80',
+  'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&q=80',
 ]
 
 const stats: { value: string; label: string }[] = []
@@ -1071,23 +1073,59 @@ export default function Home() {
 
       {/* Instagram */}
       <section className="pt-12 pb-32 px-6 max-w-7xl mx-auto">
-        <FadeIn className="text-center mb-4">
-          <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Follow the Journey</p>
-          <h2 className="font-serif text-4xl text-[#f5f0e8] font-light mb-4">@NivoraInteriors</h2>
+        <FadeIn className="text-center mb-12">
+          {/* Editorial gold rule */}
+          <div style={{ width: 60, height: 1, backgroundColor: '#C9A96E', margin: '0 auto 20px' }} />
+          <p style={{
+            fontFamily: "'Inter', sans-serif",
+            fontWeight: 300,
+            fontSize: 10,
+            letterSpacing: '0.4em',
+            textTransform: 'uppercase',
+            color: '#b8966a',
+            marginBottom: 16,
+          }}>Follow the Journey</p>
+          <h2 style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontWeight: 300,
+            fontSize: 'clamp(2rem, 4vw, 3rem)',
+            color: '#f5f0e8',
+            marginBottom: 12,
+            lineHeight: 1.1,
+          }}>@NivoraInteriors</h2>
           <p className="text-[#f5f0e8]/40 text-sm font-light">Daily design inspiration and behind-the-scenes site visits</p>
         </FadeIn>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-12">
+
+        {/* 3×2 grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3" style={{ gap: '3px' }}>
           {igPosts.map((src, i) => (
-            <FadeIn key={i} delay={i * 0.1}>
+            <FadeIn key={i} delay={i * 0.08}>
               <a
                 href="https://instagram.com/NivoraInteriors"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block relative aspect-square overflow-hidden"
+                className="group block relative overflow-hidden"
+                style={{ aspectRatio: '1 / 1' }}
               >
-                <img src={src} alt={`Instagram post ${i + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-                <div className="absolute inset-0 bg-[#b8966a]/0 group-hover:bg-[#b8966a]/20 transition-all duration-500 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="currentColor" viewBox="0 0 24 24">
+                <img
+                  src={src}
+                  alt={`@NivoraInteriors post ${i + 1}`}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
+                {/* Gold tint overlay */}
+                <div
+                  className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{ backgroundColor: 'rgba(201,169,110,0.15)' }}
+                >
+                  {/* Instagram icon — white, 24px */}
+                  <svg
+                    width="24"
+                    height="24"
+                    fill="white"
+                    viewBox="0 0 24 24"
+                    style={{ filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.4))' }}
+                  >
                     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
                   </svg>
                 </div>
@@ -1095,6 +1133,32 @@ export default function Home() {
             </FadeIn>
           ))}
         </div>
+
+        {/* Follow CTA */}
+        <FadeIn delay={0.3} className="text-center mt-10">
+          <a
+            href="https://instagram.com/NivoraInteriors"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 300,
+              fontSize: 11,
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+              color: '#C9A96E',
+              textDecoration: 'none',
+              transition: 'opacity 0.2s ease',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+          >
+            Follow on Instagram <ArrowRight size={12} />
+          </a>
+        </FadeIn>
       </section>
 
       {/* Final CTA */}
