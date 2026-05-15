@@ -94,29 +94,72 @@ function BeforeAfterSlider() {
   }, [])
 
   return (
-    <div
-      ref={containerRef}
-      className="relative w-full aspect-[16/9] overflow-hidden cursor-col-resize select-none"
-      onMouseDown={e => { dragging.current = true; update(e.clientX) }}
-      onTouchStart={e => { dragging.current = true; update(e.touches[0].clientX) }}
-    >
-      <img src={afterImg} alt="After" className="absolute inset-0 w-full h-full object-cover" />
-      <div className="absolute inset-0 overflow-hidden" style={{ width: `${pos}%` }}>
-        <img src={beforeImg} alt="Before" className="absolute inset-0 w-full h-full object-cover" style={{ width: `${10000 / pos}%` }} />
-      </div>
-      <div className="absolute top-0 bottom-0 flex items-center justify-center" style={{ left: `${pos}%`, transform: 'translateX(-50%)' }}>
-        <div className="w-0.5 h-full bg-[#b8966a]" />
-        <div className="absolute w-10 h-10 rounded-full bg-[#b8966a] flex items-center justify-center shadow-lg">
-          <svg className="w-5 h-5 text-[#3b4a35]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-            <path d="M15 19l-7-7 7-7" />
-          </svg>
-          <svg className="w-5 h-5 text-[#3b4a35] -ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-            <path d="M9 5l7 7-7 7" />
-          </svg>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div
+        ref={containerRef}
+        style={{ width: '80%', maxWidth: 900, height: 500, position: 'relative', overflow: 'hidden', cursor: 'col-resize', userSelect: 'none', flexShrink: 0 }}
+        onMouseDown={e => { dragging.current = true; update(e.clientX) }}
+        onTouchStart={e => { dragging.current = true; update(e.touches[0].clientX) }}
+      >
+        <img src={afterImg} alt="After" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', width: `${pos}%` }}>
+          <img src={beforeImg} alt="Before" style={{ position: 'absolute', inset: 0, height: '100%', objectFit: 'cover', width: `${10000 / pos}%` }} />
         </div>
+        {/* Divider line + handle */}
+        <div style={{ position: 'absolute', top: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', left: `${pos}%`, transform: 'translateX(-50%)', zIndex: 10 }}>
+          <div style={{ width: 2, height: '100%', backgroundColor: '#C9A96E', position: 'absolute' }} />
+          <div style={{
+            position: 'relative',
+            width: 40,
+            height: 40,
+            borderRadius: '50%',
+            backgroundColor: '#ffffff',
+            border: '1.5px solid #C9A96E',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.18)',
+            gap: 2,
+          }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A96E" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 19l-7-7 7-7" />
+              <path d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </div>
+        {/* Before label */}
+        <span style={{
+          position: 'absolute',
+          top: 12,
+          left: 12,
+          zIndex: 10,
+          fontFamily: "'Inter', sans-serif",
+          fontWeight: 300,
+          fontSize: 10,
+          letterSpacing: '2px',
+          textTransform: 'uppercase',
+          color: '#C9A96E',
+          backgroundColor: 'rgba(15,25,15,0.75)',
+          border: '1px solid #C9A96E',
+          padding: '5px 12px',
+        }}>Before</span>
+        {/* After label */}
+        <span style={{
+          position: 'absolute',
+          top: 12,
+          right: 12,
+          zIndex: 10,
+          fontFamily: "'Inter', sans-serif",
+          fontWeight: 300,
+          fontSize: 10,
+          letterSpacing: '2px',
+          textTransform: 'uppercase',
+          color: '#C9A96E',
+          backgroundColor: 'rgba(15,25,15,0.75)',
+          border: '1px solid #C9A96E',
+          padding: '5px 12px',
+        }}>After</span>
       </div>
-      <span className="absolute top-4 left-4 text-xs tracking-[0.2em] uppercase text-[#f5f0e8]/80 bg-[#3b4a35]/60 px-3 py-1.5 backdrop-blur-sm">Before</span>
-      <span className="absolute top-4 right-4 text-xs tracking-[0.2em] uppercase text-[#f5f0e8]/80 bg-[#3b4a35]/60 px-3 py-1.5 backdrop-blur-sm">After</span>
     </div>
   )
 }
@@ -827,33 +870,80 @@ export default function Home() {
             <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Selected Work</p>
             <h2 className="font-serif text-4xl md:text-5xl text-[#f5f0e8] font-light">Recent Projects</h2>
           </FadeIn>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {/* Gold-bordered mosaic grid */}
+          <div
+            className="grid grid-cols-2 md:grid-cols-3"
+            style={{ gap: '1px', backgroundColor: 'rgba(201,169,110,0.35)' }}
+          >
             {featured.map((p, i) => (
               <FadeIn key={p.id} delay={i * 0.08}>
-                <Link to={`/portfolio/${p.id}`} className="group relative block overflow-hidden">
-                  <div className="overflow-hidden" style={{ height: 380 }}>
-                    <img
-                      src={p.coverImage}
-                      alt={p.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-[#3b4a35]/0 group-hover:bg-[#3b4a35]/60 transition-all duration-500" />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <h3 className="font-serif text-xl text-[#f5f0e8] font-light">{p.name}</h3>
-                      <p className="text-[#b8966a] text-xs tracking-wider mt-1">{p.location}</p>
-                    </div>
+                <Link
+                  to={`/portfolio/${p.id}`}
+                  className="proj-cell group relative block overflow-hidden"
+                  style={{ display: 'block', height: 380 }}
+                >
+                  <img
+                    src={p.coverImage}
+                    alt={p.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    style={{ display: 'block' }}
+                    loading="lazy"
+                  />
+                  {/* Dark hover overlay */}
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ backgroundColor: 'rgba(0,0,0,0.55)' }}
+                  />
+                  {/* Hover text — name + city */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    <p style={{
+                      fontFamily: "'Cormorant Garamond', serif",
+                      fontWeight: 300,
+                      fontStyle: 'italic',
+                      fontSize: '1.4rem',
+                      color: '#f5f0e8',
+                      lineHeight: 1.2,
+                      textAlign: 'center',
+                      margin: 0,
+                      padding: '0 1rem',
+                    }}>{p.name}</p>
+                    <p style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontWeight: 300,
+                      fontSize: 10,
+                      letterSpacing: '2.5px',
+                      textTransform: 'uppercase',
+                      color: '#C9A96E',
+                      marginTop: 10,
+                    }}>{p.location}</p>
                   </div>
                 </Link>
               </FadeIn>
             ))}
           </div>
+          {/* View All Projects CTA */}
           <FadeIn delay={0.3} className="text-center mt-14">
             <Link
               to="/portfolio"
-              className="inline-flex items-center gap-3 border border-[#b8966a] text-[#b8966a] text-xs tracking-[0.2em] uppercase px-10 py-4 hover:bg-[#b8966a] hover:text-[#3b4a35] transition-all duration-300"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 10,
+                backgroundColor: '#2E4A30',
+                color: '#C9A96E',
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: 300,
+                fontSize: 11,
+                letterSpacing: '3px',
+                textTransform: 'uppercase',
+                padding: '16px 40px',
+                textDecoration: 'none',
+                transition: 'background 0.3s ease',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#3a5e3c' }}
+              onMouseLeave={e => { e.currentTarget.style.background = '#2E4A30' }}
             >
-              View Full Portfolio <ArrowRight size={13} />
+              View All Projects <ArrowRight size={12} />
             </Link>
           </FadeIn>
         </div>
