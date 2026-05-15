@@ -7,6 +7,7 @@
   --green-mid: #3b4a35;
   --green-light: #3b4a35;
   --gold: #b8966a;
+  --gold-accent: #C9A96E;
   --gold-light: #d4b896;
   --cream: #f5f0e8;
   --alabaster: #ede8df;
@@ -36,6 +37,17 @@ h1, h2, h3, h4, h5 {
   font-family: 'Cormorant Garamond', serif;
 }
 
+/* Responsive display headings */
+h1 {
+  font-size: clamp(2.2rem, 6vw, 4.5rem);
+}
+h2 {
+  font-size: clamp(1.8rem, 4.5vw, 3.5rem);
+}
+h3 {
+  font-size: clamp(1.3rem, 3vw, 2.2rem);
+}
+
 ::selection {
   background: var(--gold);
   color: var(--green-deep);
@@ -52,6 +64,57 @@ h1, h2, h3, h4, h5 {
 ::-webkit-scrollbar-thumb {
   background: var(--gold);
   border-radius: 3px;
+}
+
+/* ── Section labels ──────────────────────────────────────────────
+   Standard treatment for small spaced-caps labels like
+   "WHAT WE DO" / "HOW WE WORK" — use class="section-label"
+   ───────────────────────────────────────────────────────────── */
+.section-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #C9A96E;
+}
+
+.section-label::before,
+.section-label::after {
+  content: '';
+  display: inline-block;
+  width: 40px;
+  height: 1px;
+  background-color: #C9A96E;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.section-label::before {
+  margin-right: 12px;
+}
+
+.section-label::after {
+  margin-left: 12px;
+}
+
+/* ── WhatsApp pulse animation ────────────────────────────────── */
+@keyframes whatsapp-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.08); }
+}
+
+.whatsapp-pulse {
+  animation: whatsapp-pulse 3s ease-in-out infinite;
+}
+
+.whatsapp-pulse:hover {
+  animation: none;
+  transform: scale(1.1);
 }
 
 @layer utilities {
