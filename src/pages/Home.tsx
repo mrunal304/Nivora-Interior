@@ -532,11 +532,11 @@ export default function Home() {
       <HeroSection />
 
       {/* Philosophy */}
-      <section style={{ backgroundColor: '#f7f4ef', padding: '80px 1.5rem' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', gap: '4rem', alignItems: 'center', flexWrap: 'wrap' }}>
+      <section className="philosophy-section" style={{ backgroundColor: '#f7f4ef', padding: '80px 1.5rem' }}>
+        <div className="philosophy-flex" style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', gap: '4rem', alignItems: 'center', flexWrap: 'wrap' }}>
 
           {/* Left — text block (55%) */}
-          <div style={{ flex: '0 0 55%', minWidth: 280 }}>
+          <div className="philosophy-text-block" style={{ flex: '0 0 55%', minWidth: 280 }}>
 
             {/* Label with flanking rules */}
             <FadeIn>
@@ -604,10 +604,10 @@ export default function Home() {
           </div>
 
           {/* Right — editorial photo (45%) */}
-          <FadeIn delay={0.2} direction="left" className="flex-1" style={{ minWidth: 240 }}>
-            <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+          <FadeIn delay={0.2} direction="left" className="philosophy-image-col flex-1" style={{ minWidth: 240 }}>
+            <div className="philosophy-image-wrap" style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
               {/* Offset gold frame */}
-              <div style={{
+              <div className="philosophy-frame" style={{
                 position: 'absolute',
                 top: 8,
                 left: 8,
@@ -618,10 +618,11 @@ export default function Home() {
                 zIndex: 0,
               }} />
               {/* Photo */}
-              <div style={{ position: 'relative', zIndex: 1, overflow: 'hidden' }}>
+              <div className="philosophy-photo-inner" style={{ position: 'relative', zIndex: 1, overflow: 'hidden' }}>
                 <img
                   src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=700&q=85"
                   alt="NIVORA Studio — editorial"
+                  className="philosophy-photo"
                   style={{
                     width: '100%',
                     aspectRatio: '3/4',
