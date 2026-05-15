@@ -43,12 +43,31 @@ export default function Navbar() {
         }}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center gap-3">
-            <img src="/logo.png" alt="NIVORA Interiors" className="h-10 w-10 object-contain" />
-            <div>
-              <span className="font-serif text-xl text-[#b8966a] tracking-wider">nivora</span>
-              <span className="block text-[8px] tracking-[0.35em] text-[#b8966a]/60 uppercase font-light">interiors</span>
-            </div>
+          <Link
+            to="/"
+            className="navbar-logo"
+            style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
+          >
+            <img
+              src="/logo.png"
+              alt="Nivora Icon"
+              className="logo"
+              style={{ height: '40px', width: '40px', objectFit: 'contain', display: 'block', flexShrink: 0 }}
+            />
+            <span className="logo-text" style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
+              <span
+                className="logo-name font-serif"
+                style={{ fontSize: '20px', color: '#b8966a', letterSpacing: '0.08em', lineHeight: 1.2 }}
+              >
+                nivora
+              </span>
+              <span
+                className="logo-sub"
+                style={{ fontSize: '8px', color: 'rgba(184,150,106,0.6)', letterSpacing: '0.35em', textTransform: 'uppercase', fontWeight: 300, lineHeight: 1.4 }}
+              >
+                interiors
+              </span>
+            </span>
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8">
