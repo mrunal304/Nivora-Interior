@@ -1168,18 +1168,19 @@ export default function Home() {
         </div>
         <div className="relative max-w-4xl mx-auto px-6 text-center">
           <FadeIn>
-            <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-6">Limited Spots Available</p>
+            <div style={{ width: 80, height: 1, backgroundColor: '#C9A96E', margin: '0 auto 24px' }} />
+            <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-6">Currently Accepting Projects</p>
             <h2 className="font-serif text-4xl md:text-6xl text-[#f5f0e8] font-light leading-tight mb-6">
               Ready to Transform<br />Your Space?
             </h2>
             <p className="text-[#f5f0e8]/50 font-light mb-10 max-w-lg mx-auto leading-relaxed">
-              Claim your Free Layout Consultation today and let's start building your dream.
+              A complimentary consultation. No pressure, just possibilities.
             </p>
             <Link
               to="/quote"
               className="inline-flex items-center gap-3 bg-[#b8966a] text-[#3b4a35] text-xs tracking-[0.25em] uppercase px-12 py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium"
             >
-              Claim My Free Offer Now <ArrowRight size={14} />
+              Begin Your Project <ArrowRight size={14} />
             </Link>
           </FadeIn>
         </div>
