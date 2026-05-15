@@ -49,16 +49,19 @@ const testimonials = [
     text: 'NIVORA completely transformed our apartment. What struck us most was how well Shweta understood what we wanted before we could even articulate it ourselves.',
     name: 'Priya & Rohan K.',
     location: 'Bandra, Mumbai',
+    initials: 'PR',
   },
   {
     text: 'Our café has become one of the most photographed spots in Pune. Every corner was designed with intention. The team was professional, transparent, and genuinely talented.',
     name: 'Aditya S.',
     location: 'FC Road, Pune',
+    initials: 'AS',
   },
   {
     text: 'The process felt effortless from start to finish. We were kept informed at every stage, and the final result exceeded our expectations in every way.',
     name: 'Meera & Vikram P.',
     location: 'Koregaon Park, Pune',
+    initials: 'MV',
   },
 ]
 
@@ -950,7 +953,36 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-32 px-6 max-w-7xl mx-auto">
+      <section className="pt-32 pb-16 px-6 max-w-7xl mx-auto">
+        <style>{`
+          .testi-read-more {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #C9A96E;
+            text-decoration: none;
+            transition: color 0.25s ease;
+          }
+          .testi-read-more::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #C9A96E;
+            transition: width 0.25s ease;
+          }
+          .testi-read-more:hover::after {
+            width: 100%;
+          }
+        `}</style>
         <FadeIn className="text-center mb-16">
           <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Client Stories</p>
           <h2 className="font-serif text-4xl md:text-5xl text-[#f5f0e8] font-light">What Clients Say</h2>
@@ -958,27 +990,87 @@ export default function Home() {
         <div className="grid md:grid-cols-3 gap-6">
           {testimonials.map((t, i) => (
             <FadeIn key={i} delay={i * 0.15}>
-              <div className="border border-[#b8966a]/15 p-8 hover:border-[#b8966a]/40 transition-all duration-500 h-full flex flex-col">
-                <p className="font-serif text-lg text-[#f5f0e8]/80 leading-relaxed font-light mb-8 flex-1">
+              <div style={{
+                border: '1px solid rgba(201,169,110,0.25)',
+                backgroundColor: 'rgba(255,255,255,0.05)',
+                padding: '2rem',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                transition: 'border-color 0.5s ease',
+              }}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(201,169,110,0.5)')}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(201,169,110,0.25)')}
+              >
+                {/* 5 gold stars */}
+                <div style={{ marginBottom: 16, letterSpacing: 2, fontSize: 13, color: '#C9A96E' }}>
+                  ★★★★★
+                </div>
+                {/* Quote */}
+                <p style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: '1.15rem',
+                  fontWeight: 300,
+                  color: 'rgba(245,240,232,0.82)',
+                  lineHeight: 1.8,
+                  flex: 1,
+                  marginBottom: '1.75rem',
+                }}>
                   "{t.text}"
                 </p>
-                <div>
-                  <p className="text-[#b8966a] text-sm font-light">{t.name}</p>
-                  <p className="text-[#f5f0e8]/30 text-xs tracking-wider mt-1">{t.location}</p>
+                {/* Name + location + avatar */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                  {/* Initials avatar */}
+                  <div style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    border: '1px solid #C9A96E',
+                    backgroundColor: '#2E4A30',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: 400,
+                    fontSize: 10,
+                    letterSpacing: '0.5px',
+                    color: '#C9A96E',
+                  }}>
+                    {t.initials}
+                  </div>
+                  <div>
+                    <p style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontWeight: 400,
+                      fontSize: 13,
+                      color: '#C9A96E',
+                      margin: 0,
+                    }}>{t.name}</p>
+                    <p style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontWeight: 300,
+                      fontSize: 10,
+                      letterSpacing: '1.5px',
+                      textTransform: 'uppercase',
+                      color: 'rgba(245,240,232,0.3)',
+                      margin: '3px 0 0',
+                    }}>{t.location}</p>
+                  </div>
                 </div>
               </div>
             </FadeIn>
           ))}
         </div>
         <FadeIn delay={0.3} className="text-center mt-12">
-          <Link to="/testimonials" className="text-[#b8966a] text-xs tracking-[0.2em] uppercase hover:text-[#d4b896] transition-colors duration-300 flex items-center gap-2 justify-center">
+          <Link to="/testimonials" className="testi-read-more">
             Read More Stories <ArrowRight size={12} />
           </Link>
         </FadeIn>
       </section>
 
       {/* Instagram */}
-      <section className="py-32 px-6 max-w-7xl mx-auto">
+      <section className="pt-12 pb-32 px-6 max-w-7xl mx-auto">
         <FadeIn className="text-center mb-4">
           <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Follow the Journey</p>
           <h2 className="font-serif text-4xl text-[#f5f0e8] font-light mb-4">@NivoraInteriors</h2>
