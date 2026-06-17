@@ -77,100 +77,165 @@ const statsData = [
 function StatsSection() {
   const [counts, setCounts] = useState(statsData.map(() => 0))
   const [started, setStarted] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
+  const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const el = sectionRef.current
+    const el = cardRef.current
     if (!el) return
+    const cleanups: (() => void)[] = []
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !started) {
           setStarted(true)
-          const duration = 2200
-          const steps = 66
           statsData.forEach((stat, i) => {
+            const duration = 1800
+            const steps = 60
             let step = 0
-            const timer = setInterval(() => {
+            const countUp = setInterval(() => {
               step++
-              const progress = step / steps
-              const eased = 1 - Math.pow(1 - progress, 3)
-              setCounts(prev => {
-                const next = [...prev]
-                next[i] = Math.min(Math.floor(eased * stat.value), stat.value)
-                return next
-              })
-              if (step >= steps) clearInterval(timer)
+              const eased = 1 - Math.pow(1 - step / steps, 3)
+              const val = Math.min(Math.floor(eased * stat.value), stat.value)
+              setCounts(prev => { const n = [...prev]; n[i] = val; return n })
+              if (step >= steps) {
+                clearInterval(countUp)
+                const startMicro = setTimeout(() => {
+                  const runMicro = () => {
+                    const seq = [
+                      Math.max(stat.value - 2, 0),
+                      Math.max(stat.value - 1, 0),
+                      stat.value,
+                    ]
+                    seq.forEach((v, j) => {
+                      const t = setTimeout(() => {
+                        setCounts(prev => { const n = [...prev]; n[i] = v; return n })
+                      }, j * 250)
+                      cleanups.push(() => clearTimeout(t))
+                    })
+                  }
+                  runMicro()
+                  const micro = setInterval(runMicro, 5200 + i * 1100)
+                  cleanups.push(() => clearInterval(micro))
+                }, 2800 + i * 700)
+                cleanups.push(() => clearTimeout(startMicro))
+              }
             }, duration / steps)
+            cleanups.push(() => clearInterval(countUp))
           })
         }
       },
-      { threshold: 0.35 }
+      { threshold: 0.4 }
     )
     observer.observe(el)
-    return () => observer.disconnect()
+    return () => {
+      observer.disconnect()
+      cleanups.forEach(fn => fn())
+    }
   }, [started])
 
   return (
-    <section
-      ref={sectionRef}
-      style={{ backgroundColor: '#4A5C34', padding: '72px 1.5rem' }}
-    >
+    <div style={{
+      position: 'relative',
+      zIndex: 10,
+      marginTop: -68,
+      padding: '0 1.5rem 56px',
+      display: 'flex',
+      justifyContent: 'center',
+    }}>
       <style>{`
-        .stats-grid {
+        .stat-float-card {
           max-width: 1100px;
-          margin: 0 auto;
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 0;
+          width: 100%;
+          background: linear-gradient(135deg, #384F2E 0%, #49613B 50%, #384F2E 100%);
+          border-radius: 24px;
+          box-shadow: 0 28px 80px rgba(0,0,0,0.30), 0 6px 22px rgba(0,0,0,0.14);
+          display: flex;
+          align-items: stretch;
+          overflow: hidden;
         }
-        .stat-item {
+        .stat-float-item {
+          flex: 1;
           text-align: center;
-          padding: 0 28px;
+          padding: 48px 28px 44px;
+          position: relative;
+          cursor: default;
+          transition: background 0.35s ease;
         }
-        .stat-item + .stat-item {
-          border-left: 1px solid rgba(212,192,161,0.18);
+        .stat-float-item + .stat-float-item {
+          border-left: 1px solid rgba(201,169,110,0.13);
+        }
+        .stat-float-item::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 0;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, #C9A96E 50%, transparent);
+          transition: width 0.5s cubic-bezier(0.16,1,0.3,1);
+          border-radius: 2px;
+        }
+        .stat-float-item:hover {
+          background: rgba(255,255,255,0.04);
+        }
+        .stat-float-item:hover::after {
+          width: 52%;
+        }
+        .stat-float-num {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: clamp(2.75rem, 4.2vw, 4.25rem);
+          font-weight: 300;
+          color: #f5f0e8;
+          line-height: 1;
+          margin-bottom: 16px;
+          letter-spacing: -0.02em;
+          transition: color 0.25s ease;
+        }
+        .stat-float-item:hover .stat-float-num {
+          color: #ffffff;
+        }
+        .stat-float-label {
+          font-family: 'Inter', sans-serif;
+          font-weight: 300;
+          font-size: 9px;
+          letter-spacing: 4.5px;
+          text-transform: uppercase;
+          color: rgba(201,169,110,0.60);
+          transition: color 0.25s ease;
+        }
+        .stat-float-item:hover .stat-float-label {
+          color: rgba(201,169,110,0.90);
         }
         @media (max-width: 640px) {
-          .stats-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 40px 0;
+          .stat-float-card {
+            flex-wrap: wrap;
+            border-radius: 18px;
           }
-          .stat-item + .stat-item {
+          .stat-float-item {
+            flex: 0 0 50%;
+            padding: 36px 16px 32px;
+          }
+          .stat-float-item + .stat-float-item {
             border-left: none;
           }
-          .stat-item:nth-child(2n) {
-            border-left: 1px solid rgba(212,192,161,0.18);
+          .stat-float-item:nth-child(2n) {
+            border-left: 1px solid rgba(201,169,110,0.13);
+          }
+          .stat-float-item:nth-child(n+3) {
+            border-top: 1px solid rgba(201,169,110,0.13);
           }
         }
       `}</style>
-      <div className="stats-grid">
+      <div ref={cardRef} className="stat-float-card">
         {statsData.map((stat, i) => (
-          <div key={stat.label} className="stat-item">
-            <div style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: 'clamp(3rem, 5vw, 4.75rem)',
-              fontWeight: 300,
-              color: '#f5f0e8',
-              lineHeight: 1,
-              marginBottom: 14,
-              letterSpacing: '-0.01em',
-            }}>
-              {counts[i]}{stat.suffix}
-            </div>
-            <div style={{
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 300,
-              fontSize: 10,
-              letterSpacing: '3.5px',
-              textTransform: 'uppercase',
-              color: 'rgba(212,192,161,0.60)',
-            }}>
-              {stat.label}
-            </div>
+          <div key={stat.label} className="stat-float-item">
+            <div className="stat-float-num">{counts[i]}{stat.suffix}</div>
+            <div className="stat-float-label">{stat.label}</div>
           </div>
         ))}
       </div>
-    </section>
+    </div>
   )
 }
 
