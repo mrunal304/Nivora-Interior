@@ -76,6 +76,7 @@ const statsData = [
 
 function StatsSection() {
   const [counts, setCounts] = useState(statsData.map(s => s.value))
+  const [shimmer, setShimmer] = useState(statsData.map(() => false))
   const [started, setStarted] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
 
@@ -101,25 +102,51 @@ function StatsSection() {
               setCounts(prev => { const n = [...prev]; n[i] = val; return n })
               if (step >= steps) {
                 clearInterval(countUp)
-                const startMicro = setTimeout(() => {
-                  const runMicro = () => {
-                    const seq = [
-                      Math.max(stat.value - 2, 0),
-                      Math.max(stat.value - 1, 0),
-                      stat.value,
-                    ]
-                    seq.forEach((v, j) => {
-                      const t = setTimeout(() => {
-                        setCounts(prev => { const n = [...prev]; n[i] = v; return n })
-                      }, j * 250)
-                      cleanups.push(() => clearTimeout(t))
-                    })
-                  }
-                  runMicro()
-                  const micro = setInterval(runMicro, 5200 + i * 1100)
-                  cleanups.push(() => clearInterval(micro))
-                }, 2800 + i * 700)
-                cleanups.push(() => clearTimeout(startMicro))
+
+                const cycleInterval = 4200 + i * 1100
+
+                const runCycle = () => {
+                  // Trigger shimmer sweep
+                  setShimmer(prev => { const n = [...prev]; n[i] = true; return n })
+                  const shimmerOff = setTimeout(() => {
+                    setShimmer(prev => { const n = [...prev]; n[i] = false; return n })
+                  }, 900)
+                  cleanups.push(() => clearTimeout(shimmerOff))
+
+                  // Dip down 2 then ease back to target
+                  const dip = 2
+                  const totalSteps = 28
+                  let s = 0
+                  const dipTimer = setInterval(() => {
+                    s++
+                    const p = s / totalSteps
+                    let v: number
+                    if (p < 0.35) {
+                      // ease down
+                      const down = p / 0.35
+                      v = Math.round(stat.value - dip * (1 - Math.pow(1 - down, 2)))
+                    } else {
+                      // ease back up
+                      const up = (p - 0.35) / 0.65
+                      const eased = 1 - Math.pow(1 - up, 3)
+                      v = Math.round((stat.value - dip) + dip * eased)
+                    }
+                    v = Math.min(Math.max(v, stat.value - dip), stat.value)
+                    setCounts(prev => { const n = [...prev]; n[i] = v; return n })
+                    if (s >= totalSteps) {
+                      clearInterval(dipTimer)
+                      setCounts(prev => { const n = [...prev]; n[i] = stat.value; return n })
+                    }
+                  }, 38)
+                  cleanups.push(() => clearInterval(dipTimer))
+                }
+
+                const startDelay = setTimeout(() => {
+                  runCycle()
+                  const loop = setInterval(runCycle, cycleInterval)
+                  cleanups.push(() => clearInterval(loop))
+                }, 3200 + i * 900)
+                cleanups.push(() => clearTimeout(startDelay))
               }
             }, duration / steps)
             cleanups.push(() => clearInterval(countUp))
@@ -184,6 +211,10 @@ function StatsSection() {
         .stat-float-item:hover::after {
           width: 52%;
         }
+        @keyframes stat-shimmer {
+          0%   { background-position: -200% center; }
+          100% { background-position: 200% center; }
+        }
         .stat-float-num {
           font-family: 'Cormorant Garamond', serif;
           font-size: clamp(2.75rem, 4.2vw, 4.25rem);
@@ -193,6 +224,24 @@ function StatsSection() {
           margin-bottom: 16px;
           letter-spacing: -0.02em;
           transition: color 0.25s ease;
+          position: relative;
+          display: inline-block;
+        }
+        .stat-float-num.shimmer-active {
+          background: linear-gradient(
+            105deg,
+            #f5f0e8 0%,
+            #f5f0e8 35%,
+            rgba(255,255,255,0.92) 48%,
+            #e8d5b0 52%,
+            #f5f0e8 65%,
+            #f5f0e8 100%
+          );
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: stat-shimmer 0.85s ease-in-out forwards;
         }
         .stat-float-item:hover .stat-float-num {
           color: #ffffff;
@@ -232,7 +281,9 @@ function StatsSection() {
       <div ref={cardRef} className="stat-float-card">
         {statsData.map((stat, i) => (
           <div key={stat.label} className="stat-float-item">
-            <div className="stat-float-num">{counts[i]}{stat.suffix}</div>
+            <div className={`stat-float-num${shimmer[i] ? ' shimmer-active' : ''}`}>
+              {counts[i]}{stat.suffix}
+            </div>
             <div className="stat-float-label">{stat.label}</div>
           </div>
         ))}
