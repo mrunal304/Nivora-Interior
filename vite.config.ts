@@ -8,13 +8,15 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5000,
     allowedHosts: true,
-    hmr: {
-      clientPort: 443,
-    },
+    strictPort: true,
   },
   resolve: {
     alias: {
       '@assets': path.resolve(__dirname, 'attached_assets'),
     },
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: true,
   },
 })
