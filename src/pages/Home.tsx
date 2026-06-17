@@ -341,7 +341,7 @@ function HeroSection() {
           transition={{ duration: 1, delay: 0.65 }}
           style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}
         >
-          <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.25 }}>
+          <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.25 }}>
             <Link
               to="/quote"
               style={{
@@ -352,27 +352,30 @@ function HeroSection() {
                 fontSize: 10,
                 letterSpacing: '0.22em',
                 textTransform: 'uppercase',
-                background: '#2E4A30',
-                color: '#ffffff',
+                background: 'linear-gradient(135deg, #E0C38A 0%, #C8A46A 50%, #A8854F 100%)',
+                color: '#2D3E29',
+                fontWeight: 600,
                 padding: '17px 40px',
                 textDecoration: 'none',
-                transition: 'background 0.3s ease, box-shadow 0.3s ease',
-                boxShadow: '0 4px 24px rgba(46,74,48,0.3)',
+                transition: 'background 0.3s ease, box-shadow 0.3s ease, transform 0.25s ease',
+                boxShadow: '0 4px 24px rgba(168,133,79,0.35)',
               }}
               onMouseEnter={e => {
-                (e.currentTarget as HTMLAnchorElement).style.background = '#3a5e3c'
-                ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 8px 32px rgba(46,74,48,0.45)'
+                const el = e.currentTarget as HTMLAnchorElement
+                el.style.background = 'linear-gradient(135deg, #EDD09A 0%, #D4B078 50%, #B8904E 100%)'
+                el.style.boxShadow = '0 8px 32px rgba(168,133,79,0.50)'
               }}
               onMouseLeave={e => {
-                (e.currentTarget as HTMLAnchorElement).style.background = '#2E4A30'
-                ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 4px 24px rgba(46,74,48,0.3)'
+                const el = e.currentTarget as HTMLAnchorElement
+                el.style.background = 'linear-gradient(135deg, #E0C38A 0%, #C8A46A 50%, #A8854F 100%)'
+                el.style.boxShadow = '0 4px 24px rgba(168,133,79,0.35)'
               }}
             >
               Book Free Consultation
             </Link>
           </motion.div>
 
-          <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.25 }}>
+          <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.25 }}>
             <Link
               to="/portfolio"
               style={{
@@ -384,21 +387,23 @@ function HeroSection() {
                 letterSpacing: '0.22em',
                 textTransform: 'uppercase',
                 background: 'transparent',
-                color: 'rgba(245,240,232,0.85)',
+                color: '#D4C0A1',
                 padding: '16px 40px',
-                border: '1px solid rgba(245,240,232,0.28)',
+                border: '1px solid rgba(212,192,161,0.45)',
                 textDecoration: 'none',
-                transition: 'border-color 0.3s ease, color 0.3s ease',
+                transition: 'border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease',
               }}
               onMouseEnter={e => {
                 const el = e.currentTarget as HTMLAnchorElement
-                el.style.borderColor = 'rgba(184,150,106,0.7)'
-                el.style.color = '#b8966a'
+                el.style.borderColor = '#C8A46A'
+                el.style.color = '#C8A46A'
+                el.style.boxShadow = '0 0 18px rgba(200,164,106,0.15)'
               }}
               onMouseLeave={e => {
                 const el = e.currentTarget as HTMLAnchorElement
-                el.style.borderColor = 'rgba(245,240,232,0.28)'
-                el.style.color = 'rgba(245,240,232,0.85)'
+                el.style.borderColor = 'rgba(212,192,161,0.45)'
+                el.style.color = '#D4C0A1'
+                el.style.boxShadow = 'none'
               }}
             >
               View Projects <ArrowRight size={13} strokeWidth={1.5} />
@@ -527,7 +532,7 @@ export default function Home() {
   const featured = projects.slice(0, 6)
 
   return (
-    <div className="bg-[#3b4a35]">
+    <div style={{ backgroundColor: '#2D3E29' }}>
       {/* Hero */}
       <HeroSection />
 
@@ -639,7 +644,7 @@ export default function Home() {
       </section>
 
       {/* Services */}
-      <section style={{ backgroundColor: '#3b4a35', padding: '5rem 1.5rem' }}>
+      <section style={{ backgroundColor: '#33452F', padding: '5rem 1.5rem' }}>
         <style>{`
           .svc-card-explore-line {
             display: inline-block;
@@ -837,7 +842,7 @@ export default function Home() {
                   left: 0,
                   right: 0,
                   height: 52,
-                  backgroundColor: '#3b4a35',
+                  backgroundColor: '#33452F',
                   borderTop: '0.5px solid rgba(200,169,110,0.35)',
                   display: 'flex',
                   alignItems: 'center',
@@ -870,7 +875,7 @@ export default function Home() {
       </section>
 
       {/* Portfolio Preview */}
-      <section className="pt-20 pb-32 bg-[#3b4a35]">
+      <section className="pt-20 pb-32" style={{ backgroundColor: '#2D3E29' }}>
         <div className="max-w-7xl mx-auto px-6">
           <FadeIn className="text-center mb-16">
             <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Selected Work</p>
@@ -935,19 +940,26 @@ export default function Home() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 10,
-                backgroundColor: '#2E4A30',
-                color: '#C9A96E',
+                background: 'linear-gradient(135deg, #E0C38A 0%, #C8A46A 50%, #A8854F 100%)',
+                color: '#2D3E29',
                 fontFamily: "'Inter', sans-serif",
-                fontWeight: 300,
+                fontWeight: 600,
                 fontSize: 11,
                 letterSpacing: '3px',
                 textTransform: 'uppercase',
                 padding: '16px 40px',
                 textDecoration: 'none',
-                transition: 'background 0.3s ease',
+                transition: 'background 0.3s ease, box-shadow 0.3s ease',
+                boxShadow: '0 4px 20px rgba(168,133,79,0.30)',
               }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#3a5e3c' }}
-              onMouseLeave={e => { e.currentTarget.style.background = '#2E4A30' }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = 'linear-gradient(135deg, #EDD09A 0%, #D4B078 50%, #B8904E 100%)'
+                e.currentTarget.style.boxShadow = '0 8px 28px rgba(168,133,79,0.45)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'linear-gradient(135deg, #E0C38A 0%, #C8A46A 50%, #A8854F 100%)'
+                e.currentTarget.style.boxShadow = '0 4px 20px rgba(168,133,79,0.30)'
+              }}
             >
               View All Projects <ArrowRight size={12} />
             </Link>
@@ -1163,7 +1175,7 @@ export default function Home() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-32 bg-[#3b4a35] relative overflow-hidden">
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#33452F' }}>
         <div className="absolute inset-0 opacity-5">
           <div className="w-full h-full" style={{ backgroundImage: 'radial-gradient(circle at 30% 50%, #b8966a 0%, transparent 60%)' }} />
         </div>
@@ -1179,7 +1191,30 @@ export default function Home() {
             </p>
             <Link
               to="/quote"
-              className="inline-flex items-center gap-3 bg-[#b8966a] text-[#3b4a35] text-xs tracking-[0.25em] uppercase px-12 py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 12,
+                background: 'linear-gradient(135deg, #E0C38A 0%, #C8A46A 50%, #A8854F 100%)',
+                color: '#2D3E29',
+                fontFamily: "'Cinzel', serif",
+                fontWeight: 600,
+                fontSize: 10,
+                letterSpacing: '0.25em',
+                textTransform: 'uppercase',
+                padding: '20px 52px',
+                textDecoration: 'none',
+                transition: 'background 0.3s ease, box-shadow 0.3s ease',
+                boxShadow: '0 6px 30px rgba(168,133,79,0.40)',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = 'linear-gradient(135deg, #EDD09A 0%, #D4B078 50%, #B8904E 100%)'
+                e.currentTarget.style.boxShadow = '0 10px 40px rgba(168,133,79,0.55)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'linear-gradient(135deg, #E0C38A 0%, #C8A46A 50%, #A8854F 100%)'
+                e.currentTarget.style.boxShadow = '0 6px 30px rgba(168,133,79,0.40)'
+              }}
             >
               Begin Your Project <ArrowRight size={14} />
             </Link>

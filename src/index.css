@@ -3,17 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --green-deep: #3b4a35;
-  --green-mid: #3b4a35;
+  --green-deep: #2D3E29;
+  --green-mid: #33452F;
   --green-light: #3b4a35;
-  --gold: #b8966a;
-  --gold-accent: #C9A96E;
-  --gold-light: #d4b896;
+  --gold: #C8A46A;
+  --gold-accent: #C8A46A;
+  --gold-light: #D4C0A1;
   --cream: #f5f0e8;
   --alabaster: #ede8df;
   --charcoal: #3a3a3a;
   --soft-grey: #7a7a7a;
   --off-white: #faf8f4;
+  --olive: #33452F;
+  --deep-olive: #2D3E29;
+  --warm-beige: #D4C0A1;
+  --soft-gold: #C8A46A;
 }
 
 * {

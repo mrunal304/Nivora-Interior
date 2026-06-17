@@ -11,6 +11,11 @@ const links = [
   { to: '/contact', label: 'Contact' },
 ]
 
+const OLIVE = '#33452F'
+const DEEP_OLIVE = '#2D3E29'
+const GOLD = '#C8A46A'
+const GOLD_LIGHT = '#D4C0A1'
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
@@ -36,40 +41,37 @@ export default function Navbar() {
           left: 0,
           right: 0,
           zIndex: 50,
-          transition: 'background-color 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease',
-          backgroundColor: scrolled ? '#2E4A30' : 'transparent',
-          borderBottom: scrolled ? '1px solid rgba(185,150,106,0.2)' : '1px solid transparent',
-          backdropFilter: scrolled ? 'blur(8px)' : 'none',
+          transition: 'background-color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease',
+          backgroundColor: scrolled ? DEEP_OLIVE : `${OLIVE}E8`,
+          borderBottom: `1px solid rgba(212,192,161,${scrolled ? '0.18' : '0.10'})`,
+          backdropFilter: scrolled ? 'blur(10px)' : 'none',
         }}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-20">
+
+          {/* Logo — text only, blends into olive bar */}
           <Link
             to="/"
             className="navbar-logo"
             style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
           >
-            <img
-              src="/logo.png"
-              alt="Nivora Icon"
-              className="logo"
-              style={{ height: '40px', width: '40px', objectFit: 'contain', display: 'block', flexShrink: 0 }}
-            />
             <span className="logo-text" style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
               <span
                 className="logo-name font-serif"
-                style={{ fontSize: '20px', color: '#b8966a', letterSpacing: '0.08em', lineHeight: 1.2 }}
+                style={{ fontSize: '22px', color: GOLD, letterSpacing: '0.08em', lineHeight: 1.2 }}
               >
                 nivora
               </span>
               <span
                 className="logo-sub"
-                style={{ fontSize: '8px', color: 'rgba(184,150,106,0.6)', letterSpacing: '0.35em', textTransform: 'uppercase', fontWeight: 300, lineHeight: 1.4 }}
+                style={{ fontSize: '8px', color: `${GOLD_LIGHT}80`, letterSpacing: '0.42em', textTransform: 'uppercase', fontWeight: 300, lineHeight: 1.4 }}
               >
                 interiors
               </span>
             </span>
           </Link>
 
+          {/* Desktop nav links */}
           <nav className="hidden lg:flex items-center gap-8">
             {links.map(l => (
               <Link
@@ -77,7 +79,7 @@ export default function Navbar() {
                 to={l.to}
                 className="text-xs tracking-[0.2em] uppercase font-light transition-colors duration-300 relative pb-1"
                 style={{
-                  color: isActive(l.to) ? '#C9A96E' : 'rgba(245,240,232,0.7)',
+                  color: isActive(l.to) ? GOLD : GOLD_LIGHT + 'B3',
                 }}
               >
                 {l.label}
@@ -88,8 +90,8 @@ export default function Navbar() {
                       bottom: 0,
                       left: 0,
                       right: 0,
-                      height: '2px',
-                      backgroundColor: '#C9A96E',
+                      height: '1.5px',
+                      backgroundColor: GOLD,
                       borderRadius: '1px',
                     }}
                   />
@@ -98,29 +100,37 @@ export default function Navbar() {
             ))}
           </nav>
 
+          {/* Enquire Now — premium gold gradient */}
           <Link
             to="/quote"
             className="hidden lg:inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase px-6 py-3 transition-all duration-300"
             style={{
-              border: '1px solid #C9A96E',
-              color: '#C9A96E',
+              background: `linear-gradient(135deg, #E0C38A 0%, #C8A46A 50%, #A8854F 100%)`,
+              color: DEEP_OLIVE,
+              fontWeight: 500,
+              letterSpacing: '0.18em',
+              boxShadow: '0 2px 14px rgba(168,133,79,0.28)',
+              border: 'none',
             }}
             onMouseEnter={e => {
               const el = e.currentTarget as HTMLAnchorElement
-              el.style.backgroundColor = '#C9A96E'
-              el.style.color = '#2E4A30'
+              el.style.background = 'linear-gradient(135deg, #EDD09A 0%, #D4B078 50%, #B8904E 100%)'
+              el.style.boxShadow = '0 4px 22px rgba(168,133,79,0.45)'
+              el.style.transform = 'translateY(-1px)'
             }}
             onMouseLeave={e => {
               const el = e.currentTarget as HTMLAnchorElement
-              el.style.backgroundColor = 'transparent'
-              el.style.color = '#C9A96E'
+              el.style.background = 'linear-gradient(135deg, #E0C38A 0%, #C8A46A 50%, #A8854F 100%)'
+              el.style.boxShadow = '0 2px 14px rgba(168,133,79,0.28)'
+              el.style.transform = 'translateY(0)'
             }}
           >
             Enquire Now
           </Link>
 
           <button
-            className="lg:hidden text-[#f5f0e8] p-2"
+            className="lg:hidden p-2"
+            style={{ color: GOLD_LIGHT }}
             onClick={() => setOpen(o => !o)}
             aria-label="Toggle menu"
           >
@@ -131,24 +141,29 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       <div
-        className={`fixed inset-0 z-40 bg-[#2E4A30] flex flex-col justify-center items-center gap-8 transition-all duration-500 ${
+        className={`fixed inset-0 z-40 flex flex-col justify-center items-center gap-8 transition-all duration-500 ${
           open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
+        style={{ backgroundColor: DEEP_OLIVE }}
       >
         {links.map(l => (
           <Link
             key={l.to}
             to={l.to}
             className="font-serif text-3xl transition-colors duration-300"
-            style={{ color: isActive(l.to) ? '#C9A96E' : '#f5f0e8' }}
+            style={{ color: isActive(l.to) ? GOLD : '#f5f0e8' }}
           >
             {l.label}
           </Link>
         ))}
         <Link
           to="/quote"
-          className="mt-4 text-[#C9A96E] text-xs tracking-[0.2em] uppercase px-10 py-4 transition-all duration-300"
-          style={{ border: '1px solid #C9A96E' }}
+          className="mt-4 text-xs tracking-[0.2em] uppercase px-10 py-4 transition-all duration-300"
+          style={{
+            background: 'linear-gradient(135deg, #E0C38A 0%, #C8A46A 50%, #A8854F 100%)',
+            color: DEEP_OLIVE,
+            fontWeight: 500,
+          }}
         >
           Enquire Now
         </Link>
