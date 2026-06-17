@@ -732,7 +732,7 @@ export default function Home() {
               {/* Photo */}
               <div className="philosophy-photo-inner" style={{ position: 'relative', zIndex: 1, overflow: 'hidden' }}>
                 <img
-                  src="/philosophy-image.png"
+                  src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=700&q=85"
                   alt="NIVORA Studio — editorial"
                   className="philosophy-photo"
                   style={{
