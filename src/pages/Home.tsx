@@ -746,55 +746,56 @@ export default function Home() {
               </div>
 
               {/* Floating quote card — bottom-left overlap */}
-              <FadeIn delay={0.45}>
-                <div
-                  className="philosophy-quote-card"
-                  style={{
-                    position: 'absolute',
-                    bottom: -32,
-                    left: -28,
-                    zIndex: 6,
-                    width: 172,
-                    padding: '22px 20px 20px',
-                    backgroundColor: '#C9A227',
-                    boxShadow: '0 10px 40px rgba(0,0,0,0.22)',
-                    transition: 'transform 0.35s ease, box-shadow 0.35s ease',
-                    cursor: 'default',
-                  }}
-                  onMouseEnter={e => {
-                    const el = e.currentTarget as HTMLDivElement
-                    el.style.transform = 'translateY(-5px)'
-                    el.style.boxShadow = '0 18px 50px rgba(0,0,0,0.30)'
-                  }}
-                  onMouseLeave={e => {
-                    const el = e.currentTarget as HTMLDivElement
-                    el.style.transform = 'translateY(0)'
-                    el.style.boxShadow = '0 10px 40px rgba(0,0,0,0.22)'
-                  }}
-                >
-                  {/* Large decorative quotation mark */}
-                  <div style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: 52,
-                    lineHeight: 0.75,
-                    color: 'rgba(255,255,255,0.38)',
-                    marginBottom: 10,
-                    fontWeight: 300,
-                    userSelect: 'none',
-                  }}>"</div>
-                  <p style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: 13.5,
-                    fontWeight: 300,
-                    fontStyle: 'italic',
-                    color: '#ffffff',
-                    lineHeight: 1.6,
-                    margin: 0,
-                  }}>
-                    We don't just design spaces, we create legacies.
-                  </p>
-                </div>
-              </FadeIn>
+              <style>{`
+                @keyframes quoteCardIn {
+                  from { opacity: 0; transform: translateY(18px); }
+                  to   { opacity: 1; transform: translateY(0); }
+                }
+                .philosophy-quote-card {
+                  animation: quoteCardIn 0.75s cubic-bezier(0.16,1,0.3,1) 0.55s both;
+                }
+                .philosophy-quote-card:hover {
+                  transform: translateY(-5px) !important;
+                  box-shadow: 0 18px 50px rgba(0,0,0,0.30) !important;
+                }
+              `}</style>
+              <div
+                className="philosophy-quote-card"
+                style={{
+                  position: 'absolute',
+                  bottom: -32,
+                  left: -28,
+                  zIndex: 6,
+                  width: 172,
+                  padding: '22px 20px 20px',
+                  backgroundColor: '#C9A227',
+                  boxShadow: '0 10px 40px rgba(0,0,0,0.22)',
+                  transition: 'transform 0.35s ease, box-shadow 0.35s ease',
+                  cursor: 'default',
+                }}
+              >
+                {/* Large decorative quotation mark */}
+                <div style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: 52,
+                  lineHeight: 0.75,
+                  color: 'rgba(255,255,255,0.38)',
+                  marginBottom: 10,
+                  fontWeight: 300,
+                  userSelect: 'none',
+                }}>"</div>
+                <p style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: 13.5,
+                  fontWeight: 300,
+                  fontStyle: 'italic',
+                  color: '#ffffff',
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}>
+                  We don't just design spaces, we create legacies.
+                </p>
+              </div>
             </div>
           </FadeIn>
 
