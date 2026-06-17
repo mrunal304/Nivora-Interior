@@ -67,6 +67,113 @@ const testimonials = [
   },
 ]
 
+const statsData = [
+  { value: 12, suffix: '+', label: 'Years Experience' },
+  { value: 250, suffix: '+', label: 'Projects Completed' },
+  { value: 200, suffix: '+', label: 'Clients Served' },
+  { value: 98, suffix: '%', label: 'Client Satisfaction' },
+]
+
+function StatsSection() {
+  const [counts, setCounts] = useState(statsData.map(() => 0))
+  const [started, setStarted] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started) {
+          setStarted(true)
+          const duration = 2200
+          const steps = 66
+          statsData.forEach((stat, i) => {
+            let step = 0
+            const timer = setInterval(() => {
+              step++
+              const progress = step / steps
+              const eased = 1 - Math.pow(1 - progress, 3)
+              setCounts(prev => {
+                const next = [...prev]
+                next[i] = Math.min(Math.floor(eased * stat.value), stat.value)
+                return next
+              })
+              if (step >= steps) clearInterval(timer)
+            }, duration / steps)
+          })
+        }
+      },
+      { threshold: 0.35 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [started])
+
+  return (
+    <section
+      ref={sectionRef}
+      style={{ backgroundColor: '#4A5C34', padding: '72px 1.5rem' }}
+    >
+      <style>{`
+        .stats-grid {
+          max-width: 1100px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 0;
+        }
+        .stat-item {
+          text-align: center;
+          padding: 0 28px;
+        }
+        .stat-item + .stat-item {
+          border-left: 1px solid rgba(212,192,161,0.18);
+        }
+        @media (max-width: 640px) {
+          .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px 0;
+          }
+          .stat-item + .stat-item {
+            border-left: none;
+          }
+          .stat-item:nth-child(2n) {
+            border-left: 1px solid rgba(212,192,161,0.18);
+          }
+        }
+      `}</style>
+      <div className="stats-grid">
+        {statsData.map((stat, i) => (
+          <div key={stat.label} className="stat-item">
+            <div style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: 'clamp(3rem, 5vw, 4.75rem)',
+              fontWeight: 300,
+              color: '#f5f0e8',
+              lineHeight: 1,
+              marginBottom: 14,
+              letterSpacing: '-0.01em',
+            }}>
+              {counts[i]}{stat.suffix}
+            </div>
+            <div style={{
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 300,
+              fontSize: 10,
+              letterSpacing: '3.5px',
+              textTransform: 'uppercase',
+              color: 'rgba(212,192,161,0.60)',
+            }}>
+              {stat.label}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 function BeforeAfterSlider() {
   const [pos, setPos] = useState(50)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -537,7 +644,7 @@ export default function Home() {
       <HeroSection />
 
       {/* Philosophy */}
-      <section className="philosophy-section" style={{ backgroundColor: '#f7f4ef', padding: '80px 1.5rem' }}>
+      <section className="philosophy-section" style={{ backgroundColor: '#f7f4ef', padding: '80px 1.5rem 110px' }}>
         <div className="philosophy-flex" style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', gap: '4rem', alignItems: 'center', flexWrap: 'wrap' }}>
 
           {/* Left — text block (55%) */}
@@ -637,11 +744,65 @@ export default function Home() {
                   loading="lazy"
                 />
               </div>
+
+              {/* Floating quote card — bottom-left overlap */}
+              <FadeIn delay={0.45}>
+                <div
+                  className="philosophy-quote-card"
+                  style={{
+                    position: 'absolute',
+                    bottom: -32,
+                    left: -28,
+                    zIndex: 6,
+                    width: 172,
+                    padding: '22px 20px 20px',
+                    backgroundColor: '#C9A227',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.22)',
+                    transition: 'transform 0.35s ease, box-shadow 0.35s ease',
+                    cursor: 'default',
+                  }}
+                  onMouseEnter={e => {
+                    const el = e.currentTarget as HTMLDivElement
+                    el.style.transform = 'translateY(-5px)'
+                    el.style.boxShadow = '0 18px 50px rgba(0,0,0,0.30)'
+                  }}
+                  onMouseLeave={e => {
+                    const el = e.currentTarget as HTMLDivElement
+                    el.style.transform = 'translateY(0)'
+                    el.style.boxShadow = '0 10px 40px rgba(0,0,0,0.22)'
+                  }}
+                >
+                  {/* Large decorative quotation mark */}
+                  <div style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: 52,
+                    lineHeight: 0.75,
+                    color: 'rgba(255,255,255,0.38)',
+                    marginBottom: 10,
+                    fontWeight: 300,
+                    userSelect: 'none',
+                  }}>"</div>
+                  <p style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: 13.5,
+                    fontWeight: 300,
+                    fontStyle: 'italic',
+                    color: '#ffffff',
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}>
+                    We don't just design spaces, we create legacies.
+                  </p>
+                </div>
+              </FadeIn>
             </div>
           </FadeIn>
 
         </div>
       </section>
+
+      {/* Stats strip */}
+      <StatsSection />
 
       {/* Services */}
       <section style={{ backgroundColor: '#33452F', padding: '5rem 1.5rem' }}>
