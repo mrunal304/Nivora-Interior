@@ -68,14 +68,14 @@ const testimonials = [
 ]
 
 const statsData = [
-  { value: 12, suffix: '+', label: 'Years Experience' },
-  { value: 250, suffix: '+', label: 'Projects Completed' },
-  { value: 200, suffix: '+', label: 'Clients Served' },
-  { value: 98, suffix: '%', label: 'Client Satisfaction' },
+  { value: 12,  from: 8,   suffix: '+', label: 'Years Experience' },
+  { value: 250, from: 180, suffix: '+', label: 'Projects Completed' },
+  { value: 200, from: 150, suffix: '+', label: 'Clients Served' },
+  { value: 98,  from: 90,  suffix: '%', label: 'Client Satisfaction' },
 ]
 
 function StatsSection() {
-  const [counts, setCounts] = useState(statsData.map(() => 0))
+  const [counts, setCounts] = useState(statsData.map(s => s.value))
   const [started, setStarted] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
 
@@ -92,10 +92,12 @@ function StatsSection() {
             const duration = 1800
             const steps = 60
             let step = 0
+            const range = stat.value - stat.from
+            setCounts(prev => { const n = [...prev]; n[i] = stat.from; return n })
             const countUp = setInterval(() => {
               step++
               const eased = 1 - Math.pow(1 - step / steps, 3)
-              const val = Math.min(Math.floor(eased * stat.value), stat.value)
+              const val = Math.min(Math.round(stat.from + eased * range), stat.value)
               setCounts(prev => { const n = [...prev]; n[i] = val; return n })
               if (step >= steps) {
                 clearInterval(countUp)
