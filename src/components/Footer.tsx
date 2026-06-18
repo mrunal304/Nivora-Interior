@@ -9,15 +9,25 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
 
           {/* Column 1 — Brand */}
-          <div className="pr-10 pb-12 lg:pb-0 footer-brand-col" style={{ borderRight: '1px solid rgba(255,255,255,0.08)' }}>
+          <div
+            className="pr-10 pb-12 lg:pb-0"
+            style={{
+              borderRight: '1px solid rgba(255,255,255,0.08)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              gap: 0,
+            }}
+          >
+            {/* Logo */}
             <a
               href="/"
-              className="footer-brand-logo-link"
               style={{
-                display: 'inline-block',
-                marginBottom: '18px',
+                display: 'block',
+                marginBottom: '20px',
                 transition: 'transform 500ms ease',
                 textDecoration: 'none',
+                flexShrink: 0,
               }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)' }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)' }}
@@ -26,42 +36,47 @@ export default function Footer() {
                 src="/nivora-logo-transparent.png"
                 alt="Nivora Interiors"
                 style={{
-                  width: '72px',
-                  height: 'auto',
-                  maxWidth: '180px',
-                  objectFit: 'contain',
                   display: 'block',
-                  opacity: 0.98,
-                  filter: 'none',
-                  mixBlendMode: 'normal',
+                  width: 'auto',
+                  height: 'auto',
+                  maxWidth: '160px',
+                  maxHeight: '80px',
+                  objectFit: 'contain',
+                  opacity: 0.95,
                 }}
               />
             </a>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginBottom: '16px' }}>
+
+            {/* Brand name */}
+            <div style={{ marginBottom: '14px' }}>
               <span style={{
+                display: 'block',
                 fontFamily: "'Cormorant Garamond', serif",
-                fontSize: '42px',
+                fontSize: '32px',
                 color: '#F7F4EF',
                 letterSpacing: '0.03em',
                 lineHeight: 1,
                 fontWeight: 300,
               }}>nivora</span>
               <span style={{
+                display: 'block',
                 fontFamily: "'Inter', sans-serif",
-                fontSize: '12px',
+                fontSize: '10px',
                 letterSpacing: '6px',
                 textTransform: 'uppercase',
-                color: 'rgba(247,244,239,0.65)',
+                color: 'rgba(247,244,239,0.55)',
                 fontWeight: 300,
+                marginTop: '4px',
               }}>interiors</span>
             </div>
+
             <p style={{
-              color: 'rgba(255,255,255,0.40)',
+              color: 'rgba(255,255,255,0.38)',
               fontSize: '12px',
-              lineHeight: 1.75,
+              lineHeight: 1.8,
               fontWeight: 300,
               marginBottom: '24px',
-              maxWidth: '220px',
+              maxWidth: '200px',
             }}>
               Thoughtful spaces designed<br />for refined living.
             </p>
