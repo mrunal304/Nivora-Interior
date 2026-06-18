@@ -55,155 +55,198 @@ const serviceCards = [
   },
 ]
 
+const STAGGER = [100, 200, 300, 400, 500, 600, 700]
+
 function ServiceCard({ card, index }: { card: typeof serviceCards[0]; index: number }) {
-  const ref = useRef<HTMLAnchorElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
+  const [imgLoaded, setImgLoaded] = useState(false)
 
   useEffect(() => {
     const el = ref.current
     if (!el) return
     const obs = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect() } },
-      { threshold: 0.12 }
+      { threshold: 0.08 }
     )
     obs.observe(el)
     return () => obs.disconnect()
   }, [])
 
+  const delay = STAGGER[index] ?? index * 100
+
   return (
-    <Link
+    <div
       ref={ref}
-      to={card.href}
-      className="svc-premium-card"
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(36px)',
-        transition: `opacity 0.7s cubic-bezier(0.16,1,0.3,1) ${index * 80}ms, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${index * 80}ms`,
-        textDecoration: 'none',
-        display: 'block',
-        position: 'relative',
-        overflow: 'hidden',
-        borderRadius: 4,
-        aspectRatio: '4/5',
-        cursor: 'pointer',
+        transform: visible ? 'translateY(0) scale(1)' : 'translateY(50px) scale(0.96)',
+        transition: `opacity 0.65s cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 0.65s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
       }}
     >
-      {/* Background image */}
-      <img
-        src={card.img}
-        alt={card.title}
-        className="svc-pm-img"
+      <Link
+        to={card.href}
+        className="svc-card-pm"
         style={{
+          display: 'block',
+          position: 'relative',
+          overflow: 'hidden',
+          borderRadius: 18,
+          height: 'var(--card-h)',
+          textDecoration: 'none',
+          cursor: 'pointer',
+        }}
+      >
+        {/* Skeleton shimmer while image loads */}
+        {!imgLoaded && (
+          <div className="svc-skeleton" style={{
+            position: 'absolute',
+            inset: 0,
+            borderRadius: 18,
+            background: 'linear-gradient(90deg, #e8e2d9 0%, #f0ebe4 40%, #e8e2d9 80%)',
+            backgroundSize: '200% 100%',
+            animation: 'skeletonPulse 1.4s ease infinite',
+            zIndex: 1,
+          }} />
+        )}
+
+        {/* Background image */}
+        <img
+          src={card.img}
+          alt={card.title}
+          className="svc-img-pm"
+          onLoad={() => setImgLoaded(true)}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+            opacity: imgLoaded ? 1 : 0,
+            transition: 'opacity 0.55s ease, transform 0.55s cubic-bezier(0.16,1,0.3,1)',
+            transform: 'scale(1)',
+            zIndex: 2,
+          }}
+          loading="lazy"
+        />
+
+        {/* Base gradient overlay */}
+        <div style={{
           position: 'absolute',
           inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          display: 'block',
-        }}
-        loading="lazy"
-      />
+          background: 'linear-gradient(to bottom, rgba(8,14,8,0.15) 0%, rgba(8,14,8,0.48) 50%, rgba(6,10,6,0.88) 100%)',
+          zIndex: 3,
+          transition: 'background 0.45s ease',
+          borderRadius: 18,
+        }} className="svc-base-overlay-pm" />
 
-      {/* Base gradient overlay — always visible */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'linear-gradient(to bottom, rgba(10,18,10,0.18) 0%, rgba(10,18,10,0.55) 55%, rgba(8,14,8,0.88) 100%)',
-        zIndex: 1,
-        transition: 'background 0.45s ease',
-      }} className="svc-pm-base-overlay" />
+        {/* Hover overlay */}
+        <div className="svc-hover-overlay-pm" style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'rgba(5,10,5,0.32)',
+          opacity: 0,
+          transition: 'opacity 0.45s ease',
+          zIndex: 4,
+          borderRadius: 18,
+        }} />
 
-      {/* Hover dark overlay */}
-      <div className="svc-pm-hover-overlay" style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'rgba(6,12,6,0.35)',
-        zIndex: 2,
-        opacity: 0,
-        transition: 'opacity 0.4s ease',
-      }} />
+        {/* Gold accent line */}
+        <div className="svc-accent-pm" style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 18,
+          right: 18,
+          height: 2,
+          background: 'linear-gradient(90deg, #C9A96E, #e8d5a3 50%, #C9A96E)',
+          borderRadius: '0 0 18px 18px',
+          width: 0,
+          transition: 'width 0.55s cubic-bezier(0.16,1,0.3,1)',
+          zIndex: 10,
+        }} />
 
-      {/* Gold accent line — bottom, animates on hover */}
-      <div className="svc-pm-accent-line" style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        height: 2,
-        width: 0,
-        background: 'linear-gradient(90deg, #C9A96E, #e8d5a3)',
-        zIndex: 10,
-        transition: 'width 0.5s cubic-bezier(0.16,1,0.3,1)',
-      }} />
-
-      {/* Service number */}
-      <div style={{
-        position: 'absolute',
-        top: 20,
-        left: 22,
-        zIndex: 5,
-        fontFamily: "'Cormorant Garamond', serif",
-        fontWeight: 300,
-        fontSize: '1rem',
-        letterSpacing: '0.06em',
-        color: '#C9A96E',
-      }}>{card.num}</div>
-
-      {/* Bottom content */}
-      <div style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        padding: '1.5rem 1.4rem 1.4rem',
-        zIndex: 6,
-      }}>
-        {/* Title — always visible */}
-        <h3 style={{
+        {/* Service number */}
+        <div style={{
+          position: 'absolute',
+          top: 20,
+          left: 22,
+          zIndex: 8,
           fontFamily: "'Cormorant Garamond', serif",
-          fontWeight: 300,
-          fontSize: 'clamp(1.3rem, 2vw, 1.55rem)',
-          color: '#f5f0e8',
-          lineHeight: 1.2,
-          margin: 0,
-          marginBottom: '0.6rem',
-          letterSpacing: '0.01em',
-        }}>{card.title}</h3>
+          fontWeight: 400,
+          fontSize: '0.95rem',
+          letterSpacing: '0.08em',
+          color: 'rgba(201,169,110,0.85)',
+          lineHeight: 1,
+        }}>{card.num}</div>
 
-        {/* Description — fades up on hover */}
-        <p className="svc-pm-desc" style={{
-          fontFamily: "'Inter', sans-serif",
-          fontWeight: 300,
-          fontSize: 12,
-          color: 'rgba(245,240,232,0.75)',
-          lineHeight: 1.6,
-          margin: 0,
-          marginBottom: '1rem',
-          opacity: 0,
-          transform: 'translateY(10px)',
-          transition: 'opacity 0.35s ease, transform 0.35s ease',
-        }}>{card.desc}</p>
-
-        {/* CTA — fades up on hover */}
-        <div className="svc-pm-cta" style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8,
-          opacity: 0,
-          transform: 'translateY(8px)',
-          transition: 'opacity 0.35s ease 0.06s, transform 0.35s ease 0.06s',
+        {/* Bottom content */}
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: '1.6rem 1.5rem 1.5rem',
+          zIndex: 9,
         }}>
-          <span style={{
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 400,
-            fontSize: 10,
-            letterSpacing: '0.22em',
-            textTransform: 'uppercase',
-            color: '#C9A96E',
-          }}>Explore Service</span>
-          <ArrowRight size={11} color="#C9A96E" />
+          {/* Title */}
+          <h3
+            className="svc-title-pm"
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontWeight: 300,
+              fontSize: 'clamp(1.2rem, 1.8vw, 1.5rem)',
+              color: '#f5f0e8',
+              lineHeight: 1.2,
+              margin: 0,
+              marginBottom: '0.65rem',
+              letterSpacing: '0.01em',
+              transition: 'transform 0.45s cubic-bezier(0.16,1,0.3,1)',
+            }}
+          >{card.title}</h3>
+
+          {/* Description */}
+          <p
+            className="svc-desc-pm"
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 300,
+              fontSize: 12,
+              color: 'rgba(245,240,232,0.78)',
+              lineHeight: 1.65,
+              margin: 0,
+              marginBottom: '1rem',
+              opacity: 0,
+              transform: 'translateY(12px)',
+              transition: 'opacity 0.45s ease, transform 0.45s cubic-bezier(0.16,1,0.3,1)',
+            }}
+          >{card.desc}</p>
+
+          {/* CTA */}
+          <div
+            className="svc-cta-pm"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 7,
+              opacity: 0,
+              transform: 'translateY(10px)',
+              transition: 'opacity 0.45s ease 0.07s, transform 0.45s cubic-bezier(0.16,1,0.3,1) 0.07s',
+            }}
+          >
+            <span style={{
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 400,
+              fontSize: 10,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: '#C9A96E',
+            }}>Explore Service</span>
+            <ArrowRight size={11} color="#C9A96E" strokeWidth={1.5} />
+          </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   )
 }
 
@@ -211,71 +254,88 @@ export default function Services() {
   return (
     <div style={{ backgroundColor: '#F7F4EF', minHeight: '100vh' }}>
       <style>{`
-        .svc-premium-card:hover .svc-pm-img {
-          transform: scale(1.06);
-          transition: transform 0.75s cubic-bezier(0.16,1,0.3,1);
+        :root {
+          --card-h: 520px;
+          --svc-gap: 28px;
         }
-        .svc-pm-img {
-          transition: transform 0.75s cubic-bezier(0.16,1,0.3,1);
+        @media (max-width: 1024px) {
+          :root { --card-h: 460px; }
         }
-        .svc-premium-card:hover .svc-pm-hover-overlay {
-          opacity: 1 !important;
-        }
-        .svc-premium-card:hover .svc-pm-desc {
-          opacity: 1 !important;
-          transform: translateY(0) !important;
-        }
-        .svc-premium-card:hover .svc-pm-cta {
-          opacity: 1 !important;
-          transform: translateY(0) !important;
-        }
-        .svc-premium-card:hover .svc-pm-accent-line {
-          width: 100% !important;
-        }
-        .svc-premium-card {
-          box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-          transition: box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1);
-        }
-        .svc-premium-card:hover {
-          box-shadow: 0 16px 56px rgba(0,0,0,0.18);
-          transform: translateY(-4px) !important;
+        @media (max-width: 640px) {
+          :root { --card-h: 400px; }
         }
 
-        .svc-grid {
+        @keyframes skeletonPulse {
+          0%   { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+
+        .svc-card-pm {
+          box-shadow: 0 6px 28px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+          transition:
+            box-shadow 0.5s cubic-bezier(0.16,1,0.3,1),
+            transform 0.5s cubic-bezier(0.16,1,0.3,1) !important;
+        }
+        .svc-card-pm:hover {
+          box-shadow: 0 20px 64px rgba(0,0,0,0.22), 0 6px 20px rgba(0,0,0,0.12) !important;
+          transform: translateY(-10px) !important;
+        }
+        .svc-card-pm:hover .svc-img-pm {
+          transform: scale(1.08) !important;
+          transition: transform 0.6s cubic-bezier(0.16,1,0.3,1) !important;
+        }
+        .svc-card-pm:hover .svc-hover-overlay-pm {
+          opacity: 1 !important;
+        }
+        .svc-card-pm:hover .svc-title-pm {
+          transform: translateY(-4px);
+        }
+        .svc-card-pm:hover .svc-desc-pm {
+          opacity: 1 !important;
+          transform: translateY(0) !important;
+        }
+        .svc-card-pm:hover .svc-cta-pm {
+          opacity: 1 !important;
+          transform: translateY(0) !important;
+        }
+        .svc-card-pm:hover .svc-accent-pm {
+          width: calc(100% - 36px) !important;
+        }
+
+        .svc-grid-pm {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 16px;
+          gap: var(--svc-gap);
         }
-        .svc-grid-row2 {
+        .svc-grid-row2-pm {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
-          margin-top: 16px;
+          gap: var(--svc-gap);
+          margin-top: var(--svc-gap);
         }
-
         @media (max-width: 1024px) {
-          .svc-grid,
-          .svc-grid-row2 {
+          .svc-grid-pm,
+          .svc-grid-row2-pm {
             grid-template-columns: repeat(2, 1fr) !important;
           }
         }
         @media (max-width: 640px) {
-          .svc-grid,
-          .svc-grid-row2 {
+          .svc-grid-pm,
+          .svc-grid-row2-pm {
             grid-template-columns: 1fr !important;
           }
-          .svc-pm-desc,
-          .svc-pm-cta {
+          .svc-desc-pm,
+          .svc-cta-pm {
             opacity: 1 !important;
             transform: translateY(0) !important;
           }
         }
       `}</style>
 
-      {/* Hero header */}
+      {/* Page header */}
       <section style={{
         paddingTop: 120,
-        paddingBottom: 64,
+        paddingBottom: 60,
         paddingLeft: '1.5rem',
         paddingRight: '1.5rem',
         textAlign: 'center',
@@ -287,26 +347,26 @@ export default function Services() {
             fontFamily: "'Inter', sans-serif",
             fontWeight: 300,
             fontSize: 10,
-            letterSpacing: '0.42em',
+            letterSpacing: '0.44em',
             textTransform: 'uppercase',
             color: '#9B7D4E',
-            marginBottom: '0.85rem',
+            marginBottom: '0.9rem',
           }}>What We Offer</p>
           <h1 style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
-            fontSize: 'clamp(2.6rem, 6vw, 4.5rem)',
-            color: '#1E2A1A',
-            lineHeight: 1.05,
-            marginBottom: '1.2rem',
+            fontSize: 'clamp(2.8rem, 6vw, 4.75rem)',
+            color: '#1C2818',
+            lineHeight: 1.04,
+            marginBottom: '1.25rem',
             letterSpacing: '-0.01em',
           }}>Our Services</h1>
           <p style={{
             fontFamily: "'Inter', sans-serif",
             fontWeight: 300,
             fontSize: 14,
-            color: 'rgba(30,42,26,0.5)',
-            lineHeight: 1.8,
+            color: 'rgba(28,40,24,0.48)',
+            lineHeight: 1.85,
           }}>
             Complete interior design and architecture services —<br />
             from first conversation to final reveal.
@@ -314,36 +374,38 @@ export default function Services() {
         </FadeIn>
       </section>
 
-      {/* Thin gold divider */}
+      {/* Gold divider */}
       <FadeIn>
         <div style={{
-          width: 48,
+          width: 44,
           height: 1,
           background: 'linear-gradient(90deg, transparent, #C9A96E, transparent)',
-          margin: '0 auto 56px',
+          margin: '0 auto 64px',
         }} />
       </FadeIn>
 
-      {/* Cards grid */}
-      <section style={{ maxWidth: 1280, margin: '0 auto', padding: '0 1.5rem 80px' }}>
-        {/* Row 1 — 4 cards */}
-        <div className="svc-grid">
+      {/* Cards */}
+      <section style={{
+        maxWidth: 1400,
+        margin: '0 auto',
+        padding: '0 2rem 96px',
+      }}>
+        <div className="svc-grid-pm">
           {serviceCards.slice(0, 4).map((card, i) => (
             <ServiceCard key={card.num} card={card} index={i} />
           ))}
         </div>
-        {/* Row 2 — 3 cards, centred */}
-        <div className="svc-grid-row2">
+        <div className="svc-grid-row2-pm">
           {serviceCards.slice(4).map((card, i) => (
             <ServiceCard key={card.num} card={card} index={i + 4} />
           ))}
         </div>
       </section>
 
-      {/* CTA strip */}
+      {/* CTA */}
       <section style={{
-        backgroundColor: '#2C3D28',
-        padding: '80px 1.5rem',
+        backgroundColor: '#2A3926',
+        padding: '88px 1.5rem',
         textAlign: 'center',
       }}>
         <FadeIn>
@@ -351,7 +413,7 @@ export default function Services() {
             fontFamily: "'Inter', sans-serif",
             fontWeight: 300,
             fontSize: 10,
-            letterSpacing: '0.42em',
+            letterSpacing: '0.44em',
             textTransform: 'uppercase',
             color: '#9B7D4E',
             marginBottom: '1rem',
@@ -359,22 +421,20 @@ export default function Services() {
           <h2 style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
-            fontSize: 'clamp(2rem, 4vw, 3.25rem)',
+            fontSize: 'clamp(2rem, 4vw, 3.5rem)',
             color: '#f5f0e8',
             fontStyle: 'italic',
-            lineHeight: 1.2,
-            marginBottom: '1.5rem',
-          }}>
-            Not sure where to start?
-          </h2>
+            lineHeight: 1.15,
+            marginBottom: '1.4rem',
+          }}>Not sure where to start?</h2>
           <p style={{
             fontFamily: "'Inter', sans-serif",
             fontWeight: 300,
             fontSize: 13,
-            color: 'rgba(245,240,232,0.45)',
-            lineHeight: 1.8,
-            maxWidth: 420,
-            margin: '0 auto 2.5rem',
+            color: 'rgba(245,240,232,0.42)',
+            lineHeight: 1.85,
+            maxWidth: 400,
+            margin: '0 auto 2.75rem',
           }}>
             Book a free consultation and we'll guide you through the best approach for your project.
           </p>
@@ -385,26 +445,29 @@ export default function Services() {
               alignItems: 'center',
               gap: 10,
               backgroundColor: '#C9A96E',
-              color: '#1E2A1A',
+              color: '#1C2818',
               fontFamily: "'Inter', sans-serif",
               fontWeight: 500,
               fontSize: 10,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
-              padding: '18px 44px',
+              padding: '18px 48px',
               textDecoration: 'none',
+              borderRadius: 2,
               transition: 'background 0.3s ease, transform 0.3s ease',
             }}
             onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.backgroundColor = '#e0c08a'
-              ;(e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'
+              const el = e.currentTarget as HTMLElement
+              el.style.backgroundColor = '#ddb97a'
+              el.style.transform = 'translateY(-2px)'
             }}
             onMouseLeave={e => {
-              (e.currentTarget as HTMLElement).style.backgroundColor = '#C9A96E'
-              ;(e.currentTarget as HTMLElement).style.transform = 'translateY(0)'
+              const el = e.currentTarget as HTMLElement
+              el.style.backgroundColor = '#C9A96E'
+              el.style.transform = 'translateY(0)'
             }}
           >
-            Book Free Consultation <ArrowRight size={13} />
+            Book Free Consultation <ArrowRight size={13} strokeWidth={1.5} />
           </Link>
         </FadeIn>
       </section>
