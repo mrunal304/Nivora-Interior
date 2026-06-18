@@ -532,38 +532,70 @@ export default function ResidentialInteriors() {
   return (
     <div className="res-page" style={{ backgroundColor: '#F7F4EF' }}>
       <style>{`
-        /* ── no horizontal overflow ───────────────────────── */
+        /* ══ BASE ══════════════════════════════════════════════════════ */
         .res-page { overflow-x: hidden; }
 
-        /* ── section padding (override inline styles) ─────── */
-        .res-section-pad { padding-top: 96px !important; padding-bottom: 96px !important;
-                            padding-left: 2rem !important; padding-right: 2rem !important; }
+        /* ══ SECTION PADDING ══════════════════════════════════════════ */
+        .res-section-pad {
+          padding-top: 96px !important; padding-bottom: 96px !important;
+          padding-left: 2rem !important; padding-right: 2rem !important;
+        }
         @media (max-width: 1023px) {
-          .res-section-pad { padding-top: 72px !important; padding-bottom: 72px !important;
-                              padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+          .res-section-pad {
+            padding-top: 72px !important; padding-bottom: 72px !important;
+            padding-left: 1.5rem !important; padding-right: 1.5rem !important;
+          }
         }
         @media (max-width: 767px) {
-          .res-section-pad { padding-top: 56px !important; padding-bottom: 56px !important;
-                              padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
+          .res-section-pad {
+            padding-top: 56px !important; padding-bottom: 56px !important;
+            padding-left: 20px !important; padding-right: 20px !important;
+          }
+        }
+        @media (max-width: 374px) {
+          .res-section-pad {
+            padding-top: 48px !important; padding-bottom: 48px !important;
+            padding-left: 16px !important; padding-right: 16px !important;
+          }
         }
 
-        /* ── hero ────────────────────────────────────────── */
+        /* ══ HERO ═════════════════════════════════════════════════════ */
         .res-hero { height: 100vh; min-height: 560px; }
-        @media (max-width: 767px) {
-          .res-hero { height: 85vh; min-height: 460px; }
-        }
+        @media (max-width: 767px) { .res-hero { height: 85vh; min-height: 460px; } }
+        @media (max-width: 374px) { .res-hero { min-height: 400px; } }
+        @media (max-width: 479px) { .res-scroll-hint { display: none !important; } }
 
-        /* ── intro image ──────────────────────────────────── */
+        /* ══ INTRO IMAGE ══════════════════════════════════════════════ */
         .res-intro-img { border-radius: 16px; overflow: hidden; height: 480px; }
         @media (max-width: 1023px) { .res-intro-img { height: 360px; } }
         @media (max-width: 767px)  { .res-intro-img { height: 240px; } }
+        @media (max-width: 374px)  { .res-intro-img { height: 200px; } }
 
-        /* ── expertise cards ──────────────────────────────── */
-        .res-exp-card { transition: box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1) !important; }
-        .res-exp-card:hover { box-shadow: 0 10px 36px rgba(0,0,0,0.10) !important; transform: translateY(-4px) !important; }
+        /* ══ EXPERTISE CARDS ══════════════════════════════════════════ */
+        .res-exp-card {
+          transition: box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1) !important;
+        }
+        .res-exp-card:hover {
+          box-shadow: 0 10px 36px rgba(0,0,0,0.10) !important;
+          transform: translateY(-4px) !important;
+        }
         .res-exp-card:hover .res-exp-line { width: 100% !important; }
+        /* Mobile: row layout, icon + label side by side, comfortable padding */
+        @media (max-width: 639px) {
+          .res-exp-card {
+            flex-direction: row !important;
+            align-items: center !important;
+            padding: 1.25rem 1.25rem !important;
+            gap: 1rem !important;
+            min-height: 72px !important;
+          }
+          .res-exp-card:active {
+            box-shadow: 0 10px 36px rgba(0,0,0,0.10) !important;
+            transform: translateY(-2px) !important;
+          }
+        }
 
-        /* ── featured cards ───────────────────────────────── */
+        /* ══ FEATURED CARDS ═══════════════════════════════════════════ */
         .res-feat-card {
           border-radius: 14px; overflow: hidden;
           box-shadow: 0 4px 20px rgba(0,0,0,0.08);
@@ -573,9 +605,10 @@ export default function ResidentialInteriors() {
         .res-feat-img { transition: transform 0.65s cubic-bezier(0.16,1,0.3,1) !important; }
         .res-feat-card:hover .res-feat-img { transform: scale(1.06) !important; }
         .res-feat-img-wrap { overflow: hidden; border-radius: 14px 14px 0 0; height: 300px; }
-        @media (max-width: 767px) { .res-feat-img-wrap { height: 210px; } }
+        @media (max-width: 767px) { .res-feat-img-wrap { height: 220px; } }
+        @media (max-width: 374px) { .res-feat-img-wrap { height: 190px; } }
 
-        /* ── gallery ──────────────────────────────────────── */
+        /* ══ GALLERY ══════════════════════════════════════════════════ */
         .res-gal-card { transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease !important; }
         .res-gal-card:hover { transform: translateY(-6px) scale(1.01) !important; box-shadow: 0 14px 44px rgba(0,0,0,0.15) !important; }
         .res-gal-card:hover .res-gal-overlay { opacity: 1 !important; }
@@ -583,7 +616,7 @@ export default function ResidentialInteriors() {
         .res-gal-img { transition: transform 0.65s cubic-bezier(0.16,1,0.3,1) !important; }
         .res-gal-card:hover .res-gal-img { transform: scale(1.07) !important; }
 
-        /* ── timeline ─────────────────────────────────────── */
+        /* ══ TIMELINE — DESKTOP ═══════════════════════════════════════ */
         .res-tl-card {
           transition: box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1) !important;
         }
@@ -591,14 +624,63 @@ export default function ResidentialInteriors() {
           box-shadow: 0 12px 40px rgba(0,0,0,0.11), 0 3px 10px rgba(0,0,0,0.05) !important;
           transform: translateY(-4px) !important;
         }
+
+        /* ══ TIMELINE — MOBILE ════════════════════════════════════════
+           Strategy:
+           • Hide the absolute diamond-overlay (can't track variable-height cards)
+           • Shift the vertical line to left: 20px
+           • Each .res-tl-row uses a ::before pseudo diamond, vertically centred
+             at the top-padding area of the card so it always aligns with the
+             step number / first line of text
+           • Cards: full-width, offset 48px from the left
+        ═══════════════════════════════════════════════════════════════ */
         @media (max-width: 768px) {
-          .res-tl-row { justify-content: flex-end !important; padding-left: 36px !important; }
-          .res-tl-row > div { width: 100% !important; }
-          .res-tl-line { left: 12px !important; transform: none !important; }
-          .res-tl-diamonds { left: 4px !important; transform: none !important; }
+          /* Hide desktop diamond overlay */
+          .res-tl-diamonds { display: none !important; }
+
+          /* Shift vertical line to left edge */
+          .res-tl-line {
+            left: 20px !important;
+            transform: none !important;
+          }
+
+          /* Each row: full-width, padded right of the line */
+          .res-tl-row {
+            justify-content: flex-start !important;
+            padding-left: 48px !important;
+            padding-right: 0 !important;
+            position: relative !important;
+          }
+
+          /* Diamond via pseudo-element — sits at top-centre of the card */
+          .res-tl-row::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 26px;
+            width: 10px;
+            height: 10px;
+            background: #C9A96E;
+            transform: rotate(45deg);
+            box-shadow: 0 0 0 3px #F7F4EF, 0 0 0 4.5px rgba(201,169,110,0.38);
+            z-index: 3;
+            flex-shrink: 0;
+          }
+
+          /* Card: nearly full width */
+          .res-tl-row > div {
+            width: 100% !important;
+            padding: 1.5rem 1.25rem 1.6rem !important;
+          }
         }
 
-        /* ── responsive grids ─────────────────────────────── */
+        @media (max-width: 374px) {
+          .res-tl-row { padding-left: 40px !important; }
+          .res-tl-row::before { left: 12px; }
+          .res-tl-line { left: 16px !important; }
+        }
+
+        /* ══ RESPONSIVE GRIDS ═════════════════════════════════════════ */
         .res-exp-grid  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .res-feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .res-gal-grid  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -606,23 +688,35 @@ export default function ResidentialInteriors() {
         .res-intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
 
         @media (max-width: 1023px) {
-          .res-exp-grid, .res-feat-grid, .res-gal-grid, .res-why-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .res-exp-grid, .res-feat-grid, .res-gal-grid, .res-why-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
           .res-intro-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
         }
         @media (max-width: 639px) {
-          .res-exp-grid, .res-feat-grid, .res-gal-grid, .res-why-grid { grid-template-columns: 1fr !important; }
+          .res-exp-grid  { grid-template-columns: 1fr !important; gap: 14px !important; }
+          .res-feat-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
+          .res-gal-grid  { grid-template-columns: 1fr !important; gap: 16px !important; }
+          .res-why-grid  { grid-template-columns: 1fr !important; gap: 14px !important; }
+        }
+        @media (max-width: 374px) {
+          .res-exp-grid  { gap: 12px !important; }
+          .res-feat-grid { gap: 16px !important; }
         }
 
-        /* ── CTA button row ───────────────────────────────── */
+        /* ══ CTA BUTTONS ══════════════════════════════════════════════ */
         .res-cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
         @media (max-width: 639px) {
-          .res-cta-btns { flex-direction: column; align-items: stretch; width: 100%; max-width: 340px; margin: 0 auto; }
-          .res-cta-btns a { min-height: 52px !important; justify-content: center !important;
-                             padding-left: 20px !important; padding-right: 20px !important; }
+          .res-cta-btns {
+            flex-direction: column; align-items: stretch;
+            width: 100%; max-width: 360px; margin: 0 auto;
+          }
+          .res-cta-btns a {
+            min-height: 52px !important;
+            justify-content: center !important;
+            padding-left: 20px !important; padding-right: 20px !important;
+          }
         }
-
-        /* ── scroll hint: hide on very small screens ─────── */
-        @media (max-width: 479px) { .res-scroll-hint { display: none !important; } }
       `}</style>
 
       {/* ── SECTION 1 · HERO ───────────────────────────────────────────────── */}
