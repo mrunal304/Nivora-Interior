@@ -723,7 +723,7 @@ export default function ResidentialInteriors() {
                   Your home should be more than just a place to live—it should reflect your personality, lifestyle, and aspirations. Whether you're moving into a new apartment, building your dream villa, renovating an existing home, or creating a weekend retreat, we design spaces that are functional, timeless, and uniquely yours.
                 </p>
                 <Link
-                  to="/quote"
+                  to="/services/residential/enquiry"
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: 9,
                     marginTop: '2.25rem',
@@ -985,7 +985,7 @@ export default function ResidentialInteriors() {
           </p>
           <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link
-              to="/quote"
+              to="/services/residential/enquiry"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 10,
                 backgroundColor: '#C9A96E', color: '#1C2818',
