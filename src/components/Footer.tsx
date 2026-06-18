@@ -1,7 +1,43 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Mail, Phone, Instagram } from 'lucide-react'
+import { Instagram } from 'lucide-react'
+
+function useTransparentLogo(src: string) {
+  const [logoSrc, setLogoSrc] = useState<string | null>(null)
+
+  useEffect(() => {
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      canvas.width = img.naturalWidth
+      canvas.height = img.naturalHeight
+      const ctx = canvas.getContext('2d')!
+      ctx.drawImage(img, 0, 0)
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+      const data = imageData.data
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i]
+        const g = data[i + 1]
+        const b = data[i + 2]
+        const isNeutral = Math.abs(r - g) < 28 && Math.abs(g - b) < 28
+        const isBright = r > 170 && g > 160 && b > 150
+        if (isNeutral && isBright) {
+          data[i + 3] = 0
+        }
+      }
+      ctx.putImageData(imageData, 0, 0)
+      setLogoSrc(canvas.toDataURL('image/png'))
+    }
+    img.src = src
+  }, [src])
+
+  return logoSrc
+}
 
 export default function Footer() {
+  const logoSrc = useTransparentLogo('/nivora-footer-logo.png')
+
   return (
     <footer style={{ backgroundColor: '#132818', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-12" style={{ paddingTop: '80px', paddingBottom: '40px' }}>
@@ -16,15 +52,14 @@ export default function Footer() {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'flex-start',
-              gap: 0,
             }}
           >
-            {/* Logo */}
+            {/* Official logo — white bg removed via canvas */}
             <a
               href="/"
               style={{
                 display: 'block',
-                marginBottom: '20px',
+                marginBottom: '24px',
                 transition: 'transform 500ms ease',
                 textDecoration: 'none',
                 flexShrink: 0,
@@ -32,43 +67,23 @@ export default function Footer() {
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)' }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)' }}
             >
-              <img
-                src="/nivora-logo-transparent.png"
-                alt="Nivora Interiors"
-                style={{
-                  display: 'block',
-                  width: 'auto',
-                  height: 'auto',
-                  maxWidth: '160px',
-                  maxHeight: '80px',
-                  objectFit: 'contain',
-                  opacity: 0.95,
-                }}
-              />
+              {logoSrc ? (
+                <img
+                  src={logoSrc}
+                  alt="Nivora Interiors"
+                  style={{
+                    display: 'block',
+                    width: '200px',
+                    height: 'auto',
+                    objectFit: 'contain',
+                    opacity: 0.95,
+                  }}
+                />
+              ) : (
+                /* Placeholder while canvas processes */
+                <div style={{ width: '200px', height: '80px' }} />
+              )}
             </a>
-
-            {/* Brand name */}
-            <div style={{ marginBottom: '14px' }}>
-              <span style={{
-                display: 'block',
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: '32px',
-                color: '#F7F4EF',
-                letterSpacing: '0.03em',
-                lineHeight: 1,
-                fontWeight: 300,
-              }}>nivora</span>
-              <span style={{
-                display: 'block',
-                fontFamily: "'Inter', sans-serif",
-                fontSize: '10px',
-                letterSpacing: '6px',
-                textTransform: 'uppercase',
-                color: 'rgba(247,244,239,0.55)',
-                fontWeight: 300,
-                marginTop: '4px',
-              }}>interiors</span>
-            </div>
 
             <p style={{
               color: 'rgba(255,255,255,0.38)',
@@ -76,10 +91,11 @@ export default function Footer() {
               lineHeight: 1.8,
               fontWeight: 300,
               marginBottom: '24px',
-              maxWidth: '200px',
+              maxWidth: '210px',
             }}>
               Thoughtful spaces designed<br />for refined living.
             </p>
+
             <a
               href="https://wa.me/917276687805"
               target="_blank"
