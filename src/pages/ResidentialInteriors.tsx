@@ -485,66 +485,72 @@ function WhyNivoraSection() {
 
   const fadeUp = (vis: boolean, delay = 0): React.CSSProperties => ({
     opacity: vis ? 1 : 0,
-    transform: vis ? 'translateY(0)' : 'translateY(32px)',
-    transition: `opacity 0.72s ease ${delay}ms, transform 0.72s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
+    transform: vis ? 'translateY(0)' : 'translateY(36px)',
+    transition: `opacity 900ms cubic-bezier(.22,1,.36,1) ${delay}ms, transform 900ms cubic-bezier(.22,1,.36,1) ${delay}ms`,
   })
 
   const serif = "'Cormorant Garamond', serif"
   const sans  = "'Inter', sans-serif"
   const ink   = '#262421'
+  const muted = '#7A756E'
+  const gold  = '#C8A56A'
+  const surf  = '#F3EEE7'
+  const bord  = '#E7DED2'
 
   return (
     <>
       {/* ── BLOCK 1 · 60 / 40 ──────────────────────────────── */}
       <div ref={r1} className="res-why-b1">
 
-        {/* LEFT — large statement */}
+        {/* LEFT — large editorial statement */}
         <div style={fadeUp(v1, 0)}>
           <span className="res-why-num">01</span>
-          <h3 style={{
-            fontFamily: serif, fontWeight: 300,
-            fontSize: 'clamp(2.2rem, 4vw, 3.5rem)',
-            color: ink, lineHeight: 1.08, letterSpacing: '-0.015em',
-          }}>Personalized<br />Design</h3>
+          <h3 className="res-why-b1-h3">
+            Personalized<br />Design
+          </h3>
           <div className="res-why-gold-line" />
           <p style={{
             fontFamily: sans, fontWeight: 300,
-            fontSize: 14, color: 'rgba(38,36,33,0.55)',
-            lineHeight: 1.9, maxWidth: 360, margin: 0,
+            fontSize: 14, color: muted,
+            lineHeight: 1.9, maxWidth: 380, margin: 0,
           }}>
-            Every project begins with listening. We shape spaces that mirror your
-            personality, habits, and the way you live — not a template.
+            Every project begins with listening.<br />
+            We shape spaces that reflect your personality,<br />
+            habits and lifestyle.
           </p>
         </div>
 
-        {/* RIGHT — icon + pull quote */}
+        {/* RIGHT — icon + refined text block */}
         <div
           className="res-why-block-hover"
           style={{
-            ...fadeUp(v1, 130),
-            display: 'flex', flexDirection: 'column',
-            alignItems: 'flex-start', gap: '1.5rem',
-            padding: '2.5rem 2.25rem',
-            background: '#F3EEE7',
-            border: '1px solid #E7DED2',
-            borderRadius: 4,
+            ...fadeUp(v1, 150),
+            display: 'flex', flexDirection: 'column' as const,
+            alignItems: 'flex-start', gap: '1.75rem',
+            padding: '2.75rem 2.5rem',
+            background: surf,
+            border: `1px solid ${bord}`,
+            borderRadius: 2,
           }}
         >
           <div style={{
-            width: 48, height: 48, borderRadius: 2, flexShrink: 0,
-            background: 'rgba(200,165,106,0.10)',
+            width: 52, height: 52, borderRadius: 2, flexShrink: 0,
+            background: 'rgba(200,165,106,0.08)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
-            <User size={20} color="#C8A56A" strokeWidth={1.3} />
+            <User size={22} color={gold} strokeWidth={1.2} />
           </div>
-          <p style={{
-            fontFamily: serif, fontWeight: 300,
-            fontSize: 'clamp(1.2rem, 1.8vw, 1.5rem)',
-            fontStyle: 'italic', color: ink, lineHeight: 1.55, margin: 0,
-          }}>
-            "A home is a self-portrait.<br />
-            We help you write it beautifully."
-          </p>
+          <div>
+            <p style={{
+              fontFamily: sans, fontWeight: 300,
+              fontSize: 14, color: ink,
+              lineHeight: 1.9, margin: 0,
+            }}>
+              Every project begins with listening.<br />
+              We shape spaces that reflect your personality,<br />
+              habits and lifestyle.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -557,16 +563,16 @@ function WhyNivoraSection() {
           <div className="res-why-block-hover" style={{ flex: 1 }}>
             <h3 style={{
               fontFamily: serif, fontWeight: 300,
-              fontSize: 'clamp(1.6rem, 2.8vw, 2.25rem)',
-              color: ink, lineHeight: 1.15, marginBottom: '1rem',
+              fontSize: 'clamp(1.65rem, 2.8vw, 2.35rem)',
+              color: ink, lineHeight: 1.12, marginBottom: '1.1rem',
+              letterSpacing: '-0.01em',
             }}>Functional<br />Planning</h3>
             <p style={{
               fontFamily: sans, fontWeight: 300,
-              fontSize: 13, color: 'rgba(38,36,33,0.52)',
-              lineHeight: 1.85, maxWidth: 320, margin: 0,
+              fontSize: 13, color: muted,
+              lineHeight: 1.85, maxWidth: 300, margin: 0,
             }}>
-              Smart layouts that work as beautifully as they look — where every
-              square foot is purposefully considered.
+              Smart layouts that work beautifully and efficiently.
             </p>
           </div>
 
@@ -576,16 +582,16 @@ function WhyNivoraSection() {
           <div className="res-why-block-hover" style={{ flex: 1 }}>
             <h3 style={{
               fontFamily: serif, fontWeight: 300,
-              fontSize: 'clamp(1.6rem, 2.8vw, 2.25rem)',
-              color: ink, lineHeight: 1.15, marginBottom: '1rem',
+              fontSize: 'clamp(1.65rem, 2.8vw, 2.35rem)',
+              color: ink, lineHeight: 1.12, marginBottom: '1.1rem',
+              letterSpacing: '-0.01em',
             }}>Premium Material<br />Selection</h3>
             <p style={{
               fontFamily: sans, fontWeight: 300,
-              fontSize: 13, color: 'rgba(38,36,33,0.52)',
-              lineHeight: 1.85, maxWidth: 320, margin: 0,
+              fontSize: 13, color: muted,
+              lineHeight: 1.85, maxWidth: 300, margin: 0,
             }}>
-              Hand-picked finishes, textures and furnishings that carry character
-              and age with extraordinary grace.
+              Hand-picked finishes and materials with timeless character.
             </p>
           </div>
         </div>
@@ -599,87 +605,74 @@ function WhyNivoraSection() {
           <span className="res-why-num">03</span>
           <h3 style={{
             fontFamily: serif, fontWeight: 300,
-            fontSize: 'clamp(1.9rem, 3.2vw, 2.85rem)',
-            color: ink, lineHeight: 1.1, letterSpacing: '-0.01em', marginBottom: '1rem',
+            fontSize: 'clamp(1.9rem, 3.2vw, 2.9rem)',
+            color: ink, lineHeight: 1.08, letterSpacing: '-0.015em', marginBottom: '1rem',
           }}>Attention<br />to Detail</h3>
           <div className="res-why-gold-line" />
           <p style={{
             fontFamily: sans, fontWeight: 300,
-            fontSize: 14, color: 'rgba(38,36,33,0.55)',
+            fontSize: 14, color: muted,
             lineHeight: 1.9, maxWidth: 280, margin: 0,
           }}>
-            Every corner considered. Every junction resolved. Nothing is left to chance.
+            Every corner considered.<br />
+            Every junction resolved.<br />
+            Nothing is left to chance.
           </p>
         </div>
 
-        {/* RIGHT — stacked items */}
+        {/* RIGHT — two editorial rows */}
         <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 0 }}>
 
-          {/* End-to-End Execution */}
+          {/* Row 1 — End-to-End Execution */}
           <div
             className="res-why-block-hover"
             style={{
-              ...fadeUp(v3, 110),
-              padding: '2rem 2.25rem',
-              background: '#F3EEE7',
-              border: '1px solid #E7DED2',
-              borderRadius: '4px 4px 0 0',
-              display: 'flex', gap: '1.25rem', alignItems: 'flex-start',
+              ...fadeUp(v3, 130),
+              padding: '2.5rem 2.75rem',
+              background: surf,
+              border: `1px solid ${bord}`,
+              borderRadius: '2px 2px 0 0',
             }}
           >
-            <div style={{
-              width: 40, height: 40, flexShrink: 0, borderRadius: 2,
-              background: 'rgba(200,165,106,0.10)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            <p style={{
+              fontFamily: serif, fontWeight: 400,
+              fontSize: '1.35rem', color: ink,
+              marginBottom: '0.6rem', lineHeight: 1.2,
+              letterSpacing: '0.005em',
+            }}>End-to-End Execution</p>
+            <p style={{
+              fontFamily: sans, fontWeight: 300,
+              fontSize: 13, color: muted, lineHeight: 1.85, margin: 0,
             }}>
-              <CheckCircle2 size={17} color="#C8A56A" strokeWidth={1.3} />
-            </div>
-            <div>
-              <p style={{
-                fontFamily: serif, fontWeight: 400,
-                fontSize: '1.2rem', color: ink, marginBottom: '0.4rem',
-              }}>End-to-End Execution</p>
-              <p style={{
-                fontFamily: sans, fontWeight: 300,
-                fontSize: 12, color: 'rgba(38,36,33,0.52)', lineHeight: 1.8, margin: 0,
-              }}>
-                From first sketch to final reveal — we own every stage of your project.
-              </p>
-            </div>
+              From concept to final reveal —<br />
+              every stage is thoughtfully managed.
+            </p>
           </div>
 
-          {/* Timeless Interiors */}
+          {/* Row 2 — Timeless Interiors */}
           <div
             className="res-why-block-hover"
             style={{
-              ...fadeUp(v3, 220),
-              padding: '2rem 2.25rem',
-              background: '#EDE8E0',
-              border: '1px solid #E7DED2',
+              ...fadeUp(v3, 260),
+              padding: '2.5rem 2.75rem',
+              background: surf,
+              border: `1px solid ${bord}`,
               borderTop: 'none',
-              borderRadius: '0 0 4px 4px',
-              display: 'flex', gap: '1.25rem', alignItems: 'flex-start',
+              borderRadius: '0 0 2px 2px',
             }}
           >
-            <div style={{
-              width: 40, height: 40, flexShrink: 0, borderRadius: 2,
-              background: 'rgba(200,165,106,0.10)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            <p style={{
+              fontFamily: serif, fontWeight: 400,
+              fontSize: '1.35rem', color: ink,
+              marginBottom: '0.6rem', lineHeight: 1.2,
+              letterSpacing: '0.005em',
+            }}>Timeless Interiors</p>
+            <p style={{
+              fontFamily: sans, fontWeight: 300,
+              fontSize: 13, color: muted, lineHeight: 1.85, margin: 0,
             }}>
-              <Clock size={17} color="#C8A56A" strokeWidth={1.3} />
-            </div>
-            <div>
-              <p style={{
-                fontFamily: serif, fontWeight: 400,
-                fontSize: '1.2rem', color: ink, marginBottom: '0.4rem',
-              }}>Timeless Interiors</p>
-              <p style={{
-                fontFamily: sans, fontWeight: 300,
-                fontSize: 12, color: 'rgba(38,36,33,0.52)', lineHeight: 1.8, margin: 0,
-              }}>
-                Design that stays relevant — long after trends have faded.
-              </p>
-            </div>
+              Design that remains beautiful long after trends fade.
+            </p>
           </div>
         </div>
       </div>
@@ -887,52 +880,118 @@ export default function ResidentialInteriors() {
         }
 
         /* ══ WHY NIVORA — EDITORIAL LAYOUT ════════════════════════════ */
+
+        /* Paper grain texture on the Why Nivora section */
+        .res-why-section {
+          position: relative;
+        }
+        .res-why-section::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+          background-size: 180px 180px;
+          pointer-events: none;
+          opacity: 1;
+          z-index: 0;
+        }
+        .res-why-section > * { position: relative; z-index: 1; }
+
         .res-why-num {
           display: block;
-          font-family: 'Cormorant Garamond', serif;
-          font-weight: 300; font-size: 11px;
-          letter-spacing: 0.52em; text-transform: uppercase;
-          color: #C8A56A; margin-bottom: 1.4rem;
+          font-family: 'Inter', sans-serif;
+          font-weight: 300; font-size: 10px;
+          letter-spacing: 5px; text-transform: uppercase;
+          color: #C8A56A; margin-bottom: 1.6rem;
         }
         .res-why-gold-line {
-          width: 32px; height: 1px;
+          width: 36px; height: 1px;
           background: linear-gradient(90deg, #C8A56A, transparent);
-          margin: 1.1rem 0 1.4rem; opacity: 0.7;
+          margin: 1.25rem 0 1.6rem;
+          transition: width 0.5s cubic-bezier(.22,1,.36,1);
         }
+        .res-why-block-hover:hover ~ .res-why-gold-line,
+        .res-why-b1 > div:hover .res-why-gold-line {
+          width: 72px;
+        }
+
+        /* Block 01 heading — large luxury serif */
+        .res-why-b1-h3 {
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 300;
+          font-size: clamp(2.4rem, 4.5vw, 4rem);
+          color: #262421;
+          line-height: 1.06;
+          letter-spacing: -0.02em;
+          margin: 0;
+        }
+
         .res-why-b1 {
           display: grid; grid-template-columns: 60fr 40fr;
           gap: 5rem; align-items: center;
-          padding: 4.5rem 0; border-bottom: 1px solid #E7DED2;
+          padding: 5rem 0; border-bottom: 1px solid #E7DED2;
         }
-        .res-why-b2 { padding: 4.5rem 0; border-bottom: 1px solid #E7DED2; }
+        .res-why-b2 {
+          padding: 6.25rem 0;
+          border-top: 1px solid #E7DED2;
+          border-bottom: 1px solid #E7DED2;
+        }
         .res-why-b2-inner { display: flex; align-items: center; }
         .res-why-vdivider {
-          width: 1px; height: 110px; background: #E7DED2;
-          flex-shrink: 0; margin: 0 4.5rem;
+          width: 1px; height: 120px; background: #E7DED2;
+          flex-shrink: 0; margin: 0 5rem;
+          transition: background 0.4s ease, height 0.4s cubic-bezier(.22,1,.36,1);
+        }
+        .res-why-b2:hover .res-why-vdivider {
+          height: 160px;
+          background: rgba(200,165,106,0.45);
         }
         .res-why-b3 {
           display: grid; grid-template-columns: 40fr 60fr;
-          gap: 5rem; align-items: start; padding: 4.5rem 0;
+          gap: 5rem; align-items: start; padding: 5rem 0;
         }
         .res-why-block-hover {
-          transition: transform 0.45s cubic-bezier(0.16,1,0.3,1),
-                      box-shadow 0.45s ease !important;
+          transition: transform 0.6s cubic-bezier(.22,1,.36,1),
+                      box-shadow 0.6s cubic-bezier(.22,1,.36,1) !important;
           cursor: default;
         }
         .res-why-block-hover:hover {
           transform: translateY(-6px) !important;
-          box-shadow: 0 16px 40px rgba(38,36,33,0.09) !important;
+          box-shadow: 0 20px 50px rgba(0,0,0,0.04) !important;
+        }
+
+        /* Section header — large luxury heading */
+        .res-why-heading {
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 300;
+          font-size: clamp(2.625rem, 5.5vw, 5.5rem);
+          color: #262421;
+          line-height: 1.06;
+          letter-spacing: -0.02em;
+          margin: 0 0 1.5rem;
         }
 
         @media (max-width: 1023px) {
-          .res-why-b1 { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
-          .res-why-b3 { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+          .res-why-b1 { grid-template-columns: 1fr !important; gap: 2.5rem !important; padding: 4rem 0 !important; }
+          .res-why-b3 { grid-template-columns: 1fr !important; gap: 2.5rem !important; padding: 4rem 0 !important; }
+          .res-why-b2 { padding: 4rem 0 !important; }
           .res-why-b2-inner { flex-direction: column !important; align-items: flex-start !important; }
-          .res-why-vdivider { width: 36px !important; height: 1px !important; margin: 2rem 0 !important; }
+          .res-why-vdivider { width: 40px !important; height: 1px !important; margin: 2.5rem 0 !important; }
+          .res-why-b2:hover .res-why-vdivider { height: 1px !important; width: 72px; background: rgba(200,165,106,0.45); }
+          .res-why-heading { font-size: clamp(2.5rem, 8vw, 4rem) !important; }
+          .res-why-b1-h3 { font-size: clamp(2.2rem, 5vw, 3.2rem) !important; }
         }
         @media (max-width: 767px) {
-          .res-why-b1, .res-why-b2, .res-why-b3 { padding: 3rem 0 !important; }
+          .res-why-b1, .res-why-b2, .res-why-b3 { padding: 4.5rem 0 !important; }
           .res-why-b1, .res-why-b3 { gap: 2rem !important; }
+          .res-why-heading { font-size: 2.625rem !important; }
+          .res-why-b1-h3 { font-size: 2.2rem !important; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .res-why-gold-line { transition: none !important; }
+          .res-why-vdivider { transition: none !important; }
+          .res-why-block-hover { transition: none !important; }
         }
       `}</style>
 
@@ -1246,33 +1305,29 @@ export default function ResidentialInteriors() {
       </section>
 
       {/* ── SECTION 6 · WHY NIVORA ───────────────────────────────────────── */}
-      <section className="res-section-pad" style={{ backgroundColor: '#F7F4EF' }}>
+      <section className="res-section-pad res-why-section" style={{ backgroundColor: '#F7F4EF' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
 
           {/* Section header */}
           <FadeIn>
-            <div style={{ maxWidth: 660, marginBottom: '1rem' }}>
+            <div style={{ maxWidth: 680, marginBottom: '4rem' }}>
               <p style={{
                 fontFamily: "'Inter', sans-serif", fontWeight: 300,
-                fontSize: 10, letterSpacing: '0.44em', textTransform: 'uppercase',
-                color: '#C8A56A', marginBottom: '1.1rem',
+                fontSize: 10, letterSpacing: '5px', textTransform: 'uppercase',
+                color: '#C8A56A', marginBottom: '1.5rem',
               }}>Why Nivora</p>
-              <h2 style={{
-                fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
-                fontSize: 'clamp(2.2rem, 4vw, 3.5rem)', color: '#262421',
-                lineHeight: 1.1, letterSpacing: '-0.01em', marginBottom: '1.1rem',
-              }}>
+              <h2 className="res-why-heading">
                 Designed Around<br />How You Live
               </h2>
               <div style={{
-                width: 36, height: 1,
+                width: 48, height: 1,
                 background: 'linear-gradient(90deg, #C8A56A, transparent)',
-                marginBottom: '1.25rem', opacity: 0.7,
+                marginBottom: '1.75rem',
               }} />
               <p style={{
                 fontFamily: "'Inter', sans-serif", fontWeight: 300,
-                fontSize: 14, color: 'rgba(38,36,33,0.5)',
-                lineHeight: 1.85, maxWidth: 440, margin: 0,
+                fontSize: 15, color: '#7A756E',
+                lineHeight: 1.85, maxWidth: 520, margin: 0,
               }}>
                 Thoughtful interiors that balance aesthetics, comfort and functionality.
               </p>
