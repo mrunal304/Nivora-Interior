@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Home as HomeIcon, Building2, Coffee, Layers, Monitor, Gem, Wrench } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
 import ProcessSection from '../components/ProcessSection'
 import { useState, useRef, useEffect } from 'react'
@@ -23,25 +23,60 @@ const stats: { value: string; label: string }[] = []
 
 const services = [
   {
+    num: '01',
     title: 'Residential Interiors',
-    desc: 'Homes that feel deeply personal — designed around how you actually live, not how homes are supposed to look.',
-    hoverDesc: 'Crafting homes that feel deeply personal and enduringly beautiful.',
+    desc: 'Thoughtfully designed homes that reflect personality, lifestyle and everyday comfort.',
     href: '/services/residential',
-    img: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80',
+    img: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900&q=85',
+    icon: HomeIcon,
   },
   {
+    num: '02',
     title: 'Commercial Interiors',
-    desc: 'Workspaces, cafés, showrooms, and hospitality spaces that make an immediate impression and sustain it.',
-    hoverDesc: 'Designing spaces that make an immediate impression and sustain it.',
+    desc: 'Functional workspaces, offices and retail environments designed for performance.',
     href: '/services/commercial',
-    img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80',
+    img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&q=85',
+    icon: Building2,
   },
   {
-    title: 'Architecture',
-    desc: 'Complete architectural design services — from concept and planning to structure, façade, and landscape.',
-    hoverDesc: 'From concept to façade — spaces built to endure and inspire.',
+    num: '03',
+    title: 'Hospitality Interiors',
+    desc: 'Hotels, cafés and guest experiences crafted to feel memorable and welcoming.',
+    href: '/services/hospitality',
+    img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=85',
+    icon: Coffee,
+  },
+  {
+    num: '04',
+    title: 'Architecture & Space Planning',
+    desc: 'Layouts, planning and built forms that connect aesthetics with purpose.',
     href: '/services/architecture',
-    img: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600&q=80',
+    img: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=900&q=85',
+    icon: Layers,
+  },
+  {
+    num: '05',
+    title: '2D & 3D Visualization',
+    desc: 'Concept drawings, renders and visual development before execution begins.',
+    href: '/services/visualization',
+    img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+    icon: Monitor,
+  },
+  {
+    num: '06',
+    title: 'Developer Solutions',
+    desc: 'Sample flats, amenities and curated experiences that enhance property value.',
+    href: '/services/developer',
+    img: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=900&q=85',
+    icon: Gem,
+  },
+  {
+    num: '07',
+    title: 'Renovation & Makeovers',
+    desc: 'Transform existing spaces through upgrades, modernization and thoughtful redesign.',
+    href: '/services/renovation',
+    img: 'https://images.unsplash.com/photo-1615873968403-89e068629265?w=900&q=85',
+    icon: Wrench,
   },
 ]
 
@@ -924,223 +959,298 @@ export default function Home() {
       <StatsSection />
 
       {/* Services */}
-      <section style={{ backgroundColor: '#33452F', padding: '5rem 1.5rem' }}>
+      <section style={{ backgroundColor: '#F7F4EF', padding: '7rem 1.5rem' }}>
         <style>{`
-          .svc-card-explore-line {
-            display: inline-block;
-            width: 24px;
-            height: 0.5px;
-            background: rgba(200,169,110,0.45);
-            transition: width 0.35s ease, background 0.35s ease;
-            vertical-align: middle;
+          /* ── Service card ── */
+          .hsvc-card {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            height: 380px;
+            border: 1px solid #E8DED1;
+            text-decoration: none;
+            display: block;
+            cursor: pointer;
+            background: #F3EEE7;
+            transition: transform 500ms cubic-bezier(0.22,1,0.36,1),
+                        box-shadow 500ms cubic-bezier(0.22,1,0.36,1);
           }
-          .svc-card:hover .svc-card-explore-line {
-            width: 48px;
-            background: #C9A96E;
+          .hsvc-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 64px rgba(38,36,33,0.13), 0 4px 16px rgba(38,36,33,0.07);
           }
-          .svc-card:hover .svc-card-img {
-            transform: scale(1.05);
+          /* image zoom */
+          .hsvc-img {
+            transition: transform 700ms cubic-bezier(0.22,1,0.36,1);
           }
-          .svc-card-img {
-            transition: transform 0.7s ease;
+          .hsvc-card:hover .hsvc-img {
+            transform: scale(1.08);
           }
-          .svc-card-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
+          /* overlay darkens on hover */
+          .hsvc-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(
+              to bottom,
+              rgba(15,12,10,0.18) 0%,
+              rgba(10,8,6,0.62) 55%,
+              rgba(6,5,4,0.90) 100%
+            );
+            transition: background 500ms cubic-bezier(0.22,1,0.36,1);
+          }
+          .hsvc-card:hover .hsvc-overlay {
+            background: linear-gradient(
+              to bottom,
+              rgba(15,12,10,0.32) 0%,
+              rgba(10,8,6,0.78) 45%,
+              rgba(6,5,4,0.96) 100%
+            );
+          }
+          /* title slides up on hover */
+          .hsvc-title {
+            transition: transform 500ms cubic-bezier(0.22,1,0.36,1);
+          }
+          .hsvc-card:hover .hsvc-title {
+            transform: translateY(-10px);
+          }
+          /* gold accent line */
+          .hsvc-gold-line {
+            width: 0;
+            height: 1.5px;
+            background: #C8A56A;
+            border-radius: 2px;
+            transition: width 500ms cubic-bezier(0.22,1,0.36,1);
+            margin: 0.65rem 0 0.75rem;
+          }
+          .hsvc-card:hover .hsvc-gold-line {
+            width: 36px;
+          }
+          /* description fades in */
+          .hsvc-desc {
             opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 2;
-            pointer-events: none;
+            transform: translateY(14px);
+            transition: opacity 500ms cubic-bezier(0.22,1,0.36,1),
+                        transform 500ms cubic-bezier(0.22,1,0.36,1);
+            transition-delay: 40ms;
           }
-          .svc-card:hover .svc-card-overlay {
-            opacity: 1;
-          }
-          .svc-card-short-desc {
+          .hsvc-card:hover .hsvc-desc {
             opacity: 1;
             transform: translateY(0);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            max-height: 3em;
-            overflow: hidden;
           }
-          .svc-card:hover .svc-card-short-desc {
-            opacity: 0;
-            transform: translateY(-6px);
-          }
-          .svc-card-hover-desc {
+          /* explore link */
+          .hsvc-explore {
             opacity: 0;
             transform: translateY(8px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            max-height: 0;
-            overflow: hidden;
-          }
-          .svc-card:hover .svc-card-hover-desc {
-            opacity: 1;
-            transform: translateY(0);
-            max-height: 5em;
-          }
-          .svc-card-explore-text {
-            position: relative;
+            transition: opacity 400ms cubic-bezier(0.22,1,0.36,1),
+                        transform 400ms cubic-bezier(0.22,1,0.36,1);
+            transition-delay: 80ms;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 1rem;
             font-family: 'Inter', sans-serif;
             font-weight: 300;
-            font-size: 13px;
-            letter-spacing: 2px;
+            font-size: 10px;
+            letter-spacing: 0.22em;
             text-transform: uppercase;
-            color: rgba(200,169,110,0.7);
-            transition: color 0.25s ease;
+            color: #C8A56A;
           }
-          .svc-card-explore-text::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: #C9A96E;
-            transition: width 0.25s ease;
+          .hsvc-card:hover .hsvc-explore {
+            opacity: 1;
+            transform: translateY(0);
           }
-          .svc-card:hover .svc-card-explore-text {
-            color: #C9A96E;
+          /* icon container */
+          .hsvc-icon-wrap {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            background: rgba(200,165,106,0.15);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 0.65rem;
+            transition: background 400ms ease;
           }
-          .svc-card:hover .svc-card-explore-text::after {
-            width: 100%;
+          .hsvc-card:hover .hsvc-icon-wrap {
+            background: rgba(200,165,106,0.25);
+          }
+          /* grids */
+          .hsvc-grid-r1 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+          }
+          .hsvc-grid-r2 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+            max-width: 895px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          @media (max-width: 1100px) {
+            .hsvc-grid-r1 { grid-template-columns: repeat(2, 1fr) !important; }
+            .hsvc-grid-r2 { grid-template-columns: repeat(2, 1fr) !important; max-width: 100% !important; }
+            .hsvc-card { height: 360px !important; }
+          }
+          @media (max-width: 639px) {
+            .hsvc-grid-r1, .hsvc-grid-r2 {
+              grid-template-columns: 1fr !important;
+              max-width: 100% !important;
+            }
+            .hsvc-card { height: 320px !important; }
           }
         `}</style>
 
         {/* Header */}
         <FadeIn>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '4.5rem', maxWidth: 640, margin: '0 auto 4.5rem' }}>
             <p style={{
               fontFamily: "'Inter', sans-serif",
               fontWeight: 300,
               fontSize: 10,
-              letterSpacing: '0.4em',
+              letterSpacing: '0.45em',
               textTransform: 'uppercase',
-              color: '#c8a96e',
-              marginBottom: '0.75rem',
-            }}>What We Do</p>
+              color: '#C8A56A',
+              marginBottom: '1rem',
+            }}>Our Services</p>
             <h2 style={{
               fontFamily: "'Cormorant Garamond', serif",
               fontWeight: 300,
-              fontSize: 'clamp(2rem, 4vw, 3rem)',
-              color: '#f5f0e8',
+              fontSize: 'clamp(2rem, 4vw, 3.25rem)',
+              color: '#262421',
               lineHeight: 1.1,
-            }}>Our Services</h2>
+              marginBottom: '1.1rem',
+              letterSpacing: '-0.01em',
+            }}>Spaces Designed Across<br />Every Experience</h2>
+            <p style={{
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 300,
+              fontSize: 14,
+              color: 'rgba(38,36,33,0.5)',
+              lineHeight: 1.85,
+              margin: 0,
+            }}>
+              From private residences to large-scale environments, we design spaces that balance beauty, function and identity.
+            </p>
           </div>
         </FadeIn>
 
-        {/* 3-col grid */}
-        <div style={{
-          maxWidth: 1200,
-          margin: '0 auto',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 0,
-          border: '1px solid rgba(200,169,110,0.18)',
-        }}>
-          {services.map((s, i) => (
-            <FadeIn key={s.title} delay={i * 0.15}>
-              <Link
-                to={s.href}
-                className="svc-card"
-                style={{
-                  display: 'block',
-                  height: 480,
-                  position: 'relative',
-                  overflow: 'hidden',
-                  borderLeft: i > 0 ? '2px solid rgba(200,169,110,0.22)' : 'none',
-                  textDecoration: 'none',
-                }}
-              >
-                {/* Featured pill — middle card only */}
-                {i === 1 && (
-                  <div style={{
-                    position: 'absolute',
-                    top: 16,
-                    left: 16,
-                    zIndex: 10,
-                    border: '1px solid #C9A96E',
-                    padding: '4px 12px',
-                    fontFamily: "'Inter', sans-serif",
-                    fontWeight: 400,
-                    fontSize: 10,
-                    letterSpacing: '1.5px',
-                    textTransform: 'uppercase',
-                    color: '#C9A96E',
-                    backgroundColor: '#1A2E1B',
-                  }}>Featured</div>
-                )}
+        {/* Cards */}
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          {/* Row 1 — 4 cards */}
+          <div className="hsvc-grid-r1">
+            {services.slice(0, 4).map((s, i) => {
+              const Icon = s.icon
+              return (
+                <FadeIn key={s.title} delay={i * 0.09}>
+                  <Link to={s.href} className="hsvc-card">
+                    {/* Background image */}
+                    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', borderRadius: 24 }}>
+                      <img
+                        src={s.img}
+                        alt={s.title}
+                        className="hsvc-img"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        loading="lazy"
+                      />
+                    </div>
+                    {/* Gradient overlay */}
+                    <div className="hsvc-overlay" />
+                    {/* Content */}
+                    <div style={{
+                      position: 'absolute', inset: 0,
+                      padding: '1.75rem 1.6rem',
+                      display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+                      zIndex: 2,
+                    }}>
+                      {/* Number — top left */}
+                      <p style={{
+                        position: 'absolute', top: '1.6rem', left: '1.6rem',
+                        fontFamily: "'Inter', sans-serif", fontWeight: 300,
+                        fontSize: 10, letterSpacing: '0.3em',
+                        color: 'rgba(200,165,106,0.7)', margin: 0,
+                      }}>{s.num}</p>
+                      {/* Icon */}
+                      <div className="hsvc-icon-wrap">
+                        <Icon size={18} color="#C8A56A" strokeWidth={1.4} />
+                      </div>
+                      {/* Title */}
+                      <h3 className="hsvc-title" style={{
+                        fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
+                        fontSize: 'clamp(1.25rem, 1.8vw, 1.55rem)',
+                        color: '#f5f0e8', lineHeight: 1.18,
+                        margin: 0, letterSpacing: '-0.005em',
+                      }}>{s.title}</h3>
+                      {/* Gold line */}
+                      <div className="hsvc-gold-line" />
+                      {/* Description */}
+                      <p className="hsvc-desc" style={{
+                        fontFamily: "'Inter', sans-serif", fontWeight: 300,
+                        fontSize: 12.5, color: 'rgba(245,240,232,0.78)',
+                        lineHeight: 1.75, margin: 0,
+                      }}>{s.desc}</p>
+                      {/* Explore link */}
+                      <span className="hsvc-explore">
+                        Explore <ArrowRight size={10} strokeWidth={1.5} />
+                      </span>
+                    </div>
+                  </Link>
+                </FadeIn>
+              )
+            })}
+          </div>
 
-                {/* Image + overlays */}
-                <div style={{ position: 'absolute', inset: 0, bottom: 52, overflow: 'hidden' }}>
-                  <img
-                    src={s.img}
-                    alt={s.title}
-                    className="svc-card-img"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                    loading="lazy"
-                  />
-                  {/* permanent gradient */}
-                  <div style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'linear-gradient(to bottom, rgba(20,40,20,0.1) 30%, rgba(15,30,15,0.88) 100%)',
-                    zIndex: 1,
-                  }} />
-                  {/* hover dark overlay */}
-                  <div className="svc-card-overlay" />
-                  {/* single content block — no duplicate layers */}
-                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.25rem 1.25rem 1rem', zIndex: 4 }}>
-                    <h3 style={{
-                      fontFamily: "'Cormorant Garamond', serif",
-                      fontWeight: 300,
-                      fontSize: '1.6rem',
-                      color: '#f5f0e8',
-                      lineHeight: 1.15,
-                      marginBottom: '0.4rem',
-                      margin: '0 0 0.4rem 0',
-                    }}>{s.title}</h3>
-                    <p className="svc-card-short-desc" style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontWeight: 300,
-                      fontSize: 11,
-                      color: 'rgba(245,240,232,0.6)',
-                      lineHeight: 1.5,
-                      margin: 0,
-                    }}>{s.desc.split('—')[0].trim()}</p>
-                    <p className="svc-card-hover-desc" style={{
-                      fontFamily: "'Cormorant Garamond', serif",
-                      fontWeight: 300,
-                      fontStyle: 'italic',
-                      fontSize: '1.05rem',
-                      color: 'rgba(245,240,232,0.92)',
-                      lineHeight: 1.55,
-                      margin: 0,
-                    }}>{s.hoverDesc}</p>
-                  </div>
-                </div>
-
-                {/* Footer bar */}
-                <div style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: 52,
-                  backgroundColor: '#33452F',
-                  borderTop: '0.5px solid rgba(200,169,110,0.35)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  padding: '0 1.25rem',
-                  gap: 10,
-                }}>
-                  <span className="svc-card-explore-text">Explore</span>
-                  <span className="svc-card-explore-line" />
-                  <ArrowRight size={11} color="#C9A96E" />
-                </div>
-              </Link>
-            </FadeIn>
-          ))}
+          {/* Row 2 — 3 cards centered */}
+          <div className="hsvc-grid-r2">
+            {services.slice(4).map((s, i) => {
+              const Icon = s.icon
+              return (
+                <FadeIn key={s.title} delay={i * 0.09}>
+                  <Link to={s.href} className="hsvc-card">
+                    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', borderRadius: 24 }}>
+                      <img
+                        src={s.img}
+                        alt={s.title}
+                        className="hsvc-img"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="hsvc-overlay" />
+                    <div style={{
+                      position: 'absolute', inset: 0,
+                      padding: '1.75rem 1.6rem',
+                      display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+                      zIndex: 2,
+                    }}>
+                      <p style={{
+                        position: 'absolute', top: '1.6rem', left: '1.6rem',
+                        fontFamily: "'Inter', sans-serif", fontWeight: 300,
+                        fontSize: 10, letterSpacing: '0.3em',
+                        color: 'rgba(200,165,106,0.7)', margin: 0,
+                      }}>{s.num}</p>
+                      <div className="hsvc-icon-wrap">
+                        <Icon size={18} color="#C8A56A" strokeWidth={1.4} />
+                      </div>
+                      <h3 className="hsvc-title" style={{
+                        fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
+                        fontSize: 'clamp(1.25rem, 1.8vw, 1.55rem)',
+                        color: '#f5f0e8', lineHeight: 1.18,
+                        margin: 0, letterSpacing: '-0.005em',
+                      }}>{s.title}</h3>
+                      <div className="hsvc-gold-line" />
+                      <p className="hsvc-desc" style={{
+                        fontFamily: "'Inter', sans-serif", fontWeight: 300,
+                        fontSize: 12.5, color: 'rgba(245,240,232,0.78)',
+                        lineHeight: 1.75, margin: 0,
+                      }}>{s.desc}</p>
+                      <span className="hsvc-explore">
+                        Explore <ArrowRight size={10} strokeWidth={1.5} />
+                      </span>
+                    </div>
+                  </Link>
+                </FadeIn>
+              )
+            })}
+          </div>
         </div>
       </section>
 
