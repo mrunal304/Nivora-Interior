@@ -1,4 +1,10 @@
 import { Link } from 'react-router-dom'
+import imgCalista from '@assets/3_(1)_1781792140739.jpg'
+import imgNeelaya from '@assets/11_1781792153281.png'
+import imgSparsh from '@assets/6_(1)_1781792222998.jpg'
+import imgOffice from '@assets/16_1781792239759.jpg'
+import imgAurelia from '@assets/2_(2)_1781792402795.jpg'
+import imgUrban from '@assets/3_(2)_1781792428831.jpg'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { ArrowRight, Home as HomeIcon, Building2, Coffee, Layers, Monitor, Gem, Wrench } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
@@ -7,6 +13,57 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { projects } from '../data/projects'
 
 const heroImg = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1800&q=85'
+
+const portfolioProjects = [
+  {
+    id: 'calista-residence',
+    name: 'Calista Residence',
+    location: 'Juhu, Mumbai',
+    category: 'Residential',
+    desc: 'A warm family home brought to life with marble surfaces, rich walnut joinery and considered lighting that shifts with the day.',
+    img: imgCalista,
+  },
+  {
+    id: 'neelaya-villa',
+    name: 'Neelaya Villa',
+    location: 'Lonavala, Pune',
+    category: 'Residential',
+    desc: 'Double-height living volumes filled with natural light, statement chandelier and bespoke teal upholstery set against cream walls.',
+    img: imgNeelaya,
+  },
+  {
+    id: 'sparsh-living',
+    name: 'Sparsh Living',
+    location: 'Baner, Pune',
+    category: 'Residential',
+    desc: 'A playful yet refined modular kitchen in blush rose gloss, framed by an arched passage into a warmly lit living space.',
+    img: imgSparsh,
+  },
+  {
+    id: 'modern-industrial-office',
+    name: 'Modern Industrial Office',
+    location: 'Lower Parel, Mumbai',
+    category: 'Commercial',
+    desc: 'A skyline terrace redesigned as an intimate outdoor retreat — stone floors, teak ceilings and lush greenery under city skies.',
+    img: imgOffice,
+  },
+  {
+    id: 'aurelia-penthouse',
+    name: 'Aurelia Penthouse',
+    location: 'Worli, Mumbai',
+    category: 'Residential',
+    desc: 'Elegant classic-contemporary living with a curved sectional, marble coffee table and layered drapery drawing in abundant daylight.',
+    img: imgAurelia,
+  },
+  {
+    id: 'urban-serenity',
+    name: 'Urban Serenity',
+    location: 'Koregaon Park, Pune',
+    category: 'Residential',
+    desc: 'Arched niches in warm ivory, backlit fluted panels and a floating walnut console make this media wall a quiet centrepiece.',
+    img: imgUrban,
+  },
+]
 const transformations = [
   {
     id: 1,
@@ -1443,95 +1500,217 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Portfolio Preview */}
-      <section className="pt-20 pb-32" style={{ backgroundColor: '#2D3E29' }}>
-        <div className="max-w-7xl mx-auto px-6">
-          <FadeIn className="text-center mb-16">
-            <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Selected Work</p>
-            <h2 className="font-serif text-4xl md:text-5xl text-[#f5f0e8] font-light">Recent Projects</h2>
+      {/* Portfolio — Our Masterpieces */}
+      <section style={{ backgroundColor: '#F5F1EA', padding: '7rem 1.5rem' }}>
+        <style>{`
+          /* ── Masterpiece card ── */
+          .mp-card {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            height: 440px;
+            display: block;
+            text-decoration: none;
+            background: #E8DED1;
+            box-shadow: 0 4px 24px rgba(38,36,33,0.07), 0 1px 4px rgba(38,36,33,0.04);
+            transition: box-shadow 450ms cubic-bezier(0.22,1,0.36,1),
+                        transform 450ms cubic-bezier(0.22,1,0.36,1);
+          }
+          .mp-card:hover {
+            box-shadow: 0 20px 56px rgba(38,36,33,0.15), 0 4px 16px rgba(38,36,33,0.08);
+            transform: translateY(-4px);
+          }
+          /* image subtle zoom */
+          .mp-img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform 700ms cubic-bezier(0.22,1,0.36,1);
+          }
+          .mp-card:hover .mp-img { transform: scale(1.06); }
+
+          /* always-on bottom gradient + title */
+          .mp-baseline {
+            position: absolute; inset: 0;
+            background: linear-gradient(
+              to bottom,
+              transparent 35%,
+              rgba(12,10,8,0.55) 70%,
+              rgba(8,7,5,0.85) 100%
+            );
+            pointer-events: none;
+            transition: background 450ms ease;
+          }
+          .mp-card:hover .mp-baseline {
+            background: linear-gradient(
+              to bottom,
+              rgba(12,10,8,0.12) 0%,
+              rgba(12,10,8,0.58) 45%,
+              rgba(8,7,5,0.92) 100%
+            );
+          }
+
+          /* title — always visible, shifts up on hover */
+          .mp-title {
+            position: absolute;
+            bottom: 1.6rem; left: 1.6rem; right: 1.6rem;
+            z-index: 3;
+            transition: transform 450ms cubic-bezier(0.22,1,0.36,1);
+          }
+          .mp-card:hover .mp-title { transform: translateY(-88px); }
+
+          /* hover content block */
+          .mp-hover-block {
+            position: absolute;
+            bottom: 1.6rem; left: 1.6rem; right: 1.6rem;
+            z-index: 4;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 400ms ease 60ms, transform 400ms cubic-bezier(0.22,1,0.36,1) 60ms;
+            pointer-events: none;
+          }
+          .mp-card:hover .mp-hover-block {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+          }
+
+          /* category badge */
+          .mp-badge {
+            display: inline-block;
+            font-family: 'Inter', sans-serif; font-weight: 400; font-size: 9px;
+            letter-spacing: 0.25em; text-transform: uppercase;
+            color: #C8A56A;
+            background: rgba(200,165,106,0.12);
+            border: 1px solid rgba(200,165,106,0.45);
+            padding: 4px 10px; border-radius: 100px;
+            margin-bottom: 0.6rem;
+            backdrop-filter: blur(4px);
+          }
+
+          /* CTA button */
+          .mp-cta {
+            display: inline-flex; align-items: center; gap: 7px;
+            font-family: 'Inter', sans-serif; font-weight: 400; font-size: 10px;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            color: #262421; background: #C8A56A;
+            border: none; border-radius: 100px;
+            padding: 9px 20px; margin-top: 1rem;
+            text-decoration: none; cursor: pointer;
+            transition: background 250ms ease;
+          }
+          .mp-cta:hover { background: #D4B478; }
+
+          /* responsive grid */
+          .mp-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+          }
+          @media (max-width: 1024px) {
+            .mp-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .mp-card { height: 400px !important; }
+          }
+          @media (max-width: 600px) {
+            .mp-grid { grid-template-columns: 1fr !important; }
+            .mp-card { height: 360px !important; }
+            .mp-card:hover .mp-title { transform: translateY(-100px) !important; }
+          }
+        `}</style>
+
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          {/* Header */}
+          <FadeIn>
+            <div style={{ textAlign: 'center', marginBottom: '4.5rem' }}>
+              <p style={{
+                fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 10,
+                letterSpacing: '0.45em', textTransform: 'uppercase',
+                color: '#C8A56A', marginBottom: '1rem',
+              }}>Our Masterpieces</p>
+              <h2 style={{
+                fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
+                fontSize: 'clamp(2rem, 4vw, 3.25rem)',
+                color: '#262421', lineHeight: 1.1,
+                marginBottom: '1.1rem', letterSpacing: '-0.01em',
+              }}>Spaces That Tell Your Story</h2>
+              <p style={{
+                fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 14,
+                color: 'rgba(38,36,33,0.5)', lineHeight: 1.85,
+                maxWidth: 560, margin: '0 auto',
+              }}>
+                Every project reflects a unique vision, thoughtfully transformed into spaces that inspire, function beautifully and stand the test of time.
+              </p>
+            </div>
           </FadeIn>
-          {/* Gold-bordered mosaic grid */}
-          <div
-            className="grid grid-cols-2 md:grid-cols-3"
-            style={{ gap: '1px', backgroundColor: 'rgba(201,169,110,0.35)' }}
-          >
-            {featured.map((p, i) => (
-              <FadeIn key={p.id} delay={i * 0.08}>
-                <Link
-                  to={`/portfolio/${p.id}`}
-                  className="proj-cell group relative block overflow-hidden"
-                  style={{ display: 'block', height: 380 }}
-                >
-                  <img
-                    src={p.coverImage}
-                    alt={p.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    style={{ display: 'block' }}
-                    loading="lazy"
-                  />
-                  {/* Dark hover overlay */}
-                  <div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ backgroundColor: 'rgba(0,0,0,0.55)' }}
-                  />
-                  {/* Hover text — name + city */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+
+          {/* 3-column grid */}
+          <div className="mp-grid">
+            {portfolioProjects.map((p, i) => (
+              <FadeIn key={p.id} delay={i * 0.09}>
+                <Link to={`/portfolio/${p.id}`} className="mp-card">
+                  {/* Image */}
+                  <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', borderRadius: 18 }}>
+                    <img src={p.img} alt={p.name} className="mp-img" loading="lazy" draggable={false} />
+                  </div>
+
+                  {/* Always-on gradient */}
+                  <div className="mp-baseline" />
+
+                  {/* Default title — always visible */}
+                  <div className="mp-title">
                     <p style={{
-                      fontFamily: "'Cormorant Garamond', serif",
-                      fontWeight: 300,
-                      fontStyle: 'italic',
-                      fontSize: '1.4rem',
-                      color: '#f5f0e8',
-                      lineHeight: 1.2,
-                      textAlign: 'center',
-                      margin: 0,
-                      padding: '0 1rem',
-                    }}>{p.name}</p>
-                    <p style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontWeight: 300,
-                      fontSize: 10,
-                      letterSpacing: '2.5px',
-                      textTransform: 'uppercase',
-                      color: '#C9A96E',
-                      marginTop: 10,
+                      fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 9,
+                      letterSpacing: '0.25em', textTransform: 'uppercase',
+                      color: 'rgba(200,165,106,0.75)', margin: '0 0 0.4rem',
                     }}>{p.location}</p>
+                    <h3 style={{
+                      fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
+                      fontSize: 'clamp(1.3rem, 1.8vw, 1.6rem)',
+                      color: '#f5f0e8', lineHeight: 1.15,
+                      margin: 0, letterSpacing: '-0.005em',
+                    }}>{p.name}</h3>
+                  </div>
+
+                  {/* Hover description + CTA */}
+                  <div className="mp-hover-block">
+                    <span className="mp-badge">{p.category}</span>
+                    <p style={{
+                      fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 13,
+                      color: 'rgba(245,240,232,0.8)', lineHeight: 1.75, margin: 0,
+                    }}>{p.desc}</p>
+                    <span className="mp-cta">
+                      View Project <ArrowRight size={10} strokeWidth={1.8} />
+                    </span>
                   </div>
                 </Link>
               </FadeIn>
             ))}
           </div>
-          {/* View All Projects CTA */}
-          <FadeIn delay={0.3} className="text-center mt-14">
-            <Link
-              to="/portfolio"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 10,
-                background: 'linear-gradient(135deg, #E0C38A 0%, #C8A46A 50%, #A8854F 100%)',
-                color: '#2D3E29',
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 600,
-                fontSize: 11,
-                letterSpacing: '3px',
-                textTransform: 'uppercase',
-                padding: '16px 40px',
-                textDecoration: 'none',
-                transition: 'background 0.3s ease, box-shadow 0.3s ease',
-                boxShadow: '0 4px 20px rgba(168,133,79,0.30)',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, #EDD09A 0%, #D4B078 50%, #B8904E 100%)'
-                e.currentTarget.style.boxShadow = '0 8px 28px rgba(168,133,79,0.45)'
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, #E0C38A 0%, #C8A46A 50%, #A8854F 100%)'
-                e.currentTarget.style.boxShadow = '0 4px 20px rgba(168,133,79,0.30)'
-              }}
-            >
-              View All Projects <ArrowRight size={12} />
-            </Link>
+
+          {/* CTA */}
+          <FadeIn delay={0.3}>
+            <div style={{ textAlign: 'center', marginTop: '3.5rem' }}>
+              <Link
+                to="/portfolio"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 10,
+                  fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 11,
+                  letterSpacing: '0.3em', textTransform: 'uppercase',
+                  color: '#262421', textDecoration: 'none',
+                  border: '1px solid #C8A56A',
+                  padding: '14px 36px', borderRadius: 100,
+                  transition: 'background 300ms ease, color 300ms ease',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = '#C8A56A'
+                  e.currentTarget.style.color = '#fff'
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = 'transparent'
+                  e.currentTarget.style.color = '#262421'
+                }}
+              >
+                View All Projects <ArrowRight size={12} strokeWidth={1.5} />
+              </Link>
+            </div>
           </FadeIn>
         </div>
       </section>
