@@ -20,6 +20,7 @@ const portfolioProjects = [
     name: 'Calista Residence',
     location: 'Juhu, Mumbai',
     category: 'Residential',
+    serviceHref: '/services/residential',
     desc: 'A warm family home brought to life with marble surfaces, rich walnut joinery and considered lighting that shifts with the day.',
     img: imgCalista,
   },
@@ -28,6 +29,7 @@ const portfolioProjects = [
     name: 'Neelaya Villa',
     location: 'Lonavala, Pune',
     category: 'Residential',
+    serviceHref: '/services/residential',
     desc: 'Double-height living volumes filled with natural light, statement chandelier and bespoke teal upholstery set against cream walls.',
     img: imgNeelaya,
   },
@@ -36,6 +38,7 @@ const portfolioProjects = [
     name: 'Sparsh Living',
     location: 'Baner, Pune',
     category: 'Residential',
+    serviceHref: '/services/residential',
     desc: 'A playful yet refined modular kitchen in blush rose gloss, framed by an arched passage into a warmly lit living space.',
     img: imgSparsh,
   },
@@ -44,6 +47,7 @@ const portfolioProjects = [
     name: 'Modern Industrial Office',
     location: 'Lower Parel, Mumbai',
     category: 'Commercial',
+    serviceHref: '/services/commercial',
     desc: 'A skyline terrace redesigned as an intimate outdoor retreat — stone floors, teak ceilings and lush greenery under city skies.',
     img: imgOffice,
   },
@@ -52,6 +56,7 @@ const portfolioProjects = [
     name: 'Aurelia Penthouse',
     location: 'Worli, Mumbai',
     category: 'Residential',
+    serviceHref: '/services/residential',
     desc: 'Elegant classic-contemporary living with a curved sectional, marble coffee table and layered drapery drawing in abundant daylight.',
     img: imgAurelia,
   },
@@ -60,6 +65,7 @@ const portfolioProjects = [
     name: 'Urban Serenity',
     location: 'Koregaon Park, Pune',
     category: 'Residential',
+    serviceHref: '/services/residential',
     desc: 'Arched niches in warm ivory, backlit fluted panels and a floating walnut console make this media wall a quiet centrepiece.',
     img: imgUrban,
   },
@@ -1491,53 +1497,60 @@ export default function Home() {
           }
           .mp-card:hover .mp-img { transform: scale(1.06); }
 
-          /* always-on bottom gradient + title */
+          /* Always-on gradient overlay */
           .mp-baseline {
-            position: absolute; inset: 0;
+            position: absolute; inset: 0; pointer-events: none;
             background: linear-gradient(
               to bottom,
-              transparent 35%,
-              rgba(12,10,8,0.55) 70%,
-              rgba(8,7,5,0.85) 100%
+              transparent 30%,
+              rgba(12,10,8,0.50) 65%,
+              rgba(8,7,5,0.88) 100%
             );
-            pointer-events: none;
             transition: background 450ms ease;
           }
           .mp-card:hover .mp-baseline {
             background: linear-gradient(
               to bottom,
-              rgba(12,10,8,0.12) 0%,
-              rgba(12,10,8,0.58) 45%,
-              rgba(8,7,5,0.92) 100%
+              rgba(12,10,8,0.10) 0%,
+              rgba(12,10,8,0.62) 42%,
+              rgba(8,7,5,0.96) 100%
             );
           }
 
-          /* title — always visible, shifts up on hover */
-          .mp-title {
+          /* ── DEFAULT LAYER: location + name — always visible, fixed position ──
+             Sits at bottom: 160px. Detail layer max-height is ~155px (badge 24px +
+             desc 3×22px + cta 50px) anchored at bottom: 1.5rem (24px).
+             Gap between layers = 160 − (24+155) = ~−19 → safe because detail is
+             opacity-0 by default and overlapping area is ~19px; on hover name lifts
+             18px further up, giving comfortable clearance. */
+          .mp-default-layer {
             position: absolute;
-            bottom: 1.6rem; left: 1.6rem; right: 1.6rem;
+            left: 1.6rem; right: 1.6rem; bottom: 160px;
             z-index: 3;
             transition: transform 450ms cubic-bezier(0.22,1,0.36,1);
           }
-          .mp-card:hover .mp-title { transform: translateY(-88px); }
+          .mp-card:hover .mp-default-layer { transform: translateY(-18px); }
 
-          /* hover content block */
-          .mp-hover-block {
+          /* ── HOVER LAYER: badge + description + CTA — hidden at rest ──
+             Anchored at bottom: 1.5rem, grows upward. Never shares position
+             with .mp-default-layer because they are at different bottom values. */
+          .mp-hover-layer {
             position: absolute;
-            bottom: 1.6rem; left: 1.6rem; right: 1.6rem;
+            left: 1.6rem; right: 1.6rem; bottom: 1.5rem;
             z-index: 4;
             opacity: 0;
-            transform: translateY(16px);
-            transition: opacity 400ms ease 60ms, transform 400ms cubic-bezier(0.22,1,0.36,1) 60ms;
+            transform: translateY(18px);
             pointer-events: none;
+            transition: opacity 400ms cubic-bezier(0.22,1,0.36,1) 55ms,
+                        transform 400ms cubic-bezier(0.22,1,0.36,1) 55ms;
           }
-          .mp-card:hover .mp-hover-block {
+          .mp-card:hover .mp-hover-layer {
             opacity: 1;
             transform: translateY(0);
             pointer-events: auto;
           }
 
-          /* category badge */
+          /* Category badge */
           .mp-badge {
             display: inline-block;
             font-family: 'Inter', sans-serif; font-weight: 400; font-size: 9px;
@@ -1546,24 +1559,33 @@ export default function Home() {
             background: rgba(200,165,106,0.12);
             border: 1px solid rgba(200,165,106,0.45);
             padding: 4px 10px; border-radius: 100px;
-            margin-bottom: 0.6rem;
-            backdrop-filter: blur(4px);
+            margin-bottom: 0.65rem;
           }
 
-          /* CTA button */
+          /* Description — capped at 3 lines */
+          .mp-desc {
+            font-family: 'Inter', sans-serif; font-weight: 300; font-size: 12.5px;
+            color: rgba(245,240,232,0.82); line-height: 1.72; margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+
+          /* CTA */
           .mp-cta {
             display: inline-flex; align-items: center; gap: 7px;
             font-family: 'Inter', sans-serif; font-weight: 400; font-size: 10px;
             letter-spacing: 0.2em; text-transform: uppercase;
             color: #262421; background: #C8A56A;
             border: none; border-radius: 100px;
-            padding: 9px 20px; margin-top: 1rem;
-            text-decoration: none; cursor: pointer;
+            padding: 9px 20px; margin-top: 0.85rem;
+            text-decoration: none;
             transition: background 250ms ease;
           }
           .mp-cta:hover { background: #D4B478; }
 
-          /* responsive grid */
+          /* Grid */
           .mp-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -1572,11 +1594,12 @@ export default function Home() {
           @media (max-width: 1024px) {
             .mp-grid { grid-template-columns: repeat(2, 1fr) !important; }
             .mp-card { height: 400px !important; }
+            .mp-default-layer { bottom: 148px !important; }
           }
           @media (max-width: 600px) {
             .mp-grid { grid-template-columns: 1fr !important; }
             .mp-card { height: 360px !important; }
-            .mp-card:hover .mp-title { transform: translateY(-100px) !important; }
+            .mp-default-layer { bottom: 140px !important; }
           }
         `}</style>
 
@@ -1609,7 +1632,7 @@ export default function Home() {
           <div className="mp-grid">
             {portfolioProjects.map((p, i) => (
               <FadeIn key={p.id} delay={i * 0.09}>
-                <Link to={`/portfolio/${p.id}`} className="mp-card">
+                <Link to={p.serviceHref} className="mp-card">
                   {/* Image */}
                   <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', borderRadius: 18 }}>
                     <img src={p.img} alt={p.name} className="mp-img" loading="lazy" draggable={false} />
@@ -1618,28 +1641,25 @@ export default function Home() {
                   {/* Always-on gradient */}
                   <div className="mp-baseline" />
 
-                  {/* Default title — always visible */}
-                  <div className="mp-title">
+                  {/* DEFAULT LAYER — location + name, always visible at fixed position */}
+                  <div className="mp-default-layer">
                     <p style={{
                       fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 9,
-                      letterSpacing: '0.25em', textTransform: 'uppercase',
-                      color: 'rgba(200,165,106,0.75)', margin: '0 0 0.4rem',
+                      letterSpacing: '0.28em', textTransform: 'uppercase',
+                      color: 'rgba(200,165,106,0.8)', margin: '0 0 0.45rem',
                     }}>{p.location}</p>
                     <h3 style={{
                       fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
-                      fontSize: 'clamp(1.3rem, 1.8vw, 1.6rem)',
+                      fontSize: 'clamp(1.3rem, 1.8vw, 1.65rem)',
                       color: '#f5f0e8', lineHeight: 1.15,
                       margin: 0, letterSpacing: '-0.005em',
                     }}>{p.name}</h3>
                   </div>
 
-                  {/* Hover description + CTA */}
-                  <div className="mp-hover-block">
+                  {/* HOVER LAYER — badge + description + CTA, fades in at different position */}
+                  <div className="mp-hover-layer">
                     <span className="mp-badge">{p.category}</span>
-                    <p style={{
-                      fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 13,
-                      color: 'rgba(245,240,232,0.8)', lineHeight: 1.75, margin: 0,
-                    }}>{p.desc}</p>
+                    <p className="mp-desc">{p.desc}</p>
                     <span className="mp-cta">
                       View Project <ArrowRight size={10} strokeWidth={1.8} />
                     </span>
