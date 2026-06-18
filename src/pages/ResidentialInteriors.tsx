@@ -167,7 +167,7 @@ function FeaturedCard({ img, title, category, desc, index }: {
       }}
     >
       <div className="res-feat-card">
-        <div style={{ overflow: 'hidden', borderRadius: '14px 14px 0 0', height: 300 }}>
+        <div className="res-feat-img-wrap">
           <img
             src={img}
             alt={title}
@@ -530,14 +530,40 @@ export default function ResidentialInteriors() {
   const nextImg = useCallback(() => setLightbox(i => i !== null ? (i + 1) % gallery.length : null), [])
 
   return (
-    <div style={{ backgroundColor: '#F7F4EF' }}>
+    <div className="res-page" style={{ backgroundColor: '#F7F4EF' }}>
       <style>{`
-        /* Expertise cards */
+        /* ── no horizontal overflow ───────────────────────── */
+        .res-page { overflow-x: hidden; }
+
+        /* ── section padding (override inline styles) ─────── */
+        .res-section-pad { padding-top: 96px !important; padding-bottom: 96px !important;
+                            padding-left: 2rem !important; padding-right: 2rem !important; }
+        @media (max-width: 1023px) {
+          .res-section-pad { padding-top: 72px !important; padding-bottom: 72px !important;
+                              padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+        }
+        @media (max-width: 767px) {
+          .res-section-pad { padding-top: 56px !important; padding-bottom: 56px !important;
+                              padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
+        }
+
+        /* ── hero ────────────────────────────────────────── */
+        .res-hero { height: 100vh; min-height: 560px; }
+        @media (max-width: 767px) {
+          .res-hero { height: 85vh; min-height: 460px; }
+        }
+
+        /* ── intro image ──────────────────────────────────── */
+        .res-intro-img { border-radius: 16px; overflow: hidden; height: 480px; }
+        @media (max-width: 1023px) { .res-intro-img { height: 360px; } }
+        @media (max-width: 767px)  { .res-intro-img { height: 240px; } }
+
+        /* ── expertise cards ──────────────────────────────── */
         .res-exp-card { transition: box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1) !important; }
         .res-exp-card:hover { box-shadow: 0 10px 36px rgba(0,0,0,0.10) !important; transform: translateY(-4px) !important; }
         .res-exp-card:hover .res-exp-line { width: 100% !important; }
 
-        /* Featured cards */
+        /* ── featured cards ───────────────────────────────── */
         .res-feat-card {
           border-radius: 14px; overflow: hidden;
           box-shadow: 0 4px 20px rgba(0,0,0,0.08);
@@ -546,8 +572,10 @@ export default function ResidentialInteriors() {
         .res-feat-card:hover { box-shadow: 0 16px 52px rgba(0,0,0,0.14); transform: translateY(-6px); }
         .res-feat-img { transition: transform 0.65s cubic-bezier(0.16,1,0.3,1) !important; }
         .res-feat-card:hover .res-feat-img { transform: scale(1.06) !important; }
+        .res-feat-img-wrap { overflow: hidden; border-radius: 14px 14px 0 0; height: 300px; }
+        @media (max-width: 767px) { .res-feat-img-wrap { height: 210px; } }
 
-        /* Gallery */
+        /* ── gallery ──────────────────────────────────────── */
         .res-gal-card { transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease !important; }
         .res-gal-card:hover { transform: translateY(-6px) scale(1.01) !important; box-shadow: 0 14px 44px rgba(0,0,0,0.15) !important; }
         .res-gal-card:hover .res-gal-overlay { opacity: 1 !important; }
@@ -555,7 +583,7 @@ export default function ResidentialInteriors() {
         .res-gal-img { transition: transform 0.65s cubic-bezier(0.16,1,0.3,1) !important; }
         .res-gal-card:hover .res-gal-img { transform: scale(1.07) !important; }
 
-        /* Timeline */
+        /* ── timeline ─────────────────────────────────────── */
         .res-tl-card {
           transition: box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1) !important;
         }
@@ -563,69 +591,42 @@ export default function ResidentialInteriors() {
           box-shadow: 0 12px 40px rgba(0,0,0,0.11), 0 3px 10px rgba(0,0,0,0.05) !important;
           transform: translateY(-4px) !important;
         }
-        /* Mobile timeline: single column left-aligned */
         @media (max-width: 768px) {
-          .res-tl-row {
-            justify-content: flex-end !important;
-            padding-left: 36px !important;
-          }
-          .res-tl-row > div {
-            width: 100% !important;
-          }
-          .res-tl-line {
-            left: 12px !important;
-            transform: none !important;
-          }
-          .res-tl-diamonds {
-            left: 4px !important;
-            transform: none !important;
-          }
+          .res-tl-row { justify-content: flex-end !important; padding-left: 36px !important; }
+          .res-tl-row > div { width: 100% !important; }
+          .res-tl-line { left: 12px !important; transform: none !important; }
+          .res-tl-diamonds { left: 4px !important; transform: none !important; }
         }
 
-        /* Responsive grids */
-        .res-exp-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
-        }
-        .res-feat-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
-        }
-        .res-gal-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
-        }
-        .res-why-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
-        }
-        .res-intro-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 5rem;
-          align-items: center;
-        }
-        @media (max-width: 1024px) {
-          .res-exp-grid,
-          .res-feat-grid,
-          .res-gal-grid,
-          .res-why-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        /* ── responsive grids ─────────────────────────────── */
+        .res-exp-grid  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .res-feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .res-gal-grid  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .res-why-grid  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .res-intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+
+        @media (max-width: 1023px) {
+          .res-exp-grid, .res-feat-grid, .res-gal-grid, .res-why-grid { grid-template-columns: repeat(2, 1fr) !important; }
           .res-intro-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
         }
-        @media (max-width: 640px) {
-          .res-exp-grid,
-          .res-feat-grid,
-          .res-gal-grid,
-          .res-why-grid { grid-template-columns: 1fr !important; }
+        @media (max-width: 639px) {
+          .res-exp-grid, .res-feat-grid, .res-gal-grid, .res-why-grid { grid-template-columns: 1fr !important; }
         }
+
+        /* ── CTA button row ───────────────────────────────── */
+        .res-cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        @media (max-width: 639px) {
+          .res-cta-btns { flex-direction: column; align-items: stretch; width: 100%; max-width: 340px; margin: 0 auto; }
+          .res-cta-btns a { min-height: 52px !important; justify-content: center !important;
+                             padding-left: 20px !important; padding-right: 20px !important; }
+        }
+
+        /* ── scroll hint: hide on very small screens ─────── */
+        @media (max-width: 479px) { .res-scroll-hint { display: none !important; } }
       `}</style>
 
       {/* ── SECTION 1 · HERO ───────────────────────────────────────────────── */}
-      <div style={{ position: 'relative', height: '100vh', minHeight: 560, overflow: 'hidden' }}>
+      <div className="res-hero" style={{ position: 'relative', overflow: 'hidden' }}>
         <img
           src={heroImg}
           alt="Residential Interiors"
@@ -691,7 +692,8 @@ export default function ResidentialInteriors() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.6, duration: 0.8 }}
-            style={{ position: 'absolute', bottom: 36, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}
+            className="res-scroll-hint"
+          style={{ position: 'absolute', bottom: 36, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}
           >
             <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.35)' }}>Scroll</span>
             <div style={{ width: 1, height: 36, background: 'linear-gradient(to bottom, rgba(201,169,110,0.6), transparent)' }} />
@@ -700,7 +702,7 @@ export default function ResidentialInteriors() {
       </div>
 
       {/* ── SECTION 2 · INTRODUCTION ─────────────────────────────────────── */}
-      <section style={{ backgroundColor: '#F7F4EF', padding: '96px 2rem' }}>
+      <section className="res-section-pad" style={{ backgroundColor: '#F7F4EF' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <div className="res-intro-grid">
             <FadeIn direction="right">
@@ -742,7 +744,7 @@ export default function ResidentialInteriors() {
               </div>
             </FadeIn>
             <FadeIn direction="left" delay={0.15}>
-              <div style={{ borderRadius: 16, overflow: 'hidden', height: 480 }}>
+              <div className="res-intro-img">
                 <img
                   src={entryImg}
                   alt="Residential Interior"
@@ -756,7 +758,7 @@ export default function ResidentialInteriors() {
       </section>
 
       {/* ── SECTION 3 · OUR EXPERTISE ────────────────────────────────────── */}
-      <section style={{ backgroundColor: '#F0EDE6', padding: '88px 2rem' }}>
+      <section className="res-section-pad" style={{ backgroundColor: '#F0EDE6' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <FadeIn>
             <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
@@ -781,7 +783,7 @@ export default function ResidentialInteriors() {
       </section>
 
       {/* ── SECTION 3.5 · HOW WE DO IT ──────────────────────────────────── */}
-      <section style={{ backgroundColor: '#F7F4EF', padding: '96px 2rem' }}>
+      <section className="res-section-pad" style={{ backgroundColor: '#F7F4EF' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
 
           {/* Header */}
@@ -876,7 +878,7 @@ export default function ResidentialInteriors() {
       </section>
 
       {/* ── SECTION 4 · FEATURED PROJECTS ────────────────────────────────── */}
-      <section style={{ backgroundColor: '#F7F4EF', padding: '96px 2rem' }}>
+      <section className="res-section-pad" style={{ backgroundColor: '#F7F4EF' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <FadeIn>
             <div style={{ marginBottom: '3.5rem' }}>
@@ -901,7 +903,7 @@ export default function ResidentialInteriors() {
       </section>
 
       {/* ── SECTION 5 · PORTFOLIO GALLERY ────────────────────────────────── */}
-      <section style={{ backgroundColor: '#EAE7E0', padding: '96px 2rem' }}>
+      <section className="res-section-pad" style={{ backgroundColor: '#EAE7E0' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <FadeIn>
             <div style={{ marginBottom: '3.5rem' }}>
@@ -933,7 +935,7 @@ export default function ResidentialInteriors() {
       </section>
 
       {/* ── SECTION 6 · WHY NIVORA ───────────────────────────────────────── */}
-      <section style={{ backgroundColor: '#2A3926', padding: '96px 2rem' }}>
+      <section className="res-section-pad" style={{ backgroundColor: '#2A3926' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <FadeIn>
             <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
@@ -958,10 +960,7 @@ export default function ResidentialInteriors() {
       </section>
 
       {/* ── SECTION 7 · CTA ──────────────────────────────────────────────── */}
-      <section style={{
-        backgroundColor: '#1C2818', padding: '100px 1.5rem',
-        textAlign: 'center',
-      }}>
+      <section className="res-section-pad" style={{ backgroundColor: '#1C2818', textAlign: 'center' }}>
         <FadeIn>
           <p style={{
             fontFamily: "'Inter', sans-serif", fontWeight: 300,
@@ -983,7 +982,7 @@ export default function ResidentialInteriors() {
           }}>
             Let's create a home that reflects your personality and lifestyle.
           </p>
-          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className="res-cta-btns">
             <Link
               to="/services/residential/enquiry"
               style={{

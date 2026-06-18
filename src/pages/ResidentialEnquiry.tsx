@@ -202,10 +202,40 @@ export default function ResidentialEnquiry() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-      style={{ backgroundColor: '#F6F3EE', minHeight: '100vh' }}
+      style={{ backgroundColor: '#F6F3EE', minHeight: '100vh', overflowX: 'hidden' }}
     >
+      <style>{`
+        /* ── enquiry page responsive ───────────────────────── */
+        .enq-header { padding: 120px 1.5rem 72px; text-align: center; }
+        .enq-body   { padding: 0 1.5rem 100px; }
+
+        @media (max-width: 767px) {
+          .enq-header { padding: 96px 1.25rem 52px; }
+          .enq-body   { padding: 0 1.25rem 72px; }
+        }
+        @media (max-width: 479px) {
+          .enq-header { padding: 84px 1rem 44px; }
+          .enq-body   { padding: 0 1rem 60px; }
+        }
+
+        /* touch-friendly inputs & selects on mobile */
+        @media (max-width: 767px) {
+          .enq-form input,
+          .enq-form select,
+          .enq-form textarea {
+            font-size: 16px !important;
+            padding-top: 14px !important;
+            padding-bottom: 14px !important;
+          }
+          .enq-submit-btn {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-height: 52px !important;
+          }
+        }
+      `}</style>
       {/* ── HEADER ─────────────────────────────────────────── */}
-      <section style={{ paddingTop: 120, paddingBottom: 72, textAlign: 'center', padding: '120px 1.5rem 72px' }}>
+      <section className="enq-header">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
@@ -237,7 +267,7 @@ export default function ResidentialEnquiry() {
       </section>
 
       {/* ── FORM / SUCCESS ──────────────────────────────────── */}
-      <section style={{ padding: '0 1.5rem 100px' }}>
+      <section className="enq-body">
         <div ref={formRef} style={{ maxWidth: 900, margin: '0 auto' }}>
           <AnimatePresence mode="wait">
             {submitted ? (
@@ -287,6 +317,7 @@ export default function ResidentialEnquiry() {
               /* ── FORM ─────────────────────────────────────── */
               <motion.form
                 key="form"
+                className="enq-form"
                 onSubmit={handleSubmit}
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -479,6 +510,7 @@ function SubmitButton({ loading }: { loading: boolean }) {
   return (
     <button
       type="submit"
+      className="enq-submit-btn"
       disabled={loading}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
