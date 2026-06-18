@@ -1171,7 +1171,7 @@ export default function Home() {
       {/* Services */}
       <section style={{ backgroundColor: '#F7F4EF', padding: '7rem 1.5rem' }}>
         <style>{`
-          /* ── Service card ── */
+          /* ── Service card shell ── */
           .hsvc-card {
             position: relative;
             border-radius: 24px;
@@ -1189,123 +1189,133 @@ export default function Home() {
             transform: translateY(-8px);
             box-shadow: 0 28px 64px rgba(38,36,33,0.13), 0 4px 16px rgba(38,36,33,0.07);
           }
-          /* image zoom */
+
+          /* Image zoom */
           .hsvc-img {
             transition: transform 700ms cubic-bezier(0.22,1,0.36,1);
           }
-          .hsvc-card:hover .hsvc-img {
-            transform: scale(1.08);
-          }
-          /* overlay darkens on hover */
+          .hsvc-card:hover .hsvc-img { transform: scale(1.08); }
+
+          /* Gradient overlay */
           .hsvc-overlay {
-            position: absolute; inset: 0;
+            position: absolute; inset: 0; pointer-events: none;
             background: linear-gradient(
               to bottom,
-              rgba(15,12,10,0.18) 0%,
-              rgba(10,8,6,0.62) 55%,
-              rgba(6,5,4,0.90) 100%
+              rgba(15,12,10,0.16) 0%,
+              rgba(10,8,6,0.60) 52%,
+              rgba(6,5,4,0.92) 100%
             );
-            transition: background 500ms cubic-bezier(0.22,1,0.36,1);
+            transition: background 500ms ease;
           }
           .hsvc-card:hover .hsvc-overlay {
             background: linear-gradient(
               to bottom,
-              rgba(15,12,10,0.32) 0%,
-              rgba(10,8,6,0.78) 45%,
-              rgba(6,5,4,0.96) 100%
+              rgba(15,12,10,0.30) 0%,
+              rgba(10,8,6,0.80) 42%,
+              rgba(6,5,4,0.97) 100%
             );
           }
-          /* title slides up on hover */
-          .hsvc-title {
+
+          /* ── TOP LAYER: number badge ── */
+          .hsvc-num {
+            position: absolute; top: 1.5rem; left: 1.6rem; z-index: 4;
+            font-family: 'Inter', sans-serif; font-weight: 300;
+            font-size: 10px; letter-spacing: 0.3em;
+            color: rgba(200,165,106,0.7); margin: 0;
+          }
+
+          /* ── MIDDLE LAYER: icon + title — always visible, never moves into detail area ── */
+          .hsvc-mid-layer {
+            position: absolute;
+            left: 1.6rem; right: 1.6rem; bottom: 168px;
+            z-index: 3;
             transition: transform 500ms cubic-bezier(0.22,1,0.36,1);
           }
-          .hsvc-card:hover .hsvc-title {
-            transform: translateY(-10px);
-          }
-          /* gold accent line */
-          .hsvc-gold-line {
-            width: 0;
-            height: 1.5px;
-            background: #C8A56A;
-            border-radius: 2px;
-            transition: width 500ms cubic-bezier(0.22,1,0.36,1);
-            margin: 0.65rem 0 0.75rem;
-          }
-          .hsvc-card:hover .hsvc-gold-line {
-            width: 36px;
-          }
-          /* description fades in */
-          .hsvc-desc {
-            opacity: 0;
-            transform: translateY(14px);
-            transition: opacity 500ms cubic-bezier(0.22,1,0.36,1),
-                        transform 500ms cubic-bezier(0.22,1,0.36,1);
-            transition-delay: 40ms;
-          }
-          .hsvc-card:hover .hsvc-desc {
-            opacity: 1;
-            transform: translateY(0);
-          }
-          /* explore link */
-          .hsvc-explore {
-            opacity: 0;
-            transform: translateY(8px);
-            transition: opacity 400ms cubic-bezier(0.22,1,0.36,1),
-                        transform 400ms cubic-bezier(0.22,1,0.36,1);
-            transition-delay: 80ms;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 1rem;
-            font-family: 'Inter', sans-serif;
-            font-weight: 300;
-            font-size: 10px;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: #C8A56A;
-          }
-          .hsvc-card:hover .hsvc-explore {
-            opacity: 1;
-            transform: translateY(0);
-          }
-          /* icon container */
+          .hsvc-card:hover .hsvc-mid-layer { transform: translateY(-16px); }
+
           .hsvc-icon-wrap {
-            width: 40px; height: 40px;
-            border-radius: 10px;
+            width: 40px; height: 40px; border-radius: 10px;
             background: rgba(200,165,106,0.15);
             display: flex; align-items: center; justify-content: center;
-            margin-bottom: 0.65rem;
+            margin-bottom: 0.6rem;
             transition: background 400ms ease;
           }
-          .hsvc-card:hover .hsvc-icon-wrap {
-            background: rgba(200,165,106,0.25);
+          .hsvc-card:hover .hsvc-icon-wrap { background: rgba(200,165,106,0.28); }
+
+          .hsvc-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+            color: #f5f0e8;
+            line-height: 1.2;
+            margin: 0;
+            letter-spacing: -0.005em;
           }
-          /* grids */
-          .hsvc-grid-r1 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+
+          /* ── BOTTOM LAYER: gold line + desc + explore — hidden at rest ── */
+          /* Occupies bottom 25px → ~165px. Never overlaps mid-layer (bottom: 168px). */
+          .hsvc-detail-layer {
+            position: absolute;
+            left: 1.6rem; right: 1.6rem; bottom: 1.5rem;
+            z-index: 3;
+            opacity: 0;
+            transform: translateY(18px);
+            pointer-events: none;
+            transition: opacity 420ms cubic-bezier(0.22,1,0.36,1) 55ms,
+                        transform 420ms cubic-bezier(0.22,1,0.36,1) 55ms;
           }
+          .hsvc-card:hover .hsvc-detail-layer {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+          }
+
+          /* Gold accent line */
+          .hsvc-gold-line {
+            width: 0; height: 1.5px;
+            background: #C8A56A; border-radius: 2px;
+            transition: width 500ms cubic-bezier(0.22,1,0.36,1);
+            margin: 0 0 0.75rem;
+          }
+          .hsvc-card:hover .hsvc-gold-line { width: 36px; }
+
+          /* Description — capped at 3 lines to guarantee no overflow */
+          .hsvc-desc {
+            font-family: 'Inter', sans-serif; font-weight: 300;
+            font-size: 12.5px; color: rgba(245,240,232,0.78);
+            line-height: 1.72; margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+
+          /* Explore CTA */
+          .hsvc-explore {
+            display: inline-flex; align-items: center; gap: 6px;
+            margin-top: 0.85rem;
+            font-family: 'Inter', sans-serif; font-weight: 300;
+            font-size: 10px; letter-spacing: 0.22em;
+            text-transform: uppercase; color: #C8A56A;
+          }
+
+          /* Grids */
+          .hsvc-grid-r1 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
           .hsvc-grid-r2 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 20px;
-            max-width: 895px;
-            margin-left: auto;
-            margin-right: auto;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+            margin: 20px auto 0; max-width: 895px;
           }
+
           @media (max-width: 1100px) {
             .hsvc-grid-r1 { grid-template-columns: repeat(2, 1fr) !important; }
             .hsvc-grid-r2 { grid-template-columns: repeat(2, 1fr) !important; max-width: 100% !important; }
             .hsvc-card { height: 360px !important; }
+            .hsvc-mid-layer { bottom: 160px !important; }
           }
           @media (max-width: 639px) {
-            .hsvc-grid-r1, .hsvc-grid-r2 {
-              grid-template-columns: 1fr !important;
-              max-width: 100% !important;
-            }
+            .hsvc-grid-r1, .hsvc-grid-r2 { grid-template-columns: 1fr !important; max-width: 100% !important; }
             .hsvc-card { height: 320px !important; }
+            .hsvc-mid-layer { bottom: 152px !important; }
           }
         `}</style>
 
@@ -1352,52 +1362,27 @@ export default function Home() {
               return (
                 <FadeIn key={s.title} delay={i * 0.09}>
                   <Link to={s.href} className="hsvc-card">
-                    {/* Background image */}
+                    {/* Image */}
                     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', borderRadius: 24 }}>
-                      <img
-                        src={s.img}
-                        alt={s.title}
-                        className="hsvc-img"
+                      <img src={s.img} alt={s.title} className="hsvc-img"
                         style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                        loading="lazy"
-                      />
+                        loading="lazy" />
                     </div>
-                    {/* Gradient overlay */}
+                    {/* Overlay */}
                     <div className="hsvc-overlay" />
-                    {/* Content */}
-                    <div style={{
-                      position: 'absolute', inset: 0,
-                      padding: '1.75rem 1.6rem',
-                      display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
-                      zIndex: 2,
-                    }}>
-                      {/* Number — top left */}
-                      <p style={{
-                        position: 'absolute', top: '1.6rem', left: '1.6rem',
-                        fontFamily: "'Inter', sans-serif", fontWeight: 300,
-                        fontSize: 10, letterSpacing: '0.3em',
-                        color: 'rgba(200,165,106,0.7)', margin: 0,
-                      }}>{s.num}</p>
-                      {/* Icon */}
+                    {/* Number — top-left, independent layer */}
+                    <p className="hsvc-num">{s.num}</p>
+                    {/* Mid layer: icon + title — always visible, fixed position */}
+                    <div className="hsvc-mid-layer">
                       <div className="hsvc-icon-wrap">
                         <Icon size={18} color="#C8A56A" strokeWidth={1.4} />
                       </div>
-                      {/* Title */}
-                      <h3 className="hsvc-title" style={{
-                        fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
-                        fontSize: 'clamp(1.25rem, 1.8vw, 1.55rem)',
-                        color: '#f5f0e8', lineHeight: 1.18,
-                        margin: 0, letterSpacing: '-0.005em',
-                      }}>{s.title}</h3>
-                      {/* Gold line */}
+                      <h3 className="hsvc-title">{s.title}</h3>
+                    </div>
+                    {/* Detail layer: fades in on hover, positioned below mid-layer */}
+                    <div className="hsvc-detail-layer">
                       <div className="hsvc-gold-line" />
-                      {/* Description */}
-                      <p className="hsvc-desc" style={{
-                        fontFamily: "'Inter', sans-serif", fontWeight: 300,
-                        fontSize: 12.5, color: 'rgba(245,240,232,0.78)',
-                        lineHeight: 1.75, margin: 0,
-                      }}>{s.desc}</p>
-                      {/* Explore link */}
+                      <p className="hsvc-desc">{s.desc}</p>
                       <span className="hsvc-explore">
                         Explore <ArrowRight size={10} strokeWidth={1.5} />
                       </span>
@@ -1416,42 +1401,21 @@ export default function Home() {
                 <FadeIn key={s.title} delay={i * 0.09}>
                   <Link to={s.href} className="hsvc-card">
                     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', borderRadius: 24 }}>
-                      <img
-                        src={s.img}
-                        alt={s.title}
-                        className="hsvc-img"
+                      <img src={s.img} alt={s.title} className="hsvc-img"
                         style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                        loading="lazy"
-                      />
+                        loading="lazy" />
                     </div>
                     <div className="hsvc-overlay" />
-                    <div style={{
-                      position: 'absolute', inset: 0,
-                      padding: '1.75rem 1.6rem',
-                      display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
-                      zIndex: 2,
-                    }}>
-                      <p style={{
-                        position: 'absolute', top: '1.6rem', left: '1.6rem',
-                        fontFamily: "'Inter', sans-serif", fontWeight: 300,
-                        fontSize: 10, letterSpacing: '0.3em',
-                        color: 'rgba(200,165,106,0.7)', margin: 0,
-                      }}>{s.num}</p>
+                    <p className="hsvc-num">{s.num}</p>
+                    <div className="hsvc-mid-layer">
                       <div className="hsvc-icon-wrap">
                         <Icon size={18} color="#C8A56A" strokeWidth={1.4} />
                       </div>
-                      <h3 className="hsvc-title" style={{
-                        fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
-                        fontSize: 'clamp(1.25rem, 1.8vw, 1.55rem)',
-                        color: '#f5f0e8', lineHeight: 1.18,
-                        margin: 0, letterSpacing: '-0.005em',
-                      }}>{s.title}</h3>
+                      <h3 className="hsvc-title">{s.title}</h3>
+                    </div>
+                    <div className="hsvc-detail-layer">
                       <div className="hsvc-gold-line" />
-                      <p className="hsvc-desc" style={{
-                        fontFamily: "'Inter', sans-serif", fontWeight: 300,
-                        fontSize: 12.5, color: 'rgba(245,240,232,0.78)',
-                        lineHeight: 1.75, margin: 0,
-                      }}>{s.desc}</p>
+                      <p className="hsvc-desc">{s.desc}</p>
                       <span className="hsvc-explore">
                         Explore <ArrowRight size={10} strokeWidth={1.5} />
                       </span>
