@@ -633,7 +633,7 @@ export default function ResidentialInteriors() {
         />
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, rgba(20,30,18,0.42) 0%, rgba(12,20,10,0.72) 100%)',
+          background: 'linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.55))',
         }} />
         <div style={{
           position: 'absolute', inset: 0,
@@ -647,9 +647,22 @@ export default function ResidentialInteriors() {
             transition={{ duration: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <p style={{
-              fontFamily: "'Inter', sans-serif", fontWeight: 300,
-              fontSize: 10, letterSpacing: '0.48em', textTransform: 'uppercase',
-              color: '#C9A96E', marginBottom: '1.25rem',
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 500,
+              fontSize: 10,
+              letterSpacing: '0.55em',
+              textTransform: 'uppercase',
+              color: '#D6B36A',
+              marginBottom: '1.25rem',
+              textShadow: '0 0 10px rgba(214,179,106,0.35)',
+              background: 'rgba(0,0,0,0.15)',
+              backdropFilter: 'blur(2px)',
+              WebkitBackdropFilter: 'blur(2px)',
+              padding: '6px 14px',
+              borderRadius: 20,
+              display: 'inline-block',
+              position: 'relative',
+              zIndex: 5,
             }}>Residential Interiors</p>
             <h1 style={{
               fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
