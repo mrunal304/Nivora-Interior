@@ -14,6 +14,7 @@ import Quote from './pages/Quote'
 import ThankYou from './pages/ThankYou'
 import ProjectDetail from './pages/ProjectDetail'
 import ServiceCategory from './pages/ServiceCategory'
+import ResidentialInteriors from './pages/ResidentialInteriors'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -42,6 +43,7 @@ export default function App() {
         <Route path="/portfolio" element={<Layout><Portfolio /></Layout>} />
         <Route path="/portfolio/:id" element={<Layout><ProjectDetail /></Layout>} />
         <Route path="/services" element={<Layout><Services /></Layout>} />
+        <Route path="/services/residential" element={<Layout><ResidentialInteriors /></Layout>} />
         <Route path="/services/:category" element={<Layout><ServiceCategory /></Layout>} />
         <Route path="/about" element={<Layout><About /></Layout>} />
         <Route path="/testimonials" element={<Layout><Testimonials /></Layout>} />
