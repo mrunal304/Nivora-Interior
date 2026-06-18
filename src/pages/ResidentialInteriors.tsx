@@ -865,6 +865,25 @@ export default function ResidentialInteriors() {
           .res-feat-grid { gap: 16px !important; }
         }
 
+        /* ══ CTA SECTION ══════════════════════════════════════════════ */
+        .res-cta-section {
+          padding: 110px 2rem 100px;
+        }
+        .res-cta-section::after {
+          content: '';
+          position: absolute;
+          bottom: 0; left: 0;
+          width: 100%; height: 120px;
+          background: linear-gradient(180deg, transparent, rgba(0,0,0,0.04));
+          pointer-events: none;
+        }
+        @media (max-width: 1023px) {
+          .res-cta-section { padding: 90px 32px !important; }
+        }
+        @media (max-width: 767px) {
+          .res-cta-section { padding: 72px 24px !important; }
+        }
+
         /* ══ CTA BUTTONS ══════════════════════════════════════════════ */
         .res-cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
         @media (max-width: 639px) {
@@ -1341,25 +1360,25 @@ export default function ResidentialInteriors() {
       </section>
 
       {/* ── SECTION 7 · CTA ──────────────────────────────────────────────── */}
-      <section className="res-section-pad" style={{ backgroundColor: '#1C2818', textAlign: 'center' }}>
+      <section className="res-cta-section" style={{ backgroundColor: '#132818', textAlign: 'center', position: 'relative' }}>
         <FadeIn>
           <p style={{
             fontFamily: "'Inter', sans-serif", fontWeight: 300,
-            fontSize: 10, letterSpacing: '0.44em', textTransform: 'uppercase',
-            color: '#9B7D4E', marginBottom: '1rem',
+            fontSize: 10, letterSpacing: '5px', textTransform: 'uppercase',
+            color: '#C8A56A', marginBottom: '1.5rem',
           }}>Let's Begin</p>
           <h2 style={{
             fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
-            fontSize: 'clamp(2.2rem, 4.5vw, 3.75rem)', color: '#f5f0e8',
-            fontStyle: 'italic', lineHeight: 1.15, marginBottom: '1.25rem',
+            fontSize: 'clamp(2.625rem, 6vw, 5.375rem)', color: '#F7F4EF',
+            fontStyle: 'italic', lineHeight: 0.95, marginBottom: '1.5rem',
           }}>
             Ready to Design<br />Your Dream Home?
           </h2>
-          <div style={{ width: 44, height: 1, background: 'linear-gradient(90deg, transparent, #C9A96E, transparent)', margin: '0 auto 1.5rem' }} />
+          <div style={{ width: 44, height: 1, background: 'linear-gradient(90deg, transparent, #C8A56A, transparent)', margin: '0 auto 1.75rem' }} />
           <p style={{
             fontFamily: "'Inter', sans-serif", fontWeight: 300,
-            fontSize: 14, color: 'rgba(245,240,232,0.42)',
-            lineHeight: 1.85, maxWidth: 400, margin: '0 auto 2.75rem',
+            fontSize: 14, color: 'rgba(247,244,239,0.70)',
+            lineHeight: 1.85, maxWidth: 560, margin: '0 auto 2.75rem',
           }}>
             Let's create a home that reflects your personality and lifestyle.
           </p>
@@ -1368,14 +1387,14 @@ export default function ResidentialInteriors() {
               to="/services/residential/enquiry"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 10,
-                backgroundColor: '#C9A96E', color: '#1C2818',
+                backgroundColor: '#C8A56A', color: '#262421',
                 fontFamily: "'Inter', sans-serif", fontWeight: 500,
                 fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase',
                 padding: '18px 48px', textDecoration: 'none',
                 transition: 'background 0.3s ease, transform 0.3s ease',
               }}
-              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = '#ddb97a'; el.style.transform = 'translateY(-2px)' }}
-              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = '#C9A96E'; el.style.transform = 'translateY(0)' }}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = '#d9b87a'; el.style.transform = 'translateY(-2px)' }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = '#C8A56A'; el.style.transform = 'translateY(0)' }}
             >
               Book a Consultation <ArrowRight size={13} strokeWidth={1.5} />
             </Link>
@@ -1383,14 +1402,16 @@ export default function ResidentialInteriors() {
               to="/services"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 10,
-                border: '1px solid rgba(201,169,110,0.35)', color: 'rgba(201,169,110,0.75)',
+                border: '1px solid rgba(200,165,106,0.35)',
+                background: 'transparent',
+                color: '#F7F4EF',
                 fontFamily: "'Inter', sans-serif", fontWeight: 300,
                 fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase',
                 padding: '18px 36px', textDecoration: 'none',
                 transition: 'border-color 0.3s ease, color 0.3s ease',
               }}
-              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = '#C9A96E'; el.style.color = '#C9A96E' }}
-              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = 'rgba(201,169,110,0.35)'; el.style.color = 'rgba(201,169,110,0.75)' }}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = '#C8A56A'; el.style.color = '#C8A56A' }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = 'rgba(200,165,106,0.35)'; el.style.color = '#F7F4EF' }}
             >
               All Services
             </Link>

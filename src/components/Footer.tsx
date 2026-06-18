@@ -3,7 +3,7 @@ import { Mail, Phone, Instagram } from 'lucide-react'
 
 export default function Footer() {
   return (
-    <footer style={{ backgroundColor: '#1A2E1B' }}>
+    <footer style={{ backgroundColor: '#132818', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-12" style={{ paddingTop: '80px', paddingBottom: '40px' }}>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
