@@ -23,7 +23,7 @@ const serviceCards = [
     title: 'Hospitality Interiors',
     desc: 'Crafting memorable guest experiences through hotels, cafés, restaurants, and hospitality environments.',
     img: 'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=900&q=80',
-    href: '/services/commercial',
+    href: '/services/hospitality',
   },
   {
     num: '04',
@@ -37,21 +37,21 @@ const serviceCards = [
     title: '2D & 3D Visualization',
     desc: 'Creating drawings, renders, and visual presentations that bring ideas to life.',
     img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80',
-    href: '/services/architecture',
+    href: '/services/visualization',
   },
   {
     num: '06',
     title: 'Developer Solutions',
     desc: 'Design support for sample flats, amenities, marketing suites, and property enhancement.',
     img: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=80',
-    href: '/services/commercial',
+    href: '/services/developer',
   },
   {
     num: '07',
     title: 'Renovation & Makeovers',
     desc: 'Transforming existing spaces through upgrades, modernization, and complete redesigns.',
     img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=80',
-    href: '/services/residential',
+    href: '/services/renovation',
   },
 ]
 
