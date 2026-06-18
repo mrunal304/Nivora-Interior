@@ -16,6 +16,7 @@ import ProjectDetail from './pages/ProjectDetail'
 import ServiceCategory from './pages/ServiceCategory'
 import ResidentialInteriors from './pages/ResidentialInteriors'
 import ResidentialEnquiry from './pages/ResidentialEnquiry'
+import CommercialInteriors from './pages/CommercialInteriors'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -46,6 +47,7 @@ export default function App() {
         <Route path="/services" element={<Layout><Services /></Layout>} />
         <Route path="/services/residential/enquiry" element={<Layout><ResidentialEnquiry /></Layout>} />
         <Route path="/services/residential" element={<Layout><ResidentialInteriors /></Layout>} />
+        <Route path="/services/commercial" element={<Layout><CommercialInteriors /></Layout>} />
         <Route path="/services/:category" element={<Layout><ServiceCategory /></Layout>} />
         <Route path="/about" element={<Layout><About /></Layout>} />
         <Route path="/testimonials" element={<Layout><Testimonials /></Layout>} />
