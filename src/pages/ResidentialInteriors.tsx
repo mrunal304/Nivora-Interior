@@ -53,6 +53,18 @@ const gallery = [
   { img: bedroomImg, title: "Kid's Bedroom", category: 'Bedroom' },
 ]
 
+const processSteps = [
+  { num: '01', title: 'Preliminary Call',                    desc: 'It starts with a preliminary call to understand your lifestyle and design aspirations.' },
+  { num: '02', title: 'Ground Plan & Blueprints',            desc: 'Next, we create a ground plan and blueprints to get your buy-in for the creative vision.' },
+  { num: '03', title: 'Project Approval & Lock-in',          desc: 'We await your approval next, and move on once we both agree on the initial plan.' },
+  { num: '04', title: 'Mood Boards & 3D Design',             desc: 'After finalizing budgets and timelines, we translate ideas into tangible concepts through mood boards and immersive 3D designs.' },
+  { num: '05', title: 'Material Sourcing & Selections',      desc: 'With a clear design direction, we meticulously curate materials, finishes, fabrics, and furnishings.' },
+  { num: '06', title: 'Site Execution & Vendor Coordination',desc: 'We coordinate with trusted vendors to manage every aspect of the build.' },
+  { num: '07', title: 'Routine Site Supervision',            desc: 'Throughout the execution phase, we conduct regular on-site inspections and quality checks.' },
+  { num: '08', title: 'Styling & Finishing Touches',         desc: 'Once the core construction is complete, we focus on the finishing touches like artwork and décor.' },
+  { num: '09', title: 'Project Delivery & Handover',         desc: 'After a walkthrough, your space is delivered—move-in ready—for you to enjoy.' },
+]
+
 const whyNivora = [
   { icon: User,          label: 'Personalized Design',      desc: 'Every space is crafted around your unique story.' },
   { icon: Layers,        label: 'Functional Planning',       desc: 'Smart layouts that work as beautifully as they look.' },
@@ -385,6 +397,85 @@ function Lightbox({ items, activeIndex, onClose, onPrev, onNext }: {
   )
 }
 
+// ─── TIMELINE CARD ───────────────────────────────────────────────────────────
+
+function TimelineCard({ step, index }: { step: typeof processSteps[0]; index: number }) {
+  const { ref, visible } = useReveal(0.12)
+  const isRight = index % 2 === 0
+
+  return (
+    <div
+      ref={ref}
+      className="res-tl-row"
+      style={{
+        display: 'flex',
+        justifyContent: isRight ? 'flex-start' : 'flex-end',
+        position: 'relative',
+        marginBottom: 0,
+        opacity: visible ? 1 : 0,
+        transform: visible
+          ? 'translateY(0)'
+          : `translateY(40px)`,
+        transition: `opacity 0.65s ease ${index * 100}ms, transform 0.65s cubic-bezier(0.16,1,0.3,1) ${index * 100}ms`,
+      }}
+    >
+      {/* Card */}
+      <div
+        className="res-tl-card"
+        style={{
+          width: 'calc(50% - 40px)',
+          background: '#fff',
+          borderRadius: 16,
+          padding: '1.75rem 1.75rem 1.85rem',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.07), 0 1px 6px rgba(0,0,0,0.04)',
+          border: '1px solid rgba(201,169,110,0.10)',
+          position: 'relative',
+        }}
+      >
+        {/* Gold step number */}
+        <p style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontWeight: 400,
+          fontSize: '1.05rem',
+          color: '#C9A96E',
+          letterSpacing: '0.06em',
+          marginBottom: '0.55rem',
+          lineHeight: 1,
+        }}>{step.num}</p>
+
+        {/* Title */}
+        <h3 style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontWeight: 400,
+          fontSize: 'clamp(1.1rem, 1.6vw, 1.35rem)',
+          color: '#1C2818',
+          lineHeight: 1.25,
+          marginBottom: '0.65rem',
+          letterSpacing: '0.01em',
+        }}>{step.title}</h3>
+
+        {/* Gold accent line */}
+        <div style={{
+          width: 28, height: 1,
+          background: 'linear-gradient(90deg, #C9A96E, transparent)',
+          marginBottom: '0.8rem',
+          opacity: 0.7,
+        }} />
+
+        {/* Description */}
+        <p style={{
+          fontFamily: "'Inter', sans-serif",
+          fontWeight: 300,
+          fontSize: 13,
+          color: 'rgba(28,40,24,0.55)',
+          lineHeight: 1.8,
+          margin: 0,
+        }}>{step.desc}</p>
+      </div>
+    </div>
+  )
+}
+
 // ─── WHY CARD ─────────────────────────────────────────────────────────────────
 
 function WhyCard({ icon: Icon, label, desc, index }: {
@@ -463,6 +554,33 @@ export default function ResidentialInteriors() {
         .res-gal-card:hover .res-gal-info { opacity: 1 !important; transform: translateY(0) !important; }
         .res-gal-img { transition: transform 0.65s cubic-bezier(0.16,1,0.3,1) !important; }
         .res-gal-card:hover .res-gal-img { transform: scale(1.07) !important; }
+
+        /* Timeline */
+        .res-tl-card {
+          transition: box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1) !important;
+        }
+        .res-tl-card:hover {
+          box-shadow: 0 12px 40px rgba(0,0,0,0.11), 0 3px 10px rgba(0,0,0,0.05) !important;
+          transform: translateY(-4px) !important;
+        }
+        /* Mobile timeline: single column left-aligned */
+        @media (max-width: 768px) {
+          .res-tl-row {
+            justify-content: flex-end !important;
+            padding-left: 36px !important;
+          }
+          .res-tl-row > div {
+            width: 100% !important;
+          }
+          .res-tl-line {
+            left: 12px !important;
+            transform: none !important;
+          }
+          .res-tl-diamonds {
+            left: 4px !important;
+            transform: none !important;
+          }
+        }
 
         /* Responsive grids */
         .res-exp-grid {
@@ -645,6 +763,101 @@ export default function ResidentialInteriors() {
             {expertise.map((e, i) => (
               <ExpertiseCard key={e.label} icon={e.icon} label={e.label} index={i} />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 3.5 · HOW WE DO IT ──────────────────────────────────── */}
+      <section style={{ backgroundColor: '#F7F4EF', padding: '96px 2rem' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+
+          {/* Header */}
+          <FadeIn>
+            <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+              <p style={{
+                fontFamily: "'Inter', sans-serif", fontWeight: 300,
+                fontSize: 10, letterSpacing: '0.44em', textTransform: 'uppercase',
+                color: '#9B7D4E', marginBottom: '0.85rem',
+              }}>The Process</p>
+              <h2 style={{
+                fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
+                fontSize: 'clamp(2rem, 3.5vw, 2.85rem)', color: '#1C2818',
+                lineHeight: 1.1, marginBottom: '1.1rem',
+              }}>How We Do It</h2>
+              <div style={{
+                width: 40, height: 1,
+                background: 'linear-gradient(90deg, transparent, #C9A96E, transparent)',
+                margin: '0 auto 1.25rem',
+              }} />
+              <p style={{
+                fontFamily: "'Inter', sans-serif", fontWeight: 300,
+                fontSize: 14, color: 'rgba(28,40,24,0.48)',
+                lineHeight: 1.85, maxWidth: 520, margin: '0 auto',
+              }}>
+                Our refined design journey transforms your vision into a beautifully crafted living space through a seamless and transparent process.
+              </p>
+            </div>
+          </FadeIn>
+
+          {/* Timeline */}
+          <div style={{ position: 'relative' }}>
+
+            {/* Vertical centre line */}
+            <div
+              className="res-tl-line"
+              style={{
+                position: 'absolute',
+                top: 0, bottom: 0,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: 1,
+                background: 'linear-gradient(to bottom, transparent, rgba(42,57,38,0.25) 8%, rgba(42,57,38,0.25) 92%, transparent)',
+                zIndex: 0,
+              }}
+            />
+
+            {/* Diamond dots — one per step */}
+            <div
+              className="res-tl-diamonds"
+              style={{
+                position: 'absolute',
+                top: 0, bottom: 0,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                zIndex: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                pointerEvents: 'none',
+              }}
+            >
+              {processSteps.map((_, i) => (
+                <div
+                  key={i}
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {/* Diamond */}
+                  <div style={{
+                    width: 10, height: 10,
+                    background: '#C9A96E',
+                    transform: 'rotate(45deg)',
+                    flexShrink: 0,
+                    boxShadow: '0 0 0 3px #F7F4EF, 0 0 0 4px rgba(201,169,110,0.35)',
+                  }} />
+                </div>
+              ))}
+            </div>
+
+            {/* Cards */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', position: 'relative', zIndex: 1 }}>
+              {processSteps.map((step, i) => (
+                <TimelineCard key={step.num} step={step} index={i} />
+              ))}
+            </div>
           </div>
         </div>
       </section>
