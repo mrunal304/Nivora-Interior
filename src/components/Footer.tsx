@@ -9,15 +9,60 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
 
           {/* Column 1 — Brand */}
-          <div className="pr-10 pb-12 lg:pb-0" style={{ borderRight: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="flex items-center gap-3 mb-4">
-              <img src="/logo.png" alt="NIVORA" className="h-11 w-11 object-contain brightness-0 invert" />
-              <div>
-                <span className="font-serif text-xl text-white tracking-wider">nivora</span>
-                <span className="block text-[9px] tracking-[0.35em] text-white/50 uppercase">interiors</span>
-              </div>
+          <div className="pr-10 pb-12 lg:pb-0 footer-brand-col" style={{ borderRight: '1px solid rgba(255,255,255,0.08)' }}>
+            <a
+              href="/"
+              className="footer-brand-logo-link"
+              style={{
+                display: 'inline-block',
+                marginBottom: '18px',
+                transition: 'transform 500ms ease',
+                textDecoration: 'none',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)' }}
+            >
+              <img
+                src="/nivora-logo-transparent.png"
+                alt="Nivora Interiors"
+                style={{
+                  width: '72px',
+                  height: 'auto',
+                  maxWidth: '180px',
+                  objectFit: 'contain',
+                  display: 'block',
+                  opacity: 0.98,
+                  filter: 'none',
+                  mixBlendMode: 'normal',
+                }}
+              />
+            </a>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginBottom: '16px' }}>
+              <span style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: '42px',
+                color: '#F7F4EF',
+                letterSpacing: '0.03em',
+                lineHeight: 1,
+                fontWeight: 300,
+              }}>nivora</span>
+              <span style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: '12px',
+                letterSpacing: '6px',
+                textTransform: 'uppercase',
+                color: 'rgba(247,244,239,0.65)',
+                fontWeight: 300,
+              }}>interiors</span>
             </div>
-            <p className="text-white/40 text-xs leading-relaxed font-light mb-6 max-w-[200px]">
+            <p style={{
+              color: 'rgba(255,255,255,0.40)',
+              fontSize: '12px',
+              lineHeight: 1.75,
+              fontWeight: 300,
+              marginBottom: '24px',
+              maxWidth: '220px',
+            }}>
               Thoughtful spaces designed<br />for refined living.
             </p>
             <a
