@@ -956,21 +956,28 @@ export default function Home() {
           .svc-card:hover .svc-card-overlay {
             opacity: 1;
           }
+          .svc-card-short-desc {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            max-height: 3em;
+            overflow: hidden;
+          }
+          .svc-card:hover .svc-card-short-desc {
+            opacity: 0;
+            transform: translateY(-6px);
+          }
           .svc-card-hover-desc {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 0 1.25rem 1.25rem;
-            z-index: 3;
             opacity: 0;
             transform: translateY(8px);
             transition: opacity 0.3s ease, transform 0.3s ease;
-            pointer-events: none;
+            max-height: 0;
+            overflow: hidden;
           }
           .svc-card:hover .svc-card-hover-desc {
             opacity: 1;
             transform: translateY(0);
+            max-height: 5em;
           }
           .svc-card-explore-text {
             position: relative;
@@ -1082,7 +1089,7 @@ export default function Home() {
                   }} />
                   {/* hover dark overlay */}
                   <div className="svc-card-overlay" />
-                  {/* title + short desc — always visible */}
+                  {/* single content block — no duplicate layers */}
                   <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.25rem 1.25rem 1rem', zIndex: 4 }}>
                     <h3 style={{
                       fontFamily: "'Cormorant Garamond', serif",
@@ -1090,9 +1097,10 @@ export default function Home() {
                       fontSize: '1.6rem',
                       color: '#f5f0e8',
                       lineHeight: 1.15,
-                      marginBottom: '0.3rem',
+                      marginBottom: '0.4rem',
+                      margin: '0 0 0.4rem 0',
                     }}>{s.title}</h3>
-                    <p style={{
+                    <p className="svc-card-short-desc" style={{
                       fontFamily: "'Inter', sans-serif",
                       fontWeight: 300,
                       fontSize: 11,
@@ -1100,10 +1108,7 @@ export default function Home() {
                       lineHeight: 1.5,
                       margin: 0,
                     }}>{s.desc.split('—')[0].trim()}</p>
-                  </div>
-                  {/* hover slide-up description */}
-                  <div className="svc-card-hover-desc">
-                    <p style={{
+                    <p className="svc-card-hover-desc" style={{
                       fontFamily: "'Cormorant Garamond', serif",
                       fontWeight: 300,
                       fontStyle: 'italic',
