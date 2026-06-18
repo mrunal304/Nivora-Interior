@@ -3,12 +3,52 @@ import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { ArrowRight, Home as HomeIcon, Building2, Coffee, Layers, Monitor, Gem, Wrench } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
 import ProcessSection from '../components/ProcessSection'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { projects } from '../data/projects'
 
 const heroImg = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1800&q=85'
-const beforeImg = 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&q=80'
-const afterImg = 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=900&q=80'
+const transformations = [
+  {
+    id: 1,
+    title: 'Living Room Refresh',
+    beforeImg: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80',
+    afterImg: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',
+    beforeDesc: 'Dark layout with limited functionality, heavy drapery and dated finishes that reduced natural light.',
+    afterDesc: 'Bright, airy interiors with custom joinery, layered lighting and a refined modern aesthetic.',
+  },
+  {
+    id: 2,
+    title: 'Master Bedroom Redesign',
+    beforeImg: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80',
+    afterImg: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=800&q=80',
+    beforeDesc: 'Generic finishes, sparse furniture and poor spatial planning that felt impersonal and flat.',
+    afterDesc: 'Warm textures, bespoke headboard, ambient lighting and a cohesive palette that feels like a boutique retreat.',
+  },
+  {
+    id: 3,
+    title: 'Kitchen Transformation',
+    beforeImg: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80',
+    afterImg: 'https://images.unsplash.com/photo-1556909045-9de404c69a78?w=800&q=80',
+    beforeDesc: 'Outdated cabinetry, inefficient workflow and ageing surfaces that lacked storage and style.',
+    afterDesc: 'Streamlined handleless cabinetry, stone countertops, integrated appliances and smart lighting throughout.',
+  },
+  {
+    id: 4,
+    title: 'Home Office Elevation',
+    beforeImg: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&q=80',
+    afterImg: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=800&q=80',
+    beforeDesc: 'A cluttered, uninspiring workspace with no acoustic treatment, poor ergonomics and no sense of identity.',
+    afterDesc: 'Tailored desk setup, concealed storage, warm wood tones and soundproofing for focused, elegant productivity.',
+  },
+  {
+    id: 5,
+    title: 'Dining Room Revival',
+    beforeImg: 'https://images.unsplash.com/photo-1562917994-8f8c50c59bb6?w=800&q=80',
+    afterImg: 'https://images.unsplash.com/photo-1616137422495-1e9e46e2aa77?w=800&q=80',
+    beforeDesc: 'A dated dining arrangement with mismatched furniture, poor lighting and no focal point.',
+    afterDesc: 'Statement dining table, pendant lighting, upholstered chairs and a curated art wall that anchors the room.',
+  },
+]
 
 const igPosts = [
   'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80',
@@ -327,104 +367,217 @@ function StatsSection() {
   )
 }
 
-function BeforeAfterSlider() {
-  const [pos, setPos] = useState(50)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const dragging = useRef(false)
+function TransformationCarousel() {
+  const [current, setCurrent] = useState(0)
+  const [isHovered, setIsHovered] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragStart, setDragStart] = useState(0)
+  const [dragDelta, setDragDelta] = useState(0)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const count = transformations.length
 
-  const update = (clientX: number) => {
-    if (!containerRef.current) return
-    const rect = containerRef.current.getBoundingClientRect()
-    const pct = ((clientX - rect.left) / rect.width) * 100
-    setPos(Math.max(5, Math.min(95, pct)))
-  }
+  const goTo = useCallback((idx: number) => {
+    setCurrent((idx + count) % count)
+  }, [count])
+
+  const startTimer = useCallback((interval = 4200) => {
+    if (timerRef.current) clearInterval(timerRef.current)
+    timerRef.current = setInterval(() => {
+      setCurrent(p => (p + 1) % count)
+    }, interval)
+  }, [count])
 
   useEffect(() => {
-    const move = (e: MouseEvent | TouchEvent) => {
-      if (!dragging.current) return
-      const x = 'touches' in e ? e.touches[0].clientX : e.clientX
-      update(x)
-    }
-    const up = () => { dragging.current = false }
-    window.addEventListener('mousemove', move)
-    window.addEventListener('touchmove', move as EventListener)
-    window.addEventListener('mouseup', up)
-    window.addEventListener('touchend', up)
-    return () => {
-      window.removeEventListener('mousemove', move)
-      window.removeEventListener('touchmove', move as EventListener)
-      window.removeEventListener('mouseup', up)
-      window.removeEventListener('touchend', up)
-    }
-  }, [])
+    if (!isHovered && !isDragging) startTimer()
+    else if (isHovered && !isDragging) startTimer(8000)
+    return () => { if (timerRef.current) clearInterval(timerRef.current) }
+  }, [isHovered, isDragging, startTimer])
+
+  const onDragStart = (clientX: number) => {
+    setIsDragging(true)
+    setDragStart(clientX)
+    setDragDelta(0)
+    if (timerRef.current) clearInterval(timerRef.current)
+  }
+  const onDragMove = (clientX: number) => {
+    if (!isDragging) return
+    setDragDelta(clientX - dragStart)
+  }
+  const onDragEnd = () => {
+    if (!isDragging) return
+    const threshold = 80
+    if (dragDelta < -threshold) goTo(current + 1)
+    else if (dragDelta > threshold) goTo(current - 1)
+    setIsDragging(false)
+    setDragDelta(0)
+    startTimer()
+  }
+
+  const slideW = trackRef.current ? trackRef.current.offsetWidth : 0
+  const translateX = -current * 100 + (slideW > 0 && isDragging ? (dragDelta / slideW) * 100 : 0)
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <div>
+      <style>{`
+        .trf-card { border-radius: 28px; background: #fff; box-shadow: 0 8px 48px rgba(38,36,33,0.09), 0 2px 12px rgba(38,36,33,0.05); overflow: hidden; user-select: none; }
+        .trf-img { transition: transform 700ms cubic-bezier(0.22,1,0.36,1); display: block; width: 100%; height: 100%; object-fit: cover; }
+        .trf-side:hover .trf-img { transform: scale(1.04); }
+        .trf-side { flex: 1; position: relative; overflow: hidden; height: 400px; }
+        .trf-tag {
+          position: absolute; top: 16px; left: 16px; z-index: 4;
+          font-family: 'Inter', sans-serif; font-weight: 400; font-size: 9px;
+          letter-spacing: 0.28em; text-transform: uppercase;
+          color: #C8A56A; background: rgba(250,248,244,0.9);
+          border: 1px solid rgba(200,165,106,0.6);
+          padding: 5px 12px; border-radius: 100px;
+          backdrop-filter: blur(4px);
+        }
+        .trf-dot {
+          width: 8px; height: 8px; border-radius: 50%;
+          background: #E8DED1; border: none; cursor: pointer; padding: 0;
+          transition: background 300ms ease, transform 300ms ease;
+        }
+        .trf-dot.active { background: #C8A56A; transform: scale(1.3); }
+        .trf-nav {
+          width: 44px; height: 44px; border-radius: 50%; border: 1px solid #E8DED1;
+          background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+          transition: border-color 250ms ease, background 250ms ease;
+        }
+        .trf-nav:hover { border-color: #C8A56A; background: #FAF8F4; }
+        .trf-desc-fade { opacity: 0; transform: translateY(12px); transition: opacity 500ms ease, transform 500ms ease; }
+        .trf-card:hover .trf-desc-fade { opacity: 1; transform: translateY(0); }
+      `}</style>
+
+      {/* Track */}
       <div
-        ref={containerRef}
-        style={{ width: '80%', maxWidth: 900, height: 500, position: 'relative', overflow: 'hidden', cursor: 'col-resize', userSelect: 'none', flexShrink: 0 }}
-        onMouseDown={e => { dragging.current = true; update(e.clientX) }}
-        onTouchStart={e => { dragging.current = true; update(e.touches[0].clientX) }}
+        ref={trackRef}
+        style={{ overflow: 'hidden', cursor: isDragging ? 'grabbing' : 'grab', borderRadius: 28 }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => { setIsHovered(false); if (isDragging) onDragEnd() }}
+        onMouseDown={e => onDragStart(e.clientX)}
+        onMouseMove={e => onDragMove(e.clientX)}
+        onMouseUp={onDragEnd}
+        onTouchStart={e => onDragStart(e.touches[0].clientX)}
+        onTouchMove={e => { e.preventDefault(); onDragMove(e.touches[0].clientX) }}
+        onTouchEnd={onDragEnd}
       >
-        <img src={afterImg} alt="After" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', width: `${pos}%` }}>
-          <img src={beforeImg} alt="Before" style={{ position: 'absolute', inset: 0, height: '100%', objectFit: 'cover', width: `${10000 / pos}%` }} />
+        <div style={{
+          display: 'flex',
+          transition: isDragging ? 'none' : 'transform 900ms cubic-bezier(0.4,0,0.2,1)',
+          transform: `translateX(${translateX}%)`,
+          willChange: 'transform',
+        }}>
+          {transformations.map((t) => (
+            <div key={t.id} style={{ minWidth: '100%', padding: '0 2px' }}>
+              <div className="trf-card">
+                {/* Images row */}
+                <div style={{ display: 'flex' }}>
+                  {/* Before */}
+                  <div className="trf-side" style={{ borderRight: '1px solid #F5F1EA' }}>
+                    <img src={t.beforeImg} alt={`Before — ${t.title}`} className="trf-img" loading="lazy" draggable={false} />
+                    <span className="trf-tag">Before</span>
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 55%, rgba(10,8,6,0.45) 100%)', pointerEvents: 'none', zIndex: 2 }} />
+                  </div>
+
+                  {/* Center divider */}
+                  <div style={{
+                    width: 64, flexShrink: 0, display: 'flex', flexDirection: 'column',
+                    alignItems: 'center', justifyContent: 'center', background: '#FAF8F4', gap: 10, zIndex: 3,
+                  }}>
+                    <div style={{ width: 1, flex: 1, background: 'linear-gradient(to bottom, transparent, #E8DED1 30%, #E8DED1 70%, transparent)' }} />
+                    <div style={{
+                      width: 38, height: 38, borderRadius: '50%', border: '1px solid #C8A56A',
+                      background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      boxShadow: '0 2px 12px rgba(200,165,106,0.2)', flexShrink: 0,
+                    }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A56A" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M5 12h14M13 6l6 6-6 6" />
+                      </svg>
+                    </div>
+                    <div style={{ width: 1, flex: 1, background: 'linear-gradient(to bottom, transparent, #E8DED1 30%, #E8DED1 70%, transparent)' }} />
+                  </div>
+
+                  {/* After */}
+                  <div className="trf-side" style={{ borderLeft: '1px solid #F5F1EA' }}>
+                    <img src={t.afterImg} alt={`After — ${t.title}`} className="trf-img" loading="lazy" draggable={false} />
+                    <span className="trf-tag" style={{ left: 'auto', right: 16, color: '#C8A56A' }}>After</span>
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 55%, rgba(10,8,6,0.45) 100%)', pointerEvents: 'none', zIndex: 2 }} />
+                  </div>
+                </div>
+
+                {/* Description block */}
+                <div style={{ padding: '2rem 2.5rem 2.25rem', borderTop: '1px solid #F5F1EA' }}>
+                  <h3 style={{
+                    fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
+                    fontSize: 'clamp(1.35rem, 2vw, 1.75rem)', color: '#262421',
+                    margin: '0 0 1.25rem', letterSpacing: '-0.01em',
+                  }}>{t.title}</h3>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem 2rem' }}>
+                    {/* Before desc */}
+                    <div>
+                      <p style={{
+                        fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 9,
+                        letterSpacing: '0.25em', textTransform: 'uppercase',
+                        color: 'rgba(38,36,33,0.35)', margin: '0 0 0.5rem',
+                      }}>Before</p>
+                      <p style={{
+                        fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 13.5,
+                        color: 'rgba(38,36,33,0.55)', lineHeight: 1.75, margin: 0,
+                      }}>{t.beforeDesc}</p>
+                    </div>
+                    {/* After desc */}
+                    <div>
+                      <p style={{
+                        fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 9,
+                        letterSpacing: '0.25em', textTransform: 'uppercase',
+                        color: '#C8A56A', margin: '0 0 0.5rem',
+                      }}>After</p>
+                      <p style={{
+                        fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 13.5,
+                        color: 'rgba(38,36,33,0.72)', lineHeight: 1.75, margin: 0,
+                      }}>{t.afterDesc}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-        {/* Divider line + handle */}
-        <div style={{ position: 'absolute', top: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', left: `${pos}%`, transform: 'translateX(-50%)', zIndex: 10 }}>
-          <div style={{ width: 2, height: '100%', backgroundColor: '#C9A96E', position: 'absolute' }} />
-          <div style={{
-            position: 'relative',
-            width: 40,
-            height: 40,
-            borderRadius: '50%',
-            backgroundColor: '#ffffff',
-            border: '1.5px solid #C9A96E',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 2px 12px rgba(0,0,0,0.18)',
-            gap: 2,
-          }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A96E" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 19l-7-7 7-7" />
-              <path d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
-        </div>
-        {/* Before label */}
-        <span style={{
-          position: 'absolute',
-          top: 12,
-          left: 12,
-          zIndex: 10,
-          fontFamily: "'Inter', sans-serif",
-          fontWeight: 300,
-          fontSize: 10,
-          letterSpacing: '2px',
-          textTransform: 'uppercase',
-          color: '#C9A96E',
-          backgroundColor: 'rgba(15,25,15,0.75)',
-          border: '1px solid #C9A96E',
-          padding: '5px 12px',
-        }}>Before</span>
-        {/* After label */}
-        <span style={{
-          position: 'absolute',
-          top: 12,
-          right: 12,
-          zIndex: 10,
-          fontFamily: "'Inter', sans-serif",
-          fontWeight: 300,
-          fontSize: 10,
-          letterSpacing: '2px',
-          textTransform: 'uppercase',
-          color: '#C9A96E',
-          backgroundColor: 'rgba(15,25,15,0.75)',
-          border: '1px solid #C9A96E',
-          padding: '5px 12px',
-        }}>After</span>
       </div>
+
+      {/* Controls row */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 24, marginTop: '2.25rem' }}>
+        {/* Prev */}
+        <button className="trf-nav" onClick={() => goTo(current - 1)} aria-label="Previous">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#262421" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 12H5M11 6l-6 6 6 6" />
+          </svg>
+        </button>
+
+        {/* Dots */}
+        <div style={{ display: 'flex', gap: 8 }}>
+          {transformations.map((_, i) => (
+            <button key={i} className={`trf-dot${i === current ? ' active' : ''}`} onClick={() => goTo(i)} aria-label={`Slide ${i + 1}`} />
+          ))}
+        </div>
+
+        {/* Next */}
+        <button className="trf-nav" onClick={() => goTo(current + 1)} aria-label="Next">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#262421" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Slide counter */}
+      <p style={{
+        textAlign: 'center', marginTop: '1rem',
+        fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 11,
+        letterSpacing: '0.2em', color: 'rgba(38,36,33,0.3)',
+      }}>
+        {String(current + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
+      </p>
     </div>
   )
 }
@@ -1257,16 +1410,37 @@ export default function Home() {
       {/* Process — Light Editorial Rebuild */}
       <ProcessSection />
 
-      {/* Before / After */}
-      <section className="py-32 px-6 max-w-6xl mx-auto">
-        <FadeIn className="text-center mb-12">
-          <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">The Transformation</p>
-          <h2 className="font-serif text-4xl md:text-5xl text-[#f5f0e8] font-light mb-4">Before & After</h2>
-          <p className="text-[#f5f0e8]/40 text-sm font-light">Drag the slider to see the difference</p>
-        </FadeIn>
-        <FadeIn delay={0.2}>
-          <BeforeAfterSlider />
-        </FadeIn>
+      {/* Before / After — Transformation Carousel */}
+      <section style={{ backgroundColor: '#FAF8F4', padding: '7rem 1.5rem' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          {/* Header */}
+          <FadeIn>
+            <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+              <p style={{
+                fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 10,
+                letterSpacing: '0.45em', textTransform: 'uppercase',
+                color: '#C8A56A', marginBottom: '1rem',
+              }}>Transformations</p>
+              <h2 style={{
+                fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
+                fontSize: 'clamp(2rem, 4vw, 3.25rem)',
+                color: '#262421', lineHeight: 1.1, marginBottom: '1rem',
+                letterSpacing: '-0.01em',
+              }}>Before &amp; After</h2>
+              <p style={{
+                fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 14,
+                color: 'rgba(38,36,33,0.5)', lineHeight: 1.85, margin: 0,
+              }}>
+                See how thoughtful design transforms spaces into refined living experiences.
+              </p>
+            </div>
+          </FadeIn>
+
+          {/* Carousel */}
+          <FadeIn delay={0.18}>
+            <TransformationCarousel />
+          </FadeIn>
+        </div>
       </section>
 
       {/* Portfolio Preview */}
