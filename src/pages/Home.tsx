@@ -460,72 +460,156 @@ function StatsSection() {
   )
 }
 
+function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afterImg: string; title: string }) {
+  const [pos, setPos] = useState(50)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const draggingRef = useRef(false)
+
+  const updatePos = (clientX: number) => {
+    if (!containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    const x = Math.max(2, Math.min(clientX - rect.left, rect.width - 2))
+    setPos((x / rect.width) * 100)
+  }
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    draggingRef.current = true
+    updatePos(e.clientX)
+    e.preventDefault()
+  }
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!draggingRef.current) return
+    updatePos(e.clientX)
+  }
+  const onMouseUp = () => { draggingRef.current = false }
+  const onTouchStart = (e: React.TouchEvent) => {
+    draggingRef.current = true
+    updatePos(e.touches[0].clientX)
+  }
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (!draggingRef.current) return
+    e.stopPropagation()
+    updatePos(e.touches[0].clientX)
+  }
+  const onTouchEnd = () => { draggingRef.current = false }
+
+  const labelStyle: React.CSSProperties = {
+    position: 'absolute',
+    bottom: 16,
+    zIndex: 6,
+    fontFamily: "'Montserrat', sans-serif",
+    fontWeight: 400,
+    fontSize: 9,
+    letterSpacing: '0.28em',
+    textTransform: 'uppercase',
+    color: '#C8A56A',
+    background: 'rgba(250,248,244,0.92)',
+    border: '1px solid rgba(200,165,106,0.55)',
+    padding: '5px 12px',
+    borderRadius: 100,
+    backdropFilter: 'blur(4px)',
+    pointerEvents: 'none',
+  }
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: 'clamp(300px, 42vw, 480px)',
+        overflow: 'hidden',
+        cursor: 'ew-resize',
+        userSelect: 'none',
+        touchAction: 'pan-y',
+      }}
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onMouseUp={onMouseUp}
+      onMouseLeave={onMouseUp}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
+      {/* After image — base layer */}
+      <img
+        src={afterImg}
+        alt={`After — ${title}`}
+        draggable={false}
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
+      />
+
+      {/* Before image — clipped to left of divider */}
+      <div style={{ position: 'absolute', inset: 0, clipPath: `inset(0 ${100 - pos}% 0 0)`, pointerEvents: 'none' }}>
+        <img
+          src={beforeImg}
+          alt={`Before — ${title}`}
+          draggable={false}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+        />
+      </div>
+
+      {/* Bottom gradient overlay */}
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 55%, rgba(10,8,6,0.38) 100%)', pointerEvents: 'none', zIndex: 3 }} />
+
+      {/* Divider line */}
+      <div style={{
+        position: 'absolute', top: 0, bottom: 0,
+        left: `${pos}%`, transform: 'translateX(-50%)',
+        width: 2,
+        background: 'rgba(255,255,255,0.88)',
+        pointerEvents: 'none',
+        zIndex: 4,
+        boxShadow: '0 0 8px rgba(0,0,0,0.25)',
+      }} />
+
+      {/* Drag handle */}
+      <div style={{
+        position: 'absolute',
+        top: '50%', left: `${pos}%`,
+        transform: 'translate(-50%, -50%)',
+        width: 46, height: 46,
+        borderRadius: '50%',
+        background: '#fff',
+        border: '2px solid rgba(200,165,106,0.85)',
+        boxShadow: '0 2px 18px rgba(0,0,0,0.22)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        pointerEvents: 'none',
+        zIndex: 5,
+      }}>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#C8A56A" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M8 5l-4 7 4 7M16 5l4 7-4 7" />
+        </svg>
+      </div>
+
+      {/* BEFORE label — bottom left */}
+      <span style={{ ...labelStyle, left: 16 }}>Before</span>
+      {/* AFTER label — bottom right */}
+      <span style={{ ...labelStyle, right: 16 }}>After</span>
+    </div>
+  )
+}
+
 function TransformationCarousel() {
   const [current, setCurrent] = useState(0)
-  const [isHovered, setIsHovered] = useState(false)
-  const [isDragging, setIsDragging] = useState(false)
-  const [dragStart, setDragStart] = useState(0)
-  const [dragDelta, setDragDelta] = useState(0)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const trackRef = useRef<HTMLDivElement>(null)
   const count = transformations.length
 
   const goTo = useCallback((idx: number) => {
     setCurrent((idx + count) % count)
   }, [count])
 
-  const startTimer = useCallback((interval = 4200) => {
-    if (timerRef.current) clearInterval(timerRef.current)
+  useEffect(() => {
     timerRef.current = setInterval(() => {
       setCurrent(p => (p + 1) % count)
-    }, interval)
-  }, [count])
-
-  useEffect(() => {
-    if (!isHovered && !isDragging) startTimer()
-    else if (isHovered && !isDragging) startTimer(8000)
+    }, 7000)
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
-  }, [isHovered, isDragging, startTimer])
-
-  const onDragStart = (clientX: number) => {
-    setIsDragging(true)
-    setDragStart(clientX)
-    setDragDelta(0)
-    if (timerRef.current) clearInterval(timerRef.current)
-  }
-  const onDragMove = (clientX: number) => {
-    if (!isDragging) return
-    setDragDelta(clientX - dragStart)
-  }
-  const onDragEnd = () => {
-    if (!isDragging) return
-    const threshold = 80
-    if (dragDelta < -threshold) goTo(current + 1)
-    else if (dragDelta > threshold) goTo(current - 1)
-    setIsDragging(false)
-    setDragDelta(0)
-    startTimer()
-  }
-
-  const slideW = trackRef.current ? trackRef.current.offsetWidth : 0
-  const translateX = -current * 100 + (slideW > 0 && isDragging ? (dragDelta / slideW) * 100 : 0)
+  }, [count])
 
   return (
     <div>
       <style>{`
-        .trf-card { border-radius: 28px; background: #fff; box-shadow: 0 8px 48px rgba(38,36,33,0.09), 0 2px 12px rgba(38,36,33,0.05); overflow: hidden; user-select: none; }
-        .trf-img { transition: transform 700ms cubic-bezier(0.22,1,0.36,1); display: block; width: 100%; height: 100%; object-fit: cover; }
-        .trf-side:hover .trf-img { transform: scale(1.04); }
-        .trf-side { flex: 1; position: relative; overflow: hidden; height: 400px; }
-        .trf-tag {
-          position: absolute; top: 16px; left: 16px; z-index: 4;
-          font-family: 'Inter', sans-serif; font-weight: 400; font-size: 9px;
-          letter-spacing: 0.28em; text-transform: uppercase;
-          color: #C8A56A; background: rgba(250,248,244,0.9);
-          border: 1px solid rgba(200,165,106,0.6);
-          padding: 5px 12px; border-radius: 100px;
-          backdrop-filter: blur(4px);
-        }
+        .trf-card { border-radius: 20px; background: #fff; box-shadow: 0 8px 48px rgba(38,36,33,0.09), 0 2px 12px rgba(38,36,33,0.05); overflow: hidden; }
         .trf-dot {
           width: 8px; height: 8px; border-radius: 50%;
           background: #E8DED1; border: none; cursor: pointer; padding: 0;
@@ -538,96 +622,49 @@ function TransformationCarousel() {
           transition: border-color 250ms ease, background 250ms ease;
         }
         .trf-nav:hover { border-color: #C8A56A; background: #FAF8F4; }
-        .trf-desc-fade { opacity: 0; transform: translateY(12px); transition: opacity 500ms ease, transform 500ms ease; }
-        .trf-card:hover .trf-desc-fade { opacity: 1; transform: translateY(0); }
       `}</style>
 
-      {/* Track */}
-      <div
-        ref={trackRef}
-        style={{ overflow: 'hidden', cursor: isDragging ? 'grabbing' : 'grab', borderRadius: 28 }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => { setIsHovered(false); if (isDragging) onDragEnd() }}
-        onMouseDown={e => onDragStart(e.clientX)}
-        onMouseMove={e => onDragMove(e.clientX)}
-        onMouseUp={onDragEnd}
-        onTouchStart={e => onDragStart(e.touches[0].clientX)}
-        onTouchMove={e => { e.preventDefault(); onDragMove(e.touches[0].clientX) }}
-        onTouchEnd={onDragEnd}
-      >
+      {/* Slide track */}
+      <div style={{ overflow: 'hidden', borderRadius: 20 }}>
         <div style={{
           display: 'flex',
-          transition: isDragging ? 'none' : 'transform 900ms cubic-bezier(0.4,0,0.2,1)',
-          transform: `translateX(${translateX}%)`,
+          transition: 'transform 800ms cubic-bezier(0.4,0,0.2,1)',
+          transform: `translateX(-${current * 100}%)`,
           willChange: 'transform',
         }}>
           {transformations.map((t) => (
             <div key={t.id} style={{ minWidth: '100%', padding: '0 2px' }}>
               <div className="trf-card">
-                {/* Images row */}
-                <div style={{ display: 'flex' }}>
-                  {/* Before */}
-                  <div className="trf-side" style={{ borderRight: '1px solid #F5F1EA' }}>
-                    <img src={t.beforeImg} alt={`Before — ${t.title}`} className="trf-img" loading="lazy" draggable={false} />
-                    <span className="trf-tag">Before</span>
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 55%, rgba(10,8,6,0.45) 100%)', pointerEvents: 'none', zIndex: 2 }} />
-                  </div>
-
-                  {/* Center divider */}
-                  <div style={{
-                    width: 64, flexShrink: 0, display: 'flex', flexDirection: 'column',
-                    alignItems: 'center', justifyContent: 'center', background: '#FAF8F4', gap: 10, zIndex: 3,
-                  }}>
-                    <div style={{ width: 1, flex: 1, background: 'linear-gradient(to bottom, transparent, #E8DED1 30%, #E8DED1 70%, transparent)' }} />
-                    <div style={{
-                      width: 38, height: 38, borderRadius: '50%', border: '1px solid #C8A56A',
-                      background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      boxShadow: '0 2px 12px rgba(200,165,106,0.2)', flexShrink: 0,
-                    }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A56A" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M5 12h14M13 6l6 6-6 6" />
-                      </svg>
-                    </div>
-                    <div style={{ width: 1, flex: 1, background: 'linear-gradient(to bottom, transparent, #E8DED1 30%, #E8DED1 70%, transparent)' }} />
-                  </div>
-
-                  {/* After */}
-                  <div className="trf-side" style={{ borderLeft: '1px solid #F5F1EA' }}>
-                    <img src={t.afterImg} alt={`After — ${t.title}`} className="trf-img" loading="lazy" draggable={false} />
-                    <span className="trf-tag" style={{ left: 'auto', right: 16, color: '#C8A56A' }}>After</span>
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 55%, rgba(10,8,6,0.45) 100%)', pointerEvents: 'none', zIndex: 2 }} />
-                  </div>
-                </div>
+                {/* Drag-to-reveal comparison slider */}
+                <CompareSlider beforeImg={t.beforeImg} afterImg={t.afterImg} title={t.title} />
 
                 {/* Description block */}
-                <div style={{ padding: '2rem 2.5rem 2.25rem', borderTop: '1px solid #F5F1EA' }}>
+                <div style={{ padding: '1.75rem 2.25rem 2rem', borderTop: '1px solid #F5F1EA' }}>
                   <h3 style={{
-                    fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
-                    fontSize: 'clamp(1.35rem, 2vw, 1.75rem)', color: '#262421',
-                    margin: '0 0 1.25rem', letterSpacing: '-0.01em',
+                    fontFamily: "'Playfair Display', serif", fontWeight: 400,
+                    fontSize: 'clamp(1.25rem, 2vw, 1.6rem)', color: '#262421',
+                    margin: '0 0 1.1rem', letterSpacing: '-0.01em',
                   }}>{t.title}</h3>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem 2rem' }}>
-                    {/* Before desc */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem 2rem' }}>
                     <div>
                       <p style={{
-                        fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 9,
+                        fontFamily: "'Montserrat', sans-serif", fontWeight: 400, fontSize: 9,
                         letterSpacing: '0.25em', textTransform: 'uppercase',
                         color: 'rgba(38,36,33,0.35)', margin: '0 0 0.5rem',
                       }}>Before</p>
                       <p style={{
-                        fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 13.5,
+                        fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 13.5,
                         color: 'rgba(38,36,33,0.55)', lineHeight: 1.75, margin: 0,
                       }}>{t.beforeDesc}</p>
                     </div>
-                    {/* After desc */}
                     <div>
                       <p style={{
-                        fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 9,
+                        fontFamily: "'Montserrat', sans-serif", fontWeight: 400, fontSize: 9,
                         letterSpacing: '0.25em', textTransform: 'uppercase',
                         color: '#C8A56A', margin: '0 0 0.5rem',
                       }}>After</p>
                       <p style={{
-                        fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 13.5,
+                        fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 13.5,
                         color: 'rgba(38,36,33,0.72)', lineHeight: 1.75, margin: 0,
                       }}>{t.afterDesc}</p>
                     </div>
@@ -641,21 +678,16 @@ function TransformationCarousel() {
 
       {/* Controls row */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 24, marginTop: '2.25rem' }}>
-        {/* Prev */}
         <button className="trf-nav" onClick={() => goTo(current - 1)} aria-label="Previous">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#262421" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M11 6l-6 6 6 6" />
           </svg>
         </button>
-
-        {/* Dots */}
         <div style={{ display: 'flex', gap: 8 }}>
           {transformations.map((_, i) => (
             <button key={i} className={`trf-dot${i === current ? ' active' : ''}`} onClick={() => goTo(i)} aria-label={`Slide ${i + 1}`} />
           ))}
         </div>
-
-        {/* Next */}
         <button className="trf-nav" onClick={() => goTo(current + 1)} aria-label="Next">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#262421" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
             <path d="M5 12h14M13 6l6 6-6 6" />
@@ -666,7 +698,7 @@ function TransformationCarousel() {
       {/* Slide counter */}
       <p style={{
         textAlign: 'center', marginTop: '1rem',
-        fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 11,
+        fontFamily: "'Montserrat', sans-serif", fontWeight: 300, fontSize: 11,
         letterSpacing: '0.2em', color: 'rgba(38,36,33,0.3)',
       }}>
         {String(current + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
@@ -1776,7 +1808,7 @@ export default function Home() {
                 color: '#C8A56A', marginBottom: '1rem',
               }}>Transformations</p>
               <h2 style={{
-                fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
+                fontFamily: "'Playfair Display', serif", fontWeight: 400,
                 fontSize: 'clamp(2rem, 4vw, 3.25rem)',
                 color: '#262421', lineHeight: 1.1, marginBottom: '1rem',
                 letterSpacing: '-0.01em',
