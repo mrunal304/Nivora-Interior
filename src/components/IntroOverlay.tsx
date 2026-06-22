@@ -56,7 +56,7 @@ export default function IntroOverlay() {
             position: 'fixed',
             inset: 0,
             zIndex: 9999,
-            backgroundColor: '#0A0A0A',
+            backgroundColor: '#21291a',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
