@@ -1214,23 +1214,25 @@ function TestimonialsCarousel() {
           transition: transform 0.25s ease;
         }
         .htc-read-more:hover .htc-arrow { transform: translateX(4px); }
-        .htc-dot {
-          width: 8px;
-          height: 8px;
+        .htc-nav {
+          flex-shrink: 0;
+          width: 44px;
+          height: 44px;
           border-radius: 50%;
-          border: 1.5px solid #a18661;
+          border: 1.5px solid rgba(161,134,97,0.35);
           background: transparent;
           cursor: pointer;
-          padding: 0;
-          transition: background 0.3s ease, transform 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #a18661;
+          transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
         }
-        .htc-dot:hover { transform: scale(1.15); }
-        .htc-dot.active {
-          background: #21291a;
-          border-color: #21291a;
-          transform: scale(1.3);
+        .htc-nav:hover {
+          border-color: #a18661;
+          background: rgba(161,134,97,0.1);
+          color: #c8a96e;
         }
-        .htc-dot.active:hover { transform: scale(1.3); }
       `}</style>
 
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px' }}>
@@ -1265,19 +1267,33 @@ function TestimonialsCarousel() {
           </p>
         </FadeIn>
 
-        {/* Card */}
-        <div style={{ overflow: 'hidden', maxWidth: 700, margin: '0 auto' }}>
+        {/* Card row: left-arrow + card + right-arrow */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20, maxWidth: 920, margin: '0 auto' }}>
+
+          {/* Left arrow */}
+          <button
+            className="htc-nav"
+            onClick={() => setCurrent((current - 1 + count) % count)}
+            aria-label="Previous testimonial"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M11 6l-6 6 6 6" />
+            </svg>
+          </button>
+
+          {/* Card */}
+          <div style={{ flex: 1, overflow: 'hidden' }}>
           <motion.div
             key={current}
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ opacity: 0, x: -30 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             style={{
               background: '#f5f2ed',
               border: '1.5px solid #21291a',
               borderRadius: 6,
-              padding: 'clamp(24px, 3.5vw, 40px) clamp(22px, 4vw, 48px)',
+              padding: 'clamp(20px, 2.5vw, 30px) clamp(24px, 4vw, 52px)',
               position: 'relative',
               overflow: 'hidden',
             }}
@@ -1341,9 +1357,9 @@ function TestimonialsCarousel() {
                 fontFamily: "'Lora', serif",
                 fontStyle: 'italic',
                 fontSize: 'clamp(17px, 2vw, 22px)',
-                lineHeight: 1.85,
+                lineHeight: 1.5,
                 color: '#2c2c2c',
-                margin: '0 0 32px',
+                margin: '0 0 24px',
                 maxWidth: '90%',
               }}>
                 "{t.text}"
@@ -1431,19 +1447,20 @@ function TestimonialsCarousel() {
 
             </div>
           </motion.div>
-        </div>
+          </div>{/* end flex:1 card wrapper */}
 
-        {/* Dots */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 28 }}>
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              className={`htc-dot${i === current ? ' active' : ''}`}
-              onClick={() => setCurrent(i)}
-              aria-label={`Go to testimonial ${i + 1}`}
-            />
-          ))}
-        </div>
+          {/* Right arrow */}
+          <button
+            className="htc-nav"
+            onClick={() => setCurrent((current + 1) % count)}
+            aria-label="Next testimonial"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </button>
+
+        </div>{/* end arrow-card-arrow row */}
 
         {/* Read all link */}
         <div style={{ textAlign: 'center', marginTop: 36 }}>
