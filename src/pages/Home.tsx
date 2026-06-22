@@ -106,7 +106,7 @@ const transformations = [
   {
     id: 5,
     title: 'Dining Room Revival',
-    beforeImg: 'https://images.unsplash.com/photo-1562917994-8f8c50c59bb6?w=800&q=80',
+    beforeImg: 'https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=800&q=80',
     afterImg: 'https://images.unsplash.com/photo-1616137422495-1e9e46e2aa77?w=800&q=80',
     beforeDesc: 'A dated dining arrangement with mismatched furniture, poor lighting and no focal point.',
     afterDesc: 'Statement dining table, pendant lighting, upholstered chairs and a curated art wall that anchors the room.',
