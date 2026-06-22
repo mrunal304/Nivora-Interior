@@ -1,110 +1,344 @@
-import FadeIn from '../components/FadeIn'
 import { Link } from 'react-router-dom'
-import { ArrowRight } from 'lucide-react'
+import FadeIn from '../components/FadeIn'
 
 const testimonials = [
   {
+    stars: 5,
     text: 'NIVORA completely transformed our apartment in Bandra. What struck us most was how well Shweta understood what we wanted before we could even articulate it ourselves. The final space feels like us — calm, warm, and beautifully considered.',
     name: 'Priya & Rohan Khanna',
     location: 'Bandra West, Mumbai',
-    project: 'Residential — 3BHK Apartment',
+    project: 'RESIDENTIAL — 3BHK APARTMENT',
+    initials: 'PK',
   },
   {
-    text: 'Our café has become one of the most photographed spots in Pune. Every corner was designed with intention. The team was professional, transparent, and genuinely talented. What they delivered exceeded everything we imagined.',
-    name: 'Aditya Shinde',
-    location: 'FC Road, Pune',
-    project: 'Commercial — Café Interior',
-  },
-  {
-    text: 'The process felt effortless from start to finish. We were kept informed at every stage, timelines were honoured, and the final result exceeded our expectations in every way. Our home now feels like a sanctuary.',
-    name: 'Meera & Vikram Patel',
-    location: 'Koregaon Park, Pune',
-    project: 'Residential — 4BHK Villa',
-  },
-  {
+    stars: 5,
     text: 'Shweta has an extraordinary ability to translate a vague feeling into a very precise space. We came to her with mood boards and half-formed ideas, and she turned them into a home that is exactly what we wanted — and more.',
     name: 'Ananya & Siddharth Mehta',
     location: 'Juhu, Mumbai',
-    project: 'Residential — Penthouse',
+    project: 'RESIDENTIAL — PENTHOUSE',
+    initials: 'AM',
   },
   {
-    text: 'Our showroom went from generic to extraordinary. The design draws people in from the street and makes them linger. We\'ve had multiple clients mention how beautiful the space is before they even look at the products.',
-    name: 'Kavya Nair',
-    location: 'Worli, Mumbai',
-    project: 'Commercial — Luxury Showroom',
-  },
-  {
-    text: 'The attention to detail is remarkable — from the way the light falls in the afternoon to the texture of every surface. It is clear that NIVORA treats every project as if it were their own home. Highly recommended.',
-    name: 'Rajesh & Sunita Joshi',
-    location: 'Aundh, Pune',
-    project: 'Residential — 3BHK Apartment',
-  },
-  {
+    stars: 5,
     text: 'Working with NIVORA on our co-working space was an excellent decision. They understood exactly what a creative workspace should feel like — productive but never sterile, professional but warm.',
     name: 'Nikhil Desai',
-    location: 'Hinjewadi, Pune',
-    project: 'Commercial — Co-working Space',
+    location: 'Winjuvadi, Pune',
+    project: 'COMMERCIAL — CO-WORKING SPACE',
+    initials: 'ND',
   },
   {
+    stars: 5,
+    text: 'Our café has become one of the most photographed spots in Pune. Every corner was designed with intention. The team was professional, transparent, and genuinely talented. What they delivered exceeded everything we imagined.',
+    name: 'Aditya Shinde',
+    location: 'FC Road, Pune',
+    project: 'COMMERCIAL — CAFE INTERIOR',
+    initials: 'AS',
+  },
+  {
+    stars: 5,
+    text: 'Our showroom went from generic to extraordinary. The design draws people in from the street and makes them linger. We have had multiple clients mention how beautiful the space is before they even look at the products.',
+    name: 'Kavya Nair',
+    location: 'Andheri, Mumbai',
+    project: 'COMMERCIAL — LUXURY SHOWROOM',
+    initials: 'KN',
+  },
+  {
+    stars: 5,
     text: 'The turnkey process was seamless. We handed over the keys and came back to a completed home that required no corrections, no touch-ups, and no follow-ups. That kind of reliability is rare.',
     name: 'Swati & Arjun Kulkarni',
-    location: 'Powai, Mumbai',
-    project: 'Residential — Studio Apartment',
-  },
-  {
-    text: 'Shweta has a quiet confidence that puts you immediately at ease. She knows exactly what she is doing, communicates it clearly, and delivers without drama. Our office is now something our team is genuinely proud of.',
-    name: 'Mihir Raval',
-    location: 'BKC, Mumbai',
-    project: 'Commercial — Corporate Office',
+    location: 'Thane, Mumbai',
+    project: 'RESIDENTIAL — STUDIO APARTMENT',
+    initials: 'SK',
   },
 ]
 
+const stats = [
+  { value: '50+', label: 'Projects Completed' },
+  { value: '5+', label: 'Years of Design Excellence' },
+  { value: '100%', label: 'On-Time Handover' },
+]
+
+function TestimonialCard({ t, delay }: { t: typeof testimonials[0]; delay: number }) {
+  return (
+    <FadeIn delay={delay}>
+      <div
+        className="testimonial-card"
+        style={{
+          background: 'rgba(255,255,255,0.05)',
+          border: '1px solid #a18661',
+          borderRadius: 8,
+          padding: 32,
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'relative',
+          transition: 'all 0.3s ease',
+        }}
+        onMouseEnter={e => {
+          const el = e.currentTarget as HTMLDivElement
+          el.style.borderColor = '#a18661'
+          el.style.borderWidth = '1.5px'
+          el.style.transform = 'translateY(-4px)'
+          el.style.background = 'rgba(161,134,97,0.08)'
+        }}
+        onMouseLeave={e => {
+          const el = e.currentTarget as HTMLDivElement
+          el.style.borderColor = '#a18661'
+          el.style.borderWidth = '1px'
+          el.style.transform = 'translateY(0)'
+          el.style.background = 'rgba(255,255,255,0.05)'
+        }}
+      >
+        {/* Decorative large quote mark */}
+        <span style={{
+          position: 'absolute',
+          top: 16,
+          right: 20,
+          fontSize: 64,
+          lineHeight: 1,
+          color: '#a18661',
+          fontFamily: "'Playfair Display', serif",
+          opacity: 0.35,
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}>"</span>
+
+        {/* Stars */}
+        <div style={{ fontSize: 14, color: '#a18661', letterSpacing: 2, marginBottom: 16 }}>
+          {'★'.repeat(t.stars)}
+        </div>
+
+        {/* Review text */}
+        <p style={{
+          fontFamily: "'Lora', serif",
+          fontStyle: 'italic',
+          fontSize: 16,
+          lineHeight: 1.8,
+          color: '#f5f2ed',
+          flex: 1,
+          marginBottom: 0,
+        }}>
+          "{t.text}"
+        </p>
+
+        {/* Divider */}
+        <div style={{
+          width: 40,
+          height: 1,
+          background: '#a18661',
+          margin: '20px 0',
+          flexShrink: 0,
+        }} />
+
+        {/* Client info */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{
+            width: 40,
+            height: 40,
+            borderRadius: '50%',
+            background: '#a18661',
+            color: '#21291a',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontFamily: "'Montserrat', sans-serif",
+            fontWeight: 700,
+            fontSize: 12,
+            flexShrink: 0,
+            letterSpacing: '0.5px',
+          }}>
+            {t.initials}
+          </div>
+          <div>
+            <p style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: 500,
+              fontSize: 14,
+              color: '#f5f2ed',
+              margin: 0,
+            }}>{t.name}</p>
+            <p style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: 11,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: '#a18661',
+              margin: '3px 0 0',
+            }}>{t.location}</p>
+            <p style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: 10,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: 'rgba(161,134,97,0.6)',
+              margin: '2px 0 0',
+            }}>{t.project}</p>
+          </div>
+        </div>
+      </div>
+    </FadeIn>
+  )
+}
+
 export default function Testimonials() {
   return (
-    <div className="bg-[#f5f0e8] pt-20 min-h-screen">
-      {/* Header */}
-      <section className="py-28 px-6 text-center max-w-3xl mx-auto">
+    <div style={{ background: '#21291a', minHeight: '100vh' }}>
+
+      {/* Page Hero */}
+      <section style={{ paddingTop: 140, paddingBottom: 60, textAlign: 'center', paddingLeft: 24, paddingRight: 24 }}>
         <FadeIn>
-          <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Client Stories</p>
-          <h1 className="font-serif text-5xl md:text-7xl text-[#3b4a35] font-light mb-6">What Clients Say</h1>
-          <p className="text-[#3a3a3a]/50 font-light leading-relaxed">
+          <p style={{
+            fontFamily: "'Montserrat', sans-serif",
+            fontSize: 11,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: '#a18661',
+            marginBottom: 16,
+          }}>Client Stories</p>
+          <h1 style={{
+            fontFamily: "'Playfair Display', serif",
+            fontWeight: 400,
+            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+            color: '#f5f2ed',
+            margin: '0 0 20px',
+            lineHeight: 1.1,
+          }}>What Clients Say</h1>
+          <p style={{
+            fontFamily: "'Lora', serif",
+            fontWeight: 300,
+            fontSize: 15,
+            color: 'rgba(245,242,237,0.6)',
+            maxWidth: 560,
+            margin: '0 auto',
+            lineHeight: 1.75,
+          }}>
             Every project is a relationship. These are the words of people who trusted us with their spaces.
           </p>
         </FadeIn>
       </section>
 
-      {/* Grid */}
-      <section className="max-w-7xl mx-auto px-6 pb-32">
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+      {/* Cards Grid */}
+      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 24px 80px' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 24,
+        }}
+          className="testi-grid"
+        >
+          <style>{`
+            @media (max-width: 1024px) {
+              .testi-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            }
+            @media (max-width: 640px) {
+              .testi-grid { grid-template-columns: 1fr !important; }
+            }
+          `}</style>
           {testimonials.map((t, i) => (
-            <FadeIn key={i} delay={(i % 3) * 0.1} className="break-inside-avoid">
-              <div className="bg-[#ede8df] p-8 border-l-2 border-[#b8966a]/30 hover:border-[#b8966a] transition-all duration-500">
-                <p className="font-serif text-lg text-[#3b4a35]/80 leading-relaxed font-light mb-8">
-                  "{t.text}"
-                </p>
-                <div>
-                  <p className="text-[#3b4a35] text-sm font-light tracking-wide">{t.name}</p>
-                  <p className="text-[#3a3a3a]/40 text-xs tracking-wider mt-1">{t.location}</p>
-                  <p className="text-[#b8966a] text-[10px] tracking-[0.2em] uppercase mt-2">{t.project}</p>
-                </div>
-              </div>
-            </FadeIn>
+            <TestimonialCard key={i} t={t} delay={(i % 3) * 0.12} />
           ))}
         </div>
+      </section>
 
-        <FadeIn className="text-center mt-24">
-          <div className="bg-[#3b4a35] py-20 px-6">
-            <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Your Turn</p>
-            <h2 className="font-serif text-4xl text-[#f5f0e8] font-light mb-6">
-              Ready to create your story?
-            </h2>
-            <Link
-              to="/quote"
-              className="inline-flex items-center gap-2 bg-[#b8966a] text-[#3b4a35] text-xs tracking-[0.2em] uppercase px-12 py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium"
-            >
-              Book Free Consultation <ArrowRight size={13} />
-            </Link>
-          </div>
+      {/* Stats Bar */}
+      <section style={{ background: '#5f745e', padding: '64px 24px' }}>
+        <div style={{
+          maxWidth: 900,
+          margin: '0 auto',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 0,
+          flexWrap: 'wrap',
+        }}
+          className="stats-bar"
+        >
+          <style>{`
+            .stats-bar-item + .stats-bar-item {
+              border-left: 1px solid rgba(245,242,237,0.2);
+            }
+            @media (max-width: 640px) {
+              .stats-bar { flex-direction: column !important; }
+              .stats-bar-item + .stats-bar-item {
+                border-left: none !important;
+                border-top: 1px solid rgba(245,242,237,0.2);
+              }
+            }
+          `}</style>
+          {stats.map((s, i) => (
+            <div key={i} className="stats-bar-item" style={{ flex: 1, textAlign: 'center', padding: '16px 40px', minWidth: 180 }}>
+              <p style={{
+                fontFamily: "'Playfair Display', serif",
+                fontWeight: 400,
+                fontSize: 'clamp(2rem, 4vw, 3rem)',
+                color: '#f5f2ed',
+                margin: '0 0 8px',
+                lineHeight: 1,
+              }}>{s.value}</p>
+              <p style={{
+                fontFamily: "'Montserrat', sans-serif",
+                fontWeight: 400,
+                fontSize: 11,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: 'rgba(245,242,237,0.7)',
+                margin: 0,
+              }}>{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section style={{ background: '#21291a', padding: '80px 24px', textAlign: 'center' }}>
+        <FadeIn>
+          <h2 style={{
+            fontFamily: "'Playfair Display', serif",
+            fontWeight: 400,
+            fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
+            color: '#f5f2ed',
+            margin: '0 0 16px',
+          }}>Ready to transform your space?</h2>
+          <p style={{
+            fontFamily: "'Lora', serif",
+            fontWeight: 300,
+            fontSize: 15,
+            color: 'rgba(245,242,237,0.6)',
+            maxWidth: 480,
+            margin: '0 auto 40px',
+            lineHeight: 1.75,
+          }}>
+            Claim your Free Layout Consultation today and let us start building your dream.
+          </p>
+          <Link
+            to="/quote"
+            style={{
+              display: 'inline-block',
+              background: '#a18661',
+              color: '#f5f2ed',
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: 500,
+              fontSize: 12,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              padding: '16px 40px',
+              borderRadius: 4,
+              textDecoration: 'none',
+              transition: 'background 0.3s ease, transform 0.3s ease',
+            }}
+            onMouseEnter={e => {
+              const el = e.currentTarget as HTMLAnchorElement
+              el.style.background = '#b8986f'
+              el.style.transform = 'translateY(-2px)'
+            }}
+            onMouseLeave={e => {
+              const el = e.currentTarget as HTMLAnchorElement
+              el.style.background = '#a18661'
+              el.style.transform = 'translateY(0)'
+            }}
+          >
+            Claim My Free Offer Now
+          </Link>
         </FadeIn>
       </section>
     </div>

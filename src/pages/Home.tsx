@@ -186,22 +186,28 @@ const services = [
 
 const testimonials = [
   {
-    text: 'NIVORA completely transformed our apartment. What struck us most was how well Shweta understood what we wanted before we could even articulate it ourselves.',
-    name: 'Priya & Rohan K.',
-    location: 'Bandra, Mumbai',
-    initials: 'PR',
+    stars: 5,
+    text: 'NIVORA completely transformed our apartment in Bandra. What struck us most was how well Shweta understood what we wanted before we could even articulate it ourselves. The final space feels like us — calm, warm, and beautifully considered.',
+    name: 'Priya & Rohan Khanna',
+    location: 'Bandra West, Mumbai',
+    project: 'RESIDENTIAL — 3BHK APARTMENT',
+    initials: 'PK',
   },
   {
-    text: 'Our café has become one of the most photographed spots in Pune. Every corner was designed with intention. The team was professional, transparent, and genuinely talented.',
-    name: 'Aditya S.',
-    location: 'FC Road, Pune',
-    initials: 'AS',
+    stars: 5,
+    text: 'Shweta has an extraordinary ability to translate a vague feeling into a very precise space. We came to her with mood boards and half-formed ideas, and she turned them into a home that is exactly what we wanted — and more.',
+    name: 'Ananya & Siddharth Mehta',
+    location: 'Juhu, Mumbai',
+    project: 'RESIDENTIAL — PENTHOUSE',
+    initials: 'AM',
   },
   {
-    text: 'The process felt effortless from start to finish. We were kept informed at every stage, and the final result exceeded our expectations in every way.',
-    name: 'Meera & Vikram P.',
-    location: 'Koregaon Park, Pune',
-    initials: 'MV',
+    stars: 5,
+    text: 'Working with NIVORA on our co-working space was an excellent decision. They understood exactly what a creative workspace should feel like — productive but never sterile, professional but warm.',
+    name: 'Nikhil Desai',
+    location: 'Winjuvadi, Pune',
+    project: 'COMMERCIAL — CO-WORKING SPACE',
+    initials: 'ND',
   },
 ]
 
@@ -1700,120 +1706,179 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="pt-32 pb-16 px-6 max-w-7xl mx-auto">
+      <section style={{ background: '#21291a', padding: '80px 0' }}>
         <style>{`
-          .testi-read-more {
+          .home-testi-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid #a18661;
+            border-radius: 8px;
+            padding: 32px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.3s ease;
+          }
+          .home-testi-card:hover {
+            border-width: 1.5px;
+            transform: translateY(-4px);
+            background: rgba(161,134,97,0.08);
+          }
+          .home-testi-read-more {
             position: relative;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 300;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
             font-size: 13px;
-            letter-spacing: 2px;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: #C9A96E;
+            color: #a18661;
             text-decoration: none;
             transition: color 0.25s ease;
           }
-          .testi-read-more::after {
+          .home-testi-read-more::after {
             content: '';
             position: absolute;
             bottom: -2px;
             left: 0;
             width: 0;
             height: 1px;
-            background: #C9A96E;
-            transition: width 0.25s ease;
+            background: #a18661;
+            transition: width 0.3s ease;
           }
-          .testi-read-more:hover::after {
-            width: 100%;
-          }
+          .home-testi-read-more:hover::after { width: 100%; }
         `}</style>
-        <FadeIn className="text-center mb-16">
-          <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Client Stories</p>
-          <h2 className="font-serif text-4xl md:text-5xl text-[#f5f0e8] font-light">What Clients Say</h2>
-        </FadeIn>
-        <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((t, i) => (
-            <FadeIn key={i} delay={i * 0.15}>
-              <div style={{
-                border: '1px solid rgba(201,169,110,0.25)',
-                backgroundColor: 'rgba(255,255,255,0.05)',
-                padding: '2rem',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                transition: 'border-color 0.5s ease',
-              }}
-                onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(201,169,110,0.5)')}
-                onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(201,169,110,0.25)')}
-              >
-                {/* 5 gold stars */}
-                <div style={{ marginBottom: 16, letterSpacing: 2, fontSize: 13, color: '#C9A96E' }}>
-                  ★★★★★
-                </div>
-                {/* Quote */}
-                <p style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: '1.15rem',
-                  fontWeight: 300,
-                  color: 'rgba(245,240,232,0.82)',
-                  lineHeight: 1.8,
-                  flex: 1,
-                  marginBottom: '1.75rem',
-                }}>
-                  "{t.text}"
-                </p>
-                {/* Name + location + avatar */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                  {/* Initials avatar */}
-                  <div style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: '50%',
-                    border: '1px solid #C9A96E',
-                    backgroundColor: '#2E4A30',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                    fontFamily: "'Inter', sans-serif",
-                    fontWeight: 400,
-                    fontSize: 10,
-                    letterSpacing: '0.5px',
-                    color: '#C9A96E',
+
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+          <FadeIn className="text-center" style={{ marginBottom: 56 }}>
+            <p style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: 11,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#a18661',
+              marginBottom: 14,
+            }}>Client Stories</p>
+            <h2 style={{
+              fontFamily: "'Playfair Display', serif",
+              fontWeight: 400,
+              fontSize: 'clamp(2rem, 5vw, 3.2rem)',
+              color: '#f5f2ed',
+              margin: '0 0 16px',
+            }}>What Clients Say</h2>
+            <p style={{
+              fontFamily: "'Lora', serif",
+              fontWeight: 300,
+              fontSize: 15,
+              color: 'rgba(245,242,237,0.6)',
+              maxWidth: 520,
+              margin: '0 auto',
+              lineHeight: 1.75,
+            }}>
+              Every project is a relationship. These are the words of people who trusted us with their spaces.
+            </p>
+          </FadeIn>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24 }} className="home-testi-grid">
+            <style>{`
+              @media (max-width: 1024px) { .home-testi-grid { grid-template-columns: repeat(2,1fr) !important; } }
+              @media (max-width: 640px) { .home-testi-grid { grid-template-columns: 1fr !important; } }
+            `}</style>
+            {testimonials.map((t, i) => (
+              <FadeIn key={i} delay={i * 0.12}>
+                <div className="home-testi-card">
+                  {/* Decorative quote mark */}
+                  <span style={{
+                    position: 'absolute',
+                    top: 14,
+                    right: 18,
+                    fontSize: 60,
+                    lineHeight: 1,
+                    color: '#a18661',
+                    fontFamily: "'Playfair Display', serif",
+                    opacity: 0.3,
+                    pointerEvents: 'none',
+                    userSelect: 'none',
+                  }}>"</span>
+
+                  {/* Stars */}
+                  <div style={{ fontSize: 14, color: '#a18661', letterSpacing: 2, marginBottom: 16 }}>
+                    {'★'.repeat(t.stars)}
+                  </div>
+
+                  {/* Review */}
+                  <p style={{
+                    fontFamily: "'Lora', serif",
+                    fontStyle: 'italic',
+                    fontSize: 16,
+                    lineHeight: 1.8,
+                    color: '#f5f2ed',
+                    flex: 1,
+                    margin: 0,
                   }}>
-                    {t.initials}
-                  </div>
-                  <div>
-                    <p style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontWeight: 400,
-                      fontSize: 13,
-                      color: '#C9A96E',
-                      margin: 0,
-                    }}>{t.name}</p>
-                    <p style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontWeight: 300,
-                      fontSize: 10,
-                      letterSpacing: '1.5px',
-                      textTransform: 'uppercase',
-                      color: 'rgba(245,240,232,0.3)',
-                      margin: '3px 0 0',
-                    }}>{t.location}</p>
+                    "{t.text}"
+                  </p>
+
+                  {/* Divider */}
+                  <div style={{ width: 40, height: 1, background: '#a18661', margin: '20px 0', flexShrink: 0 }} />
+
+                  {/* Client info */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: '50%',
+                      background: '#a18661',
+                      color: '#21291a',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontFamily: "'Montserrat', sans-serif",
+                      fontWeight: 700,
+                      fontSize: 12,
+                      flexShrink: 0,
+                    }}>
+                      {t.initials}
+                    </div>
+                    <div>
+                      <p style={{
+                        fontFamily: "'Montserrat', sans-serif",
+                        fontWeight: 500,
+                        fontSize: 14,
+                        color: '#f5f2ed',
+                        margin: 0,
+                      }}>{t.name}</p>
+                      <p style={{
+                        fontFamily: "'Montserrat', sans-serif",
+                        fontSize: 11,
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        color: '#a18661',
+                        margin: '3px 0 0',
+                      }}>{t.location}</p>
+                      <p style={{
+                        fontFamily: "'Montserrat', sans-serif",
+                        fontSize: 10,
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase',
+                        color: 'rgba(161,134,97,0.55)',
+                        margin: '2px 0 0',
+                      }}>{t.project}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </FadeIn>
-          ))}
+              </FadeIn>
+            ))}
+          </div>
+
+          <FadeIn delay={0.35} className="text-center" style={{ marginTop: 48 }}>
+            <Link to="/testimonials" className="home-testi-read-more">
+              Read All Client Stories <ArrowRight size={12} />
+            </Link>
+          </FadeIn>
         </div>
-        <FadeIn delay={0.3} className="text-center mt-12">
-          <Link to="/testimonials" className="testi-read-more">
-            Read More Stories <ArrowRight size={12} />
-          </Link>
-        </FadeIn>
       </section>
 
       {/* Instagram */}
