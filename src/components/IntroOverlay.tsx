@@ -94,6 +94,68 @@ export default function IntroOverlay() {
                   }}
                 />
 
+                {/* Golden arc rings */}
+                <style>{`
+                  @keyframes nivoraDrawRingInner {
+                    0%   { stroke-dasharray: 0 9999; opacity: 0.6; }
+                    10%  { opacity: 0.6; }
+                    100% { stroke-dasharray: 9999 0; opacity: 0.35; }
+                  }
+                  @keyframes nivoraDrawRingOuter {
+                    0%   { stroke-dasharray: 0 9999; opacity: 0.6; }
+                    10%  { opacity: 0.6; }
+                    100% { stroke-dasharray: 9999 0; opacity: 0.35; }
+                  }
+                  @media (max-width: 768px) {
+                    .nivora-rings { width: 280px !important; height: 280px !important; }
+                  }
+                `}</style>
+                <div
+                  className="nivora-rings"
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 'clamp(280px, 42vw, 420px)',
+                    height: 'clamp(280px, 42vw, 420px)',
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                  }}
+                >
+                  <svg
+                    viewBox="0 0 420 420"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }}
+                  >
+                    <circle
+                      cx="210" cy="210" r="200"
+                      fill="none"
+                      stroke="#C9A96E"
+                      strokeWidth="0.8"
+                      strokeLinecap="round"
+                      style={{
+                        strokeDasharray: '0 9999',
+                        opacity: 0,
+                        animation: 'nivoraDrawRingOuter 900ms ease-out 450ms forwards',
+                      }}
+                    />
+                    <circle
+                      cx="210" cy="210" r="160"
+                      fill="none"
+                      stroke="#C9A96E"
+                      strokeWidth="0.8"
+                      strokeLinecap="round"
+                      style={{
+                        strokeDasharray: '0 9999',
+                        opacity: 0,
+                        animation: 'nivoraDrawRingInner 800ms ease-out 300ms forwards',
+                      }}
+                    />
+                  </svg>
+                </div>
+
                 {/* Official logo — white pixels removed via canvas */}
                 <img
                   src={logoSrc}

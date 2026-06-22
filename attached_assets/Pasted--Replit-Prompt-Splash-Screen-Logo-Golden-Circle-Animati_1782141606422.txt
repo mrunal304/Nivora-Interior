@@ -1,0 +1,150 @@
+# Replit Prompt — Splash Screen Logo: Golden Circle Animation
+
+## WHAT TO CHANGE
+
+Find the **splash/intro screen** — the dark green fullscreen screen that shows at the very beginning with the "nivora INTERIORS" logo in the center before the main website loads.
+
+Add a decorative golden circle/arc animation around the logo that makes it feel premium and highlighted.
+
+---
+
+## ANIMATION TO ADD
+
+Around the centered logo, add **two thin golden arc rings** that animate in alongside the logo reveal:
+
+### Visual Description
+- Two concentric thin circles centered exactly on the logo
+- Inner circle: slightly tighter around the logo (~160px radius or adjust to fit logo size)
+- Outer circle: slightly larger (~200px radius)
+- Color: same gold as the logo text — use `#C9A96E` or `#B8945A` (match existing gold exactly)
+- Stroke width: 0.8px (very thin, elegant)
+- Both circles are SVG strokes, transparent fill
+
+### Animation Sequence (total ~1.8s)
+
+**Step 1 — Logo fades in (existing animation, keep as-is)**
+
+**Step 2 — Inner arc draws itself (stroke-dasharray trick):**
+- Starts at 0% drawn → draws to 100% (full circle)
+- Duration: 800ms
+- Easing: ease-out
+- Delay: start when logo is ~50% visible (approx 300ms after logo starts)
+- Direction: clockwise from top (12 o'clock position)
+
+**Step 3 — Outer arc draws itself:**
+- Same stroke-dasharray animation
+- Duration: 900ms
+- Delay: 150ms after inner arc starts (slight stagger)
+- Easing: ease-out
+
+**Step 4 — Both arcs fade out gently as splash exits:**
+- When splash screen fades out, arcs fade with it (no extra work needed if they're inside the splash container)
+
+---
+
+## IMPLEMENTATION
+
+Add this SVG overlay inside the splash screen container, centered on the logo:
+
+```html
+<!-- Inside splash screen div, as a sibling to the logo -->
+<div class="logo-rings" aria-hidden="true">
+  <svg viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg">
+    <!-- Outer ring -->
+    <circle
+      class="ring ring-outer"
+      cx="210" cy="210" r="200"
+      fill="none"
+      stroke="#C9A96E"
+      stroke-width="0.8"
+      stroke-linecap="round"
+    />
+    <!-- Inner ring -->
+    <circle
+      class="ring ring-inner"
+      cx="210" cy="210" r="160"
+      fill="none"
+      stroke="#C9A96E"
+      stroke-width="0.8"
+      stroke-linecap="round"
+    />
+  </svg>
+</div>
+```
+
+```css
+.logo-rings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  height: 420px;
+  pointer-events: none;
+  z-index: 1; /* behind logo z-index if logo is higher */
+}
+
+.logo-rings svg {
+  width: 100%;
+  height: 100%;
+  /* Rotate so animation starts from 12 o'clock */
+  transform: rotate(-90deg);
+}
+
+.ring {
+  stroke-dasharray: 0 9999;
+  opacity: 0;
+}
+
+.ring-inner {
+  animation: drawRing 800ms ease-out 300ms forwards;
+}
+
+.ring-outer {
+  animation: drawRing 900ms ease-out 450ms forwards;
+}
+
+@keyframes drawRing {
+  0% {
+    stroke-dasharray: 0 9999;
+    opacity: 0.6;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  100% {
+    stroke-dasharray: 9999 0;
+    opacity: 0.35;
+  }
+}
+```
+
+**Final opacity of rings = 0.35** — subtle, not overwhelming. Rings are decorative, logo stays the hero.
+
+---
+
+## SIZING NOTES
+
+- Adjust the SVG `r` (radius) values to match your actual logo dimensions
+- Logo width approx — inner ring should be ~30px outside the logo bounding box on each side
+- If logo is smaller/larger, scale the SVG `width`/`height` and `r` proportionally
+- On mobile (< 768px): reduce SVG to `280px × 280px` and adjust `r` accordingly
+
+```css
+@media (max-width: 768px) {
+  .logo-rings {
+    width: 280px;
+    height: 280px;
+  }
+  /* Also adjust r values in SVG or use a separate mobile SVG */
+}
+```
+
+---
+
+## DO NOT CHANGE
+- Logo image, size, color, or position
+- Splash screen background color (dark green)
+- Existing logo fade-in animation timing
+- Any transition from splash screen to main site
+- Anything outside the splash screen component
