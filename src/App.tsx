@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import WhatsAppButton from './components/WhatsAppButton'
@@ -37,26 +38,37 @@ function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const [introDone, setIntroDone] = useState(() => {
+    return !!(sessionStorage.getItem('nivoraVisited') || window.location.pathname !== '/')
+  })
+
   return (
     <BrowserRouter>
-      <IntroOverlay />
+      <IntroOverlay onExitComplete={() => setIntroDone(true)} />
       <ConsultationPopup />
-      <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<Layout><Home /></Layout>} />
-        <Route path="/portfolio" element={<Layout><Portfolio /></Layout>} />
-        <Route path="/portfolio/:id" element={<Layout><ProjectDetail /></Layout>} />
-        <Route path="/services" element={<Layout><Services /></Layout>} />
-        <Route path="/services/residential/enquiry" element={<Layout><ResidentialEnquiry /></Layout>} />
-        <Route path="/services/residential" element={<Layout><ResidentialInteriors /></Layout>} />
-        <Route path="/services/commercial" element={<Layout><CommercialInteriors /></Layout>} />
-        <Route path="/services/:category" element={<Layout><ServiceCategory /></Layout>} />
-        <Route path="/about" element={<Layout><About /></Layout>} />
-        <Route path="/testimonials" element={<Layout><Testimonials /></Layout>} />
-        <Route path="/contact" element={<Layout><Contact /></Layout>} />
-        <Route path="/quote" element={<Layout><Quote /></Layout>} />
-        <Route path="/thank-you" element={<Layout><ThankYou /></Layout>} />
-      </Routes>
+      <motion.div
+        initial={false}
+        animate={{ x: introDone ? 0 : '100%' }}
+        transition={{ duration: 0.7, ease: [0.65, 0, 0.35, 1] }}
+        style={{ overflowX: 'hidden', minHeight: '100vh' }}
+      >
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<Layout><Home /></Layout>} />
+          <Route path="/portfolio" element={<Layout><Portfolio /></Layout>} />
+          <Route path="/portfolio/:id" element={<Layout><ProjectDetail /></Layout>} />
+          <Route path="/services" element={<Layout><Services /></Layout>} />
+          <Route path="/services/residential/enquiry" element={<Layout><ResidentialEnquiry /></Layout>} />
+          <Route path="/services/residential" element={<Layout><ResidentialInteriors /></Layout>} />
+          <Route path="/services/commercial" element={<Layout><CommercialInteriors /></Layout>} />
+          <Route path="/services/:category" element={<Layout><ServiceCategory /></Layout>} />
+          <Route path="/about" element={<Layout><About /></Layout>} />
+          <Route path="/testimonials" element={<Layout><Testimonials /></Layout>} />
+          <Route path="/contact" element={<Layout><Contact /></Layout>} />
+          <Route path="/quote" element={<Layout><Quote /></Layout>} />
+          <Route path="/thank-you" element={<Layout><ThankYou /></Layout>} />
+        </Routes>
+      </motion.div>
     </BrowserRouter>
   )
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 function useTransparentLogo(src: string) {
@@ -19,8 +19,6 @@ function useTransparentLogo(src: string) {
         const r = data[i]
         const g = data[i + 1]
         const b = data[i + 2]
-        // Remove neutral bright pixels (white/gray background & shadows).
-        // Check color-neutrality (r≈g≈b) so gold logo pixels are never removed.
         const isNeutral = Math.abs(r - g) < 28 && Math.abs(g - b) < 28
         const isBright = r > 170 && g > 160 && b > 150
         if (isNeutral && isBright) {
@@ -36,82 +34,87 @@ function useTransparentLogo(src: string) {
   return logoSrc
 }
 
-export default function IntroOverlay() {
+export default function IntroOverlay({ onExitComplete }: { onExitComplete?: () => void }) {
   const isHome = window.location.pathname === '/'
   const [visible, setVisible] = useState(isHome)
   const logoSrc = useTransparentLogo('/nivora-logo.png')
 
-  if (!visible) return null
-
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          key="intro-overlay"
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.0, ease: [0.76, 0, 0.24, 1] }}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 9999,
-            backgroundColor: '#21291a',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <AnimatePresence>
-            {logoSrc && (
-              <motion.div
-                key="logo"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-                onAnimationComplete={() => {
-                  setTimeout(() => setVisible(false), 1000)
-                }}
-                style={{
-                  position: 'relative',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {/* Ambient gold glow */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 1.4, ease: 'easeOut', delay: 0.3 }}
-                  style={{
-                    position: 'absolute',
-                    inset: '-40% -30%',
-                    background:
-                      'radial-gradient(ellipse at center, rgba(180,148,90,0.12) 0%, transparent 65%)',
-                    filter: 'blur(24px)',
-                    pointerEvents: 'none',
-                  }}
-                />
+    <>
+      <style>{`
+        @keyframes glowBreathe {
+          0%, 100% { transform: scale(0.85); opacity: 0.6; }
+          50%       { transform: scale(1.15); opacity: 1; }
+        }
+      `}</style>
 
-                {/* Official logo — white pixels removed via canvas */}
-                <img
-                  src={logoSrc}
-                  alt="Nivora Interiors"
-                  style={{
-                    width: 'clamp(220px, 30vw, 320px)',
-                    height: 'auto',
-                    display: 'block',
-                    position: 'relative',
-                    zIndex: 1,
-                    filter: 'drop-shadow(0 0 16px rgba(180,148,90,0.20))',
+      <AnimatePresence onExitComplete={onExitComplete}>
+        {visible && (
+          <motion.div
+            key="intro-overlay"
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15, ease: 'easeOut' }}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 9999,
+              backgroundColor: '#21291a',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <AnimatePresence>
+              {logoSrc && (
+                <motion.div
+                  key="logo"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+                  onAnimationComplete={() => {
+                    setTimeout(() => setVisible(false), 1000)
                   }}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
-      )}
-    </AnimatePresence>
+                  style={{
+                    position: 'relative',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {/* Breathing golden glow — pulses softly behind the logo */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: '-70% -50%',
+                      background:
+                        'radial-gradient(ellipse at center, rgba(201,166,107,0.55) 0%, rgba(201,166,107,0.18) 45%, transparent 72%)',
+                      filter: 'blur(32px)',
+                      pointerEvents: 'none',
+                      animation: 'glowBreathe 2.2s ease-in-out infinite',
+                    }}
+                  />
+
+                  {/* Logo image */}
+                  <img
+                    src={logoSrc}
+                    alt="Nivora Interiors"
+                    style={{
+                      width: 'clamp(220px, 30vw, 320px)',
+                      height: 'auto',
+                      display: 'block',
+                      position: 'relative',
+                      zIndex: 1,
+                      filter: 'drop-shadow(0 0 20px rgba(201,166,107,0.28))',
+                    }}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
