@@ -568,10 +568,10 @@ function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afte
   return (
     <div
       ref={containerRef}
+      className="compare-slider-container"
       style={{
         position: 'relative',
         width: '100%',
-        aspectRatio: '16/9',
         overflow: 'hidden',
         cursor: 'ew-resize',
         userSelect: 'none',
@@ -1933,6 +1933,16 @@ export default function Home() {
 
       {/* Before / After — Transformation Carousel */}
       <section style={{ backgroundColor: '#FAF8F4', padding: '7rem 1.5rem' }}>
+        <style>{`
+          .compare-slider-container {
+            aspect-ratio: 16 / 9;
+          }
+          @media (max-width: 768px) {
+            .compare-slider-container {
+              aspect-ratio: 4 / 5;
+            }
+          }
+        `}</style>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           {/* Header */}
           <FadeIn>
