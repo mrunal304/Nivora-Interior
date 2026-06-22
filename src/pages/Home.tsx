@@ -5,7 +5,7 @@ import imgSparsh from '@assets/6_(1)_1781792222998.jpg'
 import imgOffice from '@assets/16_1781792239759.jpg'
 import imgAurelia from '@assets/2_(2)_1781792402795.jpg'
 import imgUrban from '@assets/3_(2)_1781792428831.jpg'
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion'
 import { ArrowRight, Home as HomeIcon, Building2, Coffee, Layers, Monitor, Gem, Wrench } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
 import ProcessSection from '../components/ProcessSection'
@@ -464,6 +464,39 @@ function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afte
   const [pos, setPos] = useState(50)
   const containerRef = useRef<HTMLDivElement>(null)
   const draggingRef = useRef(false)
+  const wigglePlayedRef = useRef(false)
+  const wiggleCancelledRef = useRef(false)
+  const wiggleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [wiggleX, setWiggleX] = useState(0)
+  const [handleScale, setHandleScale] = useState(1)
+  const [beforeHover, setBeforeHover] = useState(false)
+  const [afterHover, setAfterHover] = useState(false)
+
+  const cancelWiggle = () => {
+    wigglePlayedRef.current = true
+    wiggleCancelledRef.current = true
+    if (wiggleTimerRef.current) clearTimeout(wiggleTimerRef.current)
+    setWiggleX(0)
+  }
+
+  useEffect(() => {
+    wiggleCancelledRef.current = false
+    wiggleTimerRef.current = setTimeout(async () => {
+      if (draggingRef.current || wigglePlayedRef.current) return
+      wigglePlayedRef.current = true
+      const frames = [15, -15, 13, -13, 8, -8, 3, -3, 0]
+      for (const x of frames) {
+        if (wiggleCancelledRef.current) { setWiggleX(0); return }
+        setWiggleX(x)
+        await new Promise(r => setTimeout(r, 130))
+      }
+      setWiggleX(0)
+    }, 1500)
+    return () => {
+      if (wiggleTimerRef.current) clearTimeout(wiggleTimerRef.current)
+      wiggleCancelledRef.current = true
+    }
+  }, [])
 
   const updatePos = (clientX: number) => {
     if (!containerRef.current) return
@@ -473,7 +506,9 @@ function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afte
   }
 
   const onMouseDown = (e: React.MouseEvent) => {
+    cancelWiggle()
     draggingRef.current = true
+    setHandleScale(1.15)
     updatePos(e.clientX)
     e.preventDefault()
   }
@@ -481,9 +516,14 @@ function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afte
     if (!draggingRef.current) return
     updatePos(e.clientX)
   }
-  const onMouseUp = () => { draggingRef.current = false }
+  const onMouseUp = () => {
+    draggingRef.current = false
+    setHandleScale(1)
+  }
   const onTouchStart = (e: React.TouchEvent) => {
+    cancelWiggle()
     draggingRef.current = true
+    setHandleScale(1.15)
     updatePos(e.touches[0].clientX)
   }
   const onTouchMove = (e: React.TouchEvent) => {
@@ -491,9 +531,12 @@ function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afte
     e.stopPropagation()
     updatePos(e.touches[0].clientX)
   }
-  const onTouchEnd = () => { draggingRef.current = false }
+  const onTouchEnd = () => {
+    draggingRef.current = false
+    setHandleScale(1)
+  }
 
-  const labelStyle: React.CSSProperties = {
+  const labelBase: React.CSSProperties = {
     position: 'absolute',
     bottom: 16,
     zIndex: 6,
@@ -508,7 +551,9 @@ function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afte
     padding: '5px 12px',
     borderRadius: 100,
     backdropFilter: 'blur(4px)',
-    pointerEvents: 'none',
+    pointerEvents: 'auto',
+    cursor: 'default',
+    transition: 'opacity 0.2s ease, filter 0.2s ease',
   }
 
   return (
@@ -517,7 +562,7 @@ function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afte
       style={{
         position: 'relative',
         width: '100%',
-        height: 'clamp(300px, 42vw, 480px)',
+        aspectRatio: '16/9',
         overflow: 'hidden',
         cursor: 'ew-resize',
         userSelect: 'none',
@@ -563,11 +608,11 @@ function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afte
         boxShadow: '0 0 8px rgba(0,0,0,0.25)',
       }} />
 
-      {/* Drag handle */}
+      {/* Drag handle — wiggle + scale animations via inline transform */}
       <div style={{
         position: 'absolute',
         top: '50%', left: `${pos}%`,
-        transform: 'translate(-50%, -50%)',
+        transform: `translate(-50%, -50%) translateX(${wiggleX}px) scale(${handleScale})`,
         width: 46, height: 46,
         borderRadius: '50%',
         background: '#fff',
@@ -576,6 +621,7 @@ function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afte
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         pointerEvents: 'none',
         zIndex: 5,
+        transition: 'transform 120ms ease',
       }}>
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#C8A56A" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
           <path d="M8 5l-4 7 4 7M16 5l4 7-4 7" />
@@ -583,9 +629,18 @@ function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afte
       </div>
 
       {/* BEFORE label — bottom left */}
-      <span style={{ ...labelStyle, left: 16 }}>Before</span>
+      <span
+        style={{ ...labelBase, left: 16, opacity: beforeHover ? 1 : 0.72, filter: beforeHover ? 'brightness(1.18)' : 'brightness(1)' }}
+        onMouseEnter={() => setBeforeHover(true)}
+        onMouseLeave={() => setBeforeHover(false)}
+      >Before</span>
+
       {/* AFTER label — bottom right */}
-      <span style={{ ...labelStyle, right: 16 }}>After</span>
+      <span
+        style={{ ...labelBase, right: 16, opacity: afterHover ? 1 : 0.72, filter: afterHover ? 'brightness(1.18)' : 'brightness(1)' }}
+        onMouseEnter={() => setAfterHover(true)}
+        onMouseLeave={() => setAfterHover(false)}
+      >After</span>
     </div>
   )
 }
@@ -606,8 +661,10 @@ function TransformationCarousel() {
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
   }, [count])
 
+  const t = transformations[current]
+
   return (
-    <div>
+    <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px' }}>
       <style>{`
         .trf-card { border-radius: 20px; background: #fff; box-shadow: 0 8px 48px rgba(38,36,33,0.09), 0 2px 12px rgba(38,36,33,0.05); overflow: hidden; }
         .trf-dot {
@@ -624,56 +681,53 @@ function TransformationCarousel() {
         .trf-nav:hover { border-color: #C8A56A; background: #FAF8F4; }
       `}</style>
 
-      {/* Slide track */}
-      <div style={{ overflow: 'hidden', borderRadius: 20 }}>
-        <div style={{
-          display: 'flex',
-          transition: 'transform 800ms cubic-bezier(0.4,0,0.2,1)',
-          transform: `translateX(-${current * 100}%)`,
-          willChange: 'transform',
-        }}>
-          {transformations.map((t) => (
-            <div key={t.id} style={{ minWidth: '100%', padding: '0 2px' }}>
-              <div className="trf-card">
-                {/* Drag-to-reveal comparison slider */}
-                <CompareSlider beforeImg={t.beforeImg} afterImg={t.afterImg} title={t.title} />
+      {/* Fade-transition card */}
+      <div className="trf-card" style={{ position: 'relative' }}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: 'easeInOut' }}
+          >
+            {/* Drag-to-reveal comparison slider */}
+            <CompareSlider beforeImg={t.beforeImg} afterImg={t.afterImg} title={t.title} />
 
-                {/* Description block */}
-                <div style={{ padding: '1.75rem 2.25rem 2rem', borderTop: '1px solid #F5F1EA' }}>
-                  <h3 style={{
-                    fontFamily: "'Playfair Display', serif", fontWeight: 400,
-                    fontSize: 'clamp(1.25rem, 2vw, 1.6rem)', color: '#262421',
-                    margin: '0 0 1.1rem', letterSpacing: '-0.01em',
-                  }}>{t.title}</h3>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem 2rem' }}>
-                    <div>
-                      <p style={{
-                        fontFamily: "'Montserrat', sans-serif", fontWeight: 400, fontSize: 9,
-                        letterSpacing: '0.25em', textTransform: 'uppercase',
-                        color: 'rgba(38,36,33,0.35)', margin: '0 0 0.5rem',
-                      }}>Before</p>
-                      <p style={{
-                        fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 13.5,
-                        color: 'rgba(38,36,33,0.55)', lineHeight: 1.75, margin: 0,
-                      }}>{t.beforeDesc}</p>
-                    </div>
-                    <div>
-                      <p style={{
-                        fontFamily: "'Montserrat', sans-serif", fontWeight: 400, fontSize: 9,
-                        letterSpacing: '0.25em', textTransform: 'uppercase',
-                        color: '#C8A56A', margin: '0 0 0.5rem',
-                      }}>After</p>
-                      <p style={{
-                        fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 13.5,
-                        color: 'rgba(38,36,33,0.72)', lineHeight: 1.75, margin: 0,
-                      }}>{t.afterDesc}</p>
-                    </div>
-                  </div>
+            {/* Description block */}
+            <div style={{ padding: '1.75rem 2.25rem 2rem', borderTop: '1px solid #F5F1EA' }}>
+              <h3 style={{
+                fontFamily: "'Playfair Display', serif", fontWeight: 400,
+                fontSize: 'clamp(1.25rem, 2vw, 1.6rem)', color: '#262421',
+                margin: '0 0 1.1rem', letterSpacing: '-0.01em',
+              }}>{t.title}</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem 2rem' }}>
+                <div>
+                  <p style={{
+                    fontFamily: "'Montserrat', sans-serif", fontWeight: 400, fontSize: 9,
+                    letterSpacing: '0.25em', textTransform: 'uppercase',
+                    color: 'rgba(38,36,33,0.35)', margin: '0 0 0.5rem',
+                  }}>Before</p>
+                  <p style={{
+                    fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 13.5,
+                    color: 'rgba(38,36,33,0.55)', lineHeight: 1.75, margin: 0,
+                  }}>{t.beforeDesc}</p>
+                </div>
+                <div>
+                  <p style={{
+                    fontFamily: "'Montserrat', sans-serif", fontWeight: 400, fontSize: 9,
+                    letterSpacing: '0.25em', textTransform: 'uppercase',
+                    color: '#C8A56A', margin: '0 0 0.5rem',
+                  }}>After</p>
+                  <p style={{
+                    fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 13.5,
+                    color: 'rgba(38,36,33,0.72)', lineHeight: 1.75, margin: 0,
+                  }}>{t.afterDesc}</p>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Controls row */}
