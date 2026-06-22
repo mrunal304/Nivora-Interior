@@ -1095,7 +1095,13 @@ function TestimonialsCarousel() {
   const t = testimonials[current]
 
   return (
-    <section style={{ background: '#283b22', padding: '80px 0' }}>
+    <motion.section
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      style={{ background: '#283b22', padding: '80px 0' }}
+    >
       <style>{`
         .htc-read-more {
           position: relative;
@@ -1122,6 +1128,12 @@ function TestimonialsCarousel() {
           transition: width 0.3s ease;
         }
         .htc-read-more:hover::after { width: 100%; }
+        .htc-arrow {
+          display: inline-flex;
+          align-items: center;
+          transition: transform 0.25s ease;
+        }
+        .htc-read-more:hover .htc-arrow { transform: translateX(4px); }
         .htc-dot {
           width: 8px;
           height: 8px;
@@ -1130,13 +1142,15 @@ function TestimonialsCarousel() {
           background: transparent;
           cursor: pointer;
           padding: 0;
-          transition: background 0.25s ease, transform 0.25s ease;
+          transition: background 0.3s ease, transform 0.3s ease;
         }
+        .htc-dot:hover { transform: scale(1.15); }
         .htc-dot.active {
           background: #21291a;
           border-color: #21291a;
           transform: scale(1.3);
         }
+        .htc-dot.active:hover { transform: scale(1.3); }
       `}</style>
 
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px' }}>
@@ -1172,7 +1186,7 @@ function TestimonialsCarousel() {
         </FadeIn>
 
         {/* Card */}
-        <div style={{ overflow: 'hidden' }}>
+        <div style={{ overflow: 'hidden', maxWidth: 700, margin: '0 auto' }}>
           <motion.div
             key={current}
             initial={{ opacity: 0, x: 40 }}
@@ -1183,7 +1197,7 @@ function TestimonialsCarousel() {
               background: '#f5f2ed',
               border: '1.5px solid #21291a',
               borderRadius: 6,
-              padding: 'clamp(32px, 4vw, 56px) clamp(28px, 5vw, 64px)',
+              padding: 'clamp(24px, 3.5vw, 40px) clamp(22px, 4vw, 48px)',
               position: 'relative',
               overflow: 'hidden',
             }}
@@ -1354,12 +1368,12 @@ function TestimonialsCarousel() {
         {/* Read all link */}
         <div style={{ textAlign: 'center', marginTop: 36 }}>
           <Link to="/testimonials" className="htc-read-more">
-            Read All Client Stories <ArrowRight size={12} />
+            Read All Client Stories <span className="htc-arrow"><ArrowRight size={12} /></span>
           </Link>
         </div>
 
       </div>
-    </section>
+    </motion.section>
   )
 }
 
