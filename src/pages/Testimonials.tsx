@@ -225,7 +225,7 @@ function TestimonialCard({ t, index }: { t: typeof testimonials[0]; index: numbe
 
 export default function Testimonials() {
   return (
-    <div style={{ background: '#1a2a1a', minHeight: '100vh' }}>
+    <div style={{ background: '#3b4a35', minHeight: '100vh' }}>
 
       {/* Page Hero */}
       <section style={{ paddingTop: 140, paddingBottom: 60, textAlign: 'center', paddingLeft: 24, paddingRight: 24 }}>
@@ -361,7 +361,7 @@ export default function Testimonials() {
       </section>
 
       {/* CTA Section */}
-      <section style={{ background: '#1a2a1a', padding: '80px 24px', textAlign: 'center' }}>
+      <section style={{ background: '#3b4a35', padding: '80px 24px', textAlign: 'center' }}>
         <motion.div
           variants={fadeUp(0)}
           initial="hidden"
