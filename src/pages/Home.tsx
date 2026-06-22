@@ -2076,93 +2076,115 @@ export default function Home() {
       <TestimonialsCarousel />
 
       {/* Instagram */}
-      <section className="pt-12 pb-32 px-6 max-w-7xl mx-auto">
-        <FadeIn className="text-center mb-12">
-          {/* Editorial gold rule */}
-          <div style={{ width: 60, height: 1, backgroundColor: '#C9A96E', margin: '0 auto 20px' }} />
-          <p style={{
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 300,
-            fontSize: 10,
-            letterSpacing: '0.4em',
-            textTransform: 'uppercase',
-            color: '#b8966a',
-            marginBottom: 16,
-          }}>Follow the Journey</p>
-          <h2 style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontWeight: 300,
-            fontSize: 'clamp(2rem, 4vw, 3rem)',
-            color: '#f5f0e8',
-            marginBottom: 12,
-            lineHeight: 1.1,
-          }}>@NivoraInteriors</h2>
-          <p className="text-[#f5f0e8]/40 text-sm font-light">Daily design inspiration and behind-the-scenes site visits</p>
-        </FadeIn>
+      <section style={{ background: '#FAF8F4', padding: '5rem 0' }}>
+        <style>{`
+          .ig-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 3px;
+          }
+          @media (max-width: 768px) {
+            .ig-grid { grid-template-columns: repeat(3, 1fr); }
+          }
+          @media (max-width: 480px) {
+            .ig-grid { grid-template-columns: repeat(2, 1fr); }
+          }
+          .ig-thumb { display: block; position: relative; overflow: hidden; aspect-ratio: 1 / 1; }
+          .ig-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.22,1,0.36,1); display: block; }
+          .ig-thumb:hover img { transform: scale(1.07); }
+          .ig-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(201,169,110,0.18); opacity: 0; transition: opacity 0.3s ease; }
+          .ig-thumb:hover .ig-overlay { opacity: 1; }
+          .ig-cta {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #a18661;
+            text-decoration: none;
+          }
+          .ig-cta::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #a18661;
+            transition: width 0.3s ease;
+          }
+          .ig-cta:hover::after { width: 100%; }
+          .ig-cta-arrow { display: inline-flex; align-items: center; transition: transform 0.25s ease; }
+          .ig-cta:hover .ig-cta-arrow { transform: translateX(4px); }
+        `}</style>
 
-        {/* 3×2 grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3" style={{ gap: '3px' }}>
-          {igPosts.map((src, i) => (
-            <FadeIn key={i} delay={i * 0.08}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+
+          {/* Heading */}
+          <FadeIn className="text-center" style={{ marginBottom: 40 }}>
+            <p style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: 400,
+              fontSize: 11,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#a18661',
+              marginBottom: 14,
+            }}>@NivoraInteriors</p>
+            <h2 style={{
+              fontFamily: "'Playfair Display', serif",
+              fontWeight: 400,
+              fontSize: 'clamp(1.8rem, 4vw, 3rem)',
+              color: '#262421',
+              marginBottom: 10,
+              lineHeight: 1.1,
+            }}>Follow Our Journey</h2>
+            <p style={{
+              fontFamily: "'Lora', serif",
+              fontWeight: 300,
+              fontSize: 14,
+              color: 'rgba(38,36,33,0.5)',
+              margin: 0,
+            }}>Daily design inspiration and behind-the-scenes site visits</p>
+          </FadeIn>
+
+          {/* Single-row 6-image grid */}
+          <div className="ig-grid">
+            {igPosts.map((src, i) => (
               <a
+                key={i}
                 href="https://instagram.com/NivoraInteriors"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block relative overflow-hidden"
-                style={{ aspectRatio: '1 / 1' }}
+                className="ig-thumb"
               >
-                <img
-                  src={src}
-                  alt={`@NivoraInteriors post ${i + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
-                {/* Gold tint overlay */}
-                <div
-                  className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ backgroundColor: 'rgba(201,169,110,0.15)' }}
-                >
-                  {/* Instagram icon — white, 24px */}
-                  <svg
-                    width="24"
-                    height="24"
-                    fill="white"
-                    viewBox="0 0 24 24"
-                    style={{ filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.4))' }}
-                  >
+                <img src={src} alt={`@NivoraInteriors post ${i + 1}`} loading="lazy" />
+                <div className="ig-overlay">
+                  <svg width="22" height="22" fill="white" viewBox="0 0 24 24" style={{ filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.4))' }}>
                     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
                   </svg>
                 </div>
               </a>
-            </FadeIn>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        {/* Follow CTA */}
-        <FadeIn delay={0.3} className="text-center mt-10">
-          <a
-            href="https://instagram.com/NivoraInteriors"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 300,
-              fontSize: 11,
-              letterSpacing: '3px',
-              textTransform: 'uppercase',
-              color: '#C9A96E',
-              textDecoration: 'none',
-              transition: 'opacity 0.2s ease',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
-          >
-            Follow on Instagram <ArrowRight size={12} />
-          </a>
-        </FadeIn>
+          {/* CTA */}
+          <div style={{ textAlign: 'center', marginTop: 32 }}>
+            <a
+              href="https://instagram.com/NivoraInteriors"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ig-cta"
+            >
+              See More On Instagram <span className="ig-cta-arrow"><ArrowRight size={12} /></span>
+            </a>
+          </div>
+
+        </div>
       </section>
 
       {/* Final CTA */}
