@@ -70,34 +70,6 @@ const portfolioProjects = [
     img: imgUrban,
   },
 ]
-const heroContainerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      delayChildren: 1.98,
-      staggerChildren: 0.11,
-    },
-  },
-}
-
-const heroItemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.42, ease: [0, 0, 0.2, 1] },
-  },
-}
-
-const heroItalicVariants = {
-  hidden: { opacity: 0, y: 20, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.42, ease: [0, 0, 0.2, 1] },
-  },
-}
 
 const transformations = [
   {
@@ -806,6 +778,27 @@ function HeroSection() {
   const parallaxY = useSpring(rawY, { stiffness: 60, damping: 20 })
   const [activeCity, setActiveCity] = useState<'Mumbai' | 'Pune'>('Mumbai')
 
+  const isFirstVisit = !sessionStorage.getItem('nivoraVisited')
+  useEffect(() => { sessionStorage.setItem('nivoraVisited', '1') }, [])
+
+  const heroContainerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        delayChildren: isFirstVisit ? 1.98 : 0,
+        staggerChildren: 0.17,
+      },
+    },
+  }
+  const heroItemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0, 0, 0.2, 1] } },
+  }
+  const heroItalicVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.65, ease: [0, 0, 0.2, 1] } },
+  }
+
   return (
     <section
       ref={sectionRef}
@@ -840,7 +833,7 @@ function HeroSection() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.72, delay: 0.72 }}
+        transition={{ duration: 1.1, delay: isFirstVisit ? 1.1 : 0 }}
         style={{
           position: 'absolute', left: 36, top: '50%', zIndex: 10,
           transform: 'translateY(-50%) rotate(-90deg)',
@@ -861,7 +854,7 @@ function HeroSection() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.72, delay: 0.72 }}
+        transition={{ duration: 1.1, delay: isFirstVisit ? 1.1 : 0 }}
         style={{
           position: 'absolute', right: 36, top: '50%', zIndex: 10,
           transform: 'translateY(-50%) rotate(90deg)',
@@ -1057,7 +1050,7 @@ function HeroSection() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.6 }}
+        transition={{ duration: 0.9, delay: isFirstVisit ? 0.9 : 0 }}
         style={{
           position: 'absolute',
           bottom: 64,
@@ -1111,7 +1104,7 @@ function HeroSection() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.96, duration: 0.48 }}
+        transition={{ delay: isFirstVisit ? 1.4 : 0, duration: 0.72 }}
         className="scroll-indicator-bounce"
         style={{
           position: 'absolute',
@@ -1155,7 +1148,7 @@ function HeroSection() {
         .hero-italic-reveal {
           display: inline-block;
           opacity: 0;
-          animation: heroItalicReveal 0.36s ease-out 0.18s forwards;
+          animation: heroItalicReveal 0.54s ease-out ${isFirstVisit ? '0.27s' : '0s'} forwards;
         }
         @keyframes scrollBounce {
           0%, 100% { transform: translateX(-50%) translateY(0); }
