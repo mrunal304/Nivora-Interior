@@ -762,7 +762,7 @@ function HeroSection() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 0, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.65, delay: 2.1, ease: [0.22, 1, 0.36, 1] }}
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 28, marginBottom: 32 }}
         >
           {(['Mumbai', 'Pune'] as const).map(city => (
@@ -792,7 +792,7 @@ function HeroSection() {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, delay: 2.25, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
@@ -808,7 +808,7 @@ function HeroSection() {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.30, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, delay: 2.40, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
@@ -824,7 +824,7 @@ function HeroSection() {
         <motion.h1
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.75, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.75, delay: 2.55, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
@@ -841,7 +841,7 @@ function HeroSection() {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.60, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, delay: 2.70, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fontFamily: "'DM Sans', sans-serif",
             fontWeight: 300,
@@ -859,7 +859,7 @@ function HeroSection() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, delay: 2.85, ease: [0.22, 1, 0.36, 1] }}
           style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}
         >
           <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.25 }}>
