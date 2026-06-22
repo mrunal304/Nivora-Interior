@@ -262,6 +262,14 @@ const testimonials = [
     project: 'RESIDENTIAL — STUDIO APARTMENT',
     initials: 'SK',
   },
+  {
+    stars: 5,
+    text: 'Nivora took my vision and refined it into something I never thought possible. Their material selection is impeccable.',
+    name: 'Aditi R.',
+    location: 'Ambernath',
+    project: 'RESIDENTIAL — HOME INTERIOR',
+    initials: 'AR',
+  },
 ]
 
 const statsData = [
@@ -1161,18 +1169,104 @@ function HeroSection() {
   )
 }
 
+function CarouselCard({ t }: { t: typeof testimonials[0] }) {
+  return (
+    <div style={{
+      background: '#f5f2ed',
+      border: '1.5px solid #21291a',
+      borderRadius: 6,
+      padding: '24px 28px',
+      position: 'relative',
+      overflow: 'hidden',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      {/* Linen texture overlay */}
+      <div aria-hidden="true" style={{
+        position: 'absolute', inset: 0, borderRadius: 6,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")`,
+        backgroundSize: '160px 160px', opacity: 0.04, pointerEvents: 'none', zIndex: 0,
+      }} />
+      {/* Decorative quote mark */}
+      <span style={{
+        position: 'absolute', top: 12, right: 18, fontSize: 72, lineHeight: 1,
+        color: '#21291a', fontFamily: "'Playfair Display', serif",
+        opacity: 0.1, pointerEvents: 'none', userSelect: 'none', zIndex: 1,
+      }}>"</span>
+      {/* Content above texture */}
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', flex: 1 }}>
+        {/* Stars */}
+        <div style={{ display: 'flex', gap: 3, marginBottom: 16 }}>
+          {Array.from({ length: t.stars }).map((_, i) => (
+            <span key={i} style={{ fontSize: 14, color: '#a18661', lineHeight: 1 }}>★</span>
+          ))}
+        </div>
+        {/* Quote */}
+        <p style={{
+          fontFamily: "'Lora', serif", fontStyle: 'italic',
+          fontSize: 15, lineHeight: 1.6, color: '#2c2c2c',
+          margin: '0 0 20px', flex: 1,
+        }}>"{t.text}"</p>
+        {/* Divider */}
+        <div style={{ width: 36, height: 1, background: '#a18661', marginBottom: 18, flexShrink: 0 }} />
+        {/* Client info */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{
+            width: 38, height: 38, borderRadius: '50%',
+            background: '#a18661', color: '#21291a',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: 12, flexShrink: 0,
+          }}>{t.initials}</div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+              <p style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 500, fontSize: 13, color: '#21291a', margin: 0 }}>{t.name}</p>
+              <span style={{
+                display: 'inline-flex', alignItems: 'center', gap: 3,
+                fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.1em',
+                textTransform: 'uppercase', color: '#a18661',
+                background: 'rgba(161,134,97,0.1)', border: '1px solid rgba(161,134,97,0.35)',
+                borderRadius: 3, padding: '2px 5px', lineHeight: 1,
+              }}>
+                <svg width="7" height="7" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}>
+                  <circle cx="6" cy="6" r="5.25" stroke="#a18661" strokeWidth="1.2"/>
+                  <path d="M3.8 6.1L5.4 7.8L8.4 4.2" stroke="#a18661" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Verified Client
+              </span>
+            </div>
+            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6d5a41', margin: '3px 0 0' }}>{t.location}</p>
+            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(109,90,65,0.6)', margin: '2px 0 0' }}>{t.project}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function TestimonialsCarousel() {
   const [current, setCurrent] = useState(0)
-  const count = testimonials.length
+  const viewportRef = useRef<HTMLDivElement>(null)
+  const [containerWidth, setContainerWidth] = useState(0)
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent(p => (p + 1) % count)
-    }, 5000)
-    return () => clearInterval(interval)
-  }, [count])
+    const measure = () => {
+      if (viewportRef.current) setContainerWidth(viewportRef.current.offsetWidth)
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    if (viewportRef.current) ro.observe(viewportRef.current)
+    return () => ro.disconnect()
+  }, [])
 
-  const t = testimonials[current]
+  const GAP = 20
+  const visibleCount = containerWidth > 0 && containerWidth < 640 ? 1 : 3
+  const cardWidth = containerWidth > 0 ? (containerWidth - GAP * (visibleCount - 1)) / visibleCount : 0
+  const count = testimonials.length
+  const maxIndex = Math.max(0, count - visibleCount)
+
+  const prev = () => setCurrent(c => (c <= 0 ? maxIndex : c - 1))
+  const next = () => setCurrent(c => (c >= maxIndex ? 0 : c + 1))
 
   return (
     <motion.section
@@ -1235,235 +1329,70 @@ function TestimonialsCarousel() {
         }
       `}</style>
 
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
 
         {/* Heading */}
         <FadeIn className="text-center" style={{ marginBottom: 56 }}>
           <p style={{
             fontFamily: "'Montserrat', sans-serif",
-            fontSize: 11,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: '#a18661',
-            marginBottom: 14,
+            fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase',
+            color: '#a18661', marginBottom: 14,
           }}>Client Stories</p>
           <h2 style={{
-            fontFamily: "'Playfair Display', serif",
-            fontWeight: 400,
-            fontSize: 'clamp(2rem, 5vw, 3.2rem)',
-            color: '#f5f2ed',
-            margin: '0 0 16px',
+            fontFamily: "'Playfair Display', serif", fontWeight: 400,
+            fontSize: 'clamp(2rem, 5vw, 3.2rem)', color: '#f5f2ed', margin: '0 0 16px',
           }}>What Clients Say</h2>
           <p style={{
-            fontFamily: "'Lora', serif",
-            fontWeight: 300,
-            fontSize: 15,
-            color: 'rgba(245,242,237,0.75)',
-            maxWidth: 520,
-            margin: '0 auto',
-            lineHeight: 1.75,
+            fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 15,
+            color: 'rgba(245,242,237,0.75)', maxWidth: 520, margin: '0 auto', lineHeight: 1.75,
           }}>
             Every project is a relationship. These are the words of people who trusted us with their spaces.
           </p>
         </FadeIn>
 
-        {/* Card row: left-arrow + card + right-arrow */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20, maxWidth: 920, margin: '0 auto' }}>
+        {/* Carousel: arrow + viewport + arrow */}
+        <div style={{ display: 'flex', alignItems: 'stretch', gap: 16 }}>
 
-          {/* Left arrow */}
-          <button
-            className="htc-nav"
-            onClick={() => setCurrent((current - 1 + count) % count)}
-            aria-label="Previous testimonial"
-          >
+          <button className="htc-nav" onClick={prev} aria-label="Previous testimonial" style={{ alignSelf: 'center' }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M11 6l-6 6 6 6" />
             </svg>
           </button>
 
-          {/* Card */}
-          <div style={{ flex: 1, overflow: 'hidden' }}>
-          <motion.div
-            key={current}
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -30 }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              background: '#f5f2ed',
-              border: '1.5px solid #21291a',
-              borderRadius: 6,
-              padding: 'clamp(20px, 2.5vw, 30px) clamp(24px, 4vw, 52px)',
-              position: 'relative',
-              overflow: 'hidden',
-            }}
-          >
-            {/* Subtle linen texture overlay */}
-            <div
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                inset: 0,
-                borderRadius: 6,
-                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")`,
-                backgroundSize: '160px 160px',
-                opacity: 0.04,
-                pointerEvents: 'none',
-                zIndex: 0,
-              }}
-            />
-
-            {/* Decorative quote mark — animated scale + rotation */}
-            <motion.span
-              initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
-              animate={{ opacity: 0.1, scale: 1, rotate: 0 }}
-              transition={{ duration: 0.55, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-              style={{
-                position: 'absolute',
-                top: 16,
-                right: 28,
-                fontSize: 88,
-                lineHeight: 1,
-                color: '#21291a',
-                fontFamily: "'Playfair Display', serif",
-                pointerEvents: 'none',
-                userSelect: 'none',
-                zIndex: 1,
-              }}
-            >"</motion.span>
-
-            {/* All content sits above texture */}
-            <div style={{ position: 'relative', zIndex: 1 }}>
-
-              {/* Stars — staggered one-by-one */}
-              <div style={{ display: 'flex', gap: 4, marginBottom: 22 }}>
-                {Array.from({ length: t.stars }).map((_, i) => (
-                  <motion.span
-                    key={i}
-                    initial={{ opacity: 0, scale: 0.4 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{
-                      duration: 0.28,
-                      delay: i * 0.09,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                    style={{ fontSize: 16, color: '#a18661', lineHeight: 1 }}
-                  >★</motion.span>
-                ))}
-              </div>
-
-              {/* Review text — larger */}
-              <p style={{
-                fontFamily: "'Lora', serif",
-                fontStyle: 'italic',
-                fontSize: 'clamp(17px, 2vw, 22px)',
-                lineHeight: 1.5,
-                color: '#2c2c2c',
-                margin: '0 0 24px',
-                maxWidth: '90%',
-              }}>
-                "{t.text}"
-              </p>
-
-              {/* Divider */}
-              <div style={{ width: 40, height: 1, background: '#a18661', marginBottom: 22 }} />
-
-              {/* Client info */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-
-                {/* Avatar — animated */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.88 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          <div ref={viewportRef} style={{ flex: 1, overflow: 'hidden' }}>
+            <div style={{
+              display: 'flex',
+              gap: GAP,
+              transform: `translateX(${cardWidth > 0 ? -(current * (cardWidth + GAP)) : 0}px)`,
+              transition: 'transform 400ms ease-out',
+              willChange: 'transform',
+              alignItems: 'stretch',
+            }}>
+              {testimonials.map((t, i) => (
+                <div
+                  key={i}
                   style={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: '50%',
-                    background: '#a18661',
-                    color: '#21291a',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontFamily: "'Montserrat', sans-serif",
-                    fontWeight: 700,
-                    fontSize: 13,
+                    width: cardWidth > 0 ? cardWidth : undefined,
+                    minWidth: cardWidth > 0 ? cardWidth : undefined,
                     flexShrink: 0,
                   }}
                 >
-                  {t.initials}
-                </motion.div>
-
-                <div>
-                  {/* Name + Verified badge */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap', marginBottom: 0 }}>
-                    <p style={{
-                      fontFamily: "'Montserrat', sans-serif",
-                      fontWeight: 500,
-                      fontSize: 14,
-                      color: '#21291a',
-                      margin: 0,
-                    }}>{t.name}</p>
-                    <span style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 3,
-                      fontFamily: "'Montserrat', sans-serif",
-                      fontSize: 9,
-                      letterSpacing: '0.1em',
-                      textTransform: 'uppercase',
-                      color: '#a18661',
-                      background: 'rgba(161,134,97,0.1)',
-                      border: '1px solid rgba(161,134,97,0.35)',
-                      borderRadius: 3,
-                      padding: '2px 6px 2px 5px',
-                      lineHeight: 1,
-                    }}>
-                      <svg width="8" height="8" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}>
-                        <circle cx="6" cy="6" r="5.25" stroke="#a18661" strokeWidth="1.2"/>
-                        <path d="M3.8 6.1L5.4 7.8L8.4 4.2" stroke="#a18661" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      Verified Client
-                    </span>
-                  </div>
-                  <p style={{
-                    fontFamily: "'Montserrat', sans-serif",
-                    fontSize: 11,
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    color: '#6d5a41',
-                    margin: '4px 0 0',
-                  }}>{t.location}</p>
-                  <p style={{
-                    fontFamily: "'Montserrat', sans-serif",
-                    fontSize: 10,
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    color: 'rgba(109,90,65,0.6)',
-                    margin: '2px 0 0',
-                  }}>{t.project}</p>
+                  <CarouselCard t={t} />
                 </div>
-              </div>
-
+              ))}
             </div>
-          </motion.div>
-          </div>{/* end flex:1 card wrapper */}
+          </div>
 
-          {/* Right arrow */}
-          <button
-            className="htc-nav"
-            onClick={() => setCurrent((current + 1) % count)}
-            aria-label="Next testimonial"
-          >
+          <button className="htc-nav" onClick={next} aria-label="Next testimonial" style={{ alignSelf: 'center' }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
           </button>
 
-        </div>{/* end arrow-card-arrow row */}
+        </div>
 
         {/* Read all link */}
-        <div style={{ textAlign: 'center', marginTop: 36 }}>
+        <div style={{ textAlign: 'center', marginTop: 40 }}>
           <Link to="/testimonials" className="htc-read-more">
             Read All Client Stories <span className="htc-arrow"><ArrowRight size={12} /></span>
           </Link>

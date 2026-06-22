@@ -50,6 +50,14 @@ const testimonials = [
     project: 'RESIDENTIAL — STUDIO APARTMENT',
     initials: 'SK',
   },
+  {
+    stars: 5,
+    text: 'Nivora took my vision and refined it into something I never thought possible. Their material selection is impeccable.',
+    name: 'Aditi R.',
+    location: 'Ambernath',
+    project: 'RESIDENTIAL — HOME INTERIOR',
+    initials: 'AR',
+  },
 ]
 
 const stats = [
