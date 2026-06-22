@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Instagram } from 'lucide-react'
+import { motion, useInView } from 'framer-motion'
 
 function useTransparentLogo(src: string) {
   const [logoSrc, setLogoSrc] = useState<string | null>(null)
@@ -35,17 +36,104 @@ function useTransparentLogo(src: string) {
   return logoSrc
 }
 
+const navLinks = [
+  { to: '/', label: 'Home' },
+  { to: '/portfolio', label: 'Portfolio' },
+  { to: '/services', label: 'Services' },
+  { to: '/about', label: 'About' },
+  { to: '/testimonials', label: 'Testimonials' },
+  { to: '/contact', label: 'Contact' },
+]
+
+const serviceLinks = [
+  { to: '/services/residential', label: 'Residential Interiors' },
+  { to: '/services/commercial', label: 'Commercial Interiors' },
+  { to: '/services/hospitality', label: 'Hospitality Interiors' },
+  { to: '/services/architecture', label: 'Architecture & Space Planning' },
+  { to: '/services/visualization', label: '2D & 3D Visualization' },
+  { to: '/services/renovation', label: 'Renovation & Makeovers' },
+]
+
+function FooterLink({ to, label }: { to: string; label: string }) {
+  return (
+    <li style={{ listStyle: 'none' }}>
+      <Link
+        to={to}
+        style={{
+          fontFamily: "'Montserrat', sans-serif",
+          fontSize: 13,
+          fontWeight: 300,
+          color: '#f5f2ed',
+          textDecoration: 'none',
+          letterSpacing: '0.04em',
+          display: 'inline-block',
+          position: 'relative',
+          paddingBottom: 2,
+          transition: 'color 0.3s ease',
+        }}
+        onMouseEnter={e => {
+          const el = e.currentTarget as HTMLElement
+          el.style.color = '#a18661'
+          const bar = el.querySelector('.link-bar') as HTMLElement | null
+          if (bar) bar.style.width = '100%'
+        }}
+        onMouseLeave={e => {
+          const el = e.currentTarget as HTMLElement
+          el.style.color = '#f5f2ed'
+          const bar = el.querySelector('.link-bar') as HTMLElement | null
+          if (bar) bar.style.width = '0%'
+        }}
+      >
+        {label}
+        <span
+          className="link-bar"
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            height: 1,
+            width: '0%',
+            background: '#a18661',
+            transition: 'width 0.3s ease',
+            display: 'block',
+          }}
+        />
+      </Link>
+    </li>
+  )
+}
+
 export default function Footer() {
   const logoSrc = useTransparentLogo('/nivora-footer-logo.png')
+  const ref = useRef<HTMLElement>(null)
+  const isInView = useInView(ref, { once: true, amount: 0.15 })
+
+  const colVariant = (x: number, delay: number) => ({
+    hidden: { opacity: 0, x, y: x === 0 ? 20 : 0 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      transition: { duration: x !== 0 ? 0.7 : 0.6, delay, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] },
+    },
+  })
 
   return (
-    <footer style={{ backgroundColor: '#132818', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-      <div className="max-w-7xl mx-auto px-6 lg:px-12" style={{ paddingTop: '80px', paddingBottom: '40px' }}>
-
+    <footer
+      ref={ref}
+      style={{ backgroundColor: '#21291a', borderTop: '1px solid rgba(255,255,255,0.05)' }}
+    >
+      <div
+        className="max-w-7xl mx-auto px-6 lg:px-12"
+        style={{ paddingTop: 80, paddingBottom: 40 }}
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
 
           {/* Column 1 — Brand */}
-          <div
+          <motion.div
+            variants={colVariant(-20, 0)}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
             className="pr-10 pb-12 lg:pb-0"
             style={{
               borderRight: '1px solid rgba(255,255,255,0.08)',
@@ -54,13 +142,12 @@ export default function Footer() {
               alignItems: 'flex-start',
             }}
           >
-            {/* Official logo — white bg removed via canvas */}
             <a
               href="/"
               style={{
                 display: 'block',
-                marginBottom: '24px',
-                transition: 'transform 500ms ease',
+                marginBottom: 24,
+                transition: 'transform 400ms ease',
                 textDecoration: 'none',
                 flexShrink: 0,
               }}
@@ -71,27 +158,21 @@ export default function Footer() {
                 <img
                   src={logoSrc}
                   alt="Nivora Interiors"
-                  style={{
-                    display: 'block',
-                    width: '200px',
-                    height: 'auto',
-                    objectFit: 'contain',
-                    opacity: 0.95,
-                  }}
+                  style={{ display: 'block', width: 200, height: 'auto', objectFit: 'contain', opacity: 0.95 }}
                 />
               ) : (
-                /* Placeholder while canvas processes */
-                <div style={{ width: '200px', height: '80px' }} />
+                <div style={{ width: 200, height: 80 }} />
               )}
             </a>
 
             <p style={{
-              color: 'rgba(255,255,255,0.38)',
-              fontSize: '12px',
+              fontFamily: "'Lora', serif",
+              color: 'rgba(245,242,237,0.45)',
+              fontSize: 13,
               lineHeight: 1.8,
               fontWeight: 300,
-              marginBottom: '24px',
-              maxWidth: '210px',
+              marginBottom: 24,
+              maxWidth: 210,
             }}>
               Thoughtful spaces designed<br />for refined living.
             </p>
@@ -108,116 +189,205 @@ export default function Footer() {
               </svg>
               Chat with us
             </a>
-          </div>
+          </motion.div>
 
           {/* Column 2 — Navigate */}
-          <div className="px-10 pb-12 lg:pb-0" style={{ borderRight: '1px solid rgba(255,255,255,0.08)' }}>
-            <h4 className="text-[10px] tracking-[0.25em] uppercase text-[#b8966a] mb-6 font-normal">Navigate</h4>
-            <ul className="space-y-3">
-              {[
-                { to: '/', label: 'Home' },
-                { to: '/portfolio', label: 'Portfolio' },
-                { to: '/services', label: 'Services' },
-                { to: '/about', label: 'About' },
-                { to: '/testimonials', label: 'Testimonials' },
-                { to: '/contact', label: 'Contact' },
-              ].map(l => (
-                <li key={l.to}>
-                  <Link
-                    to={l.to}
-                    className="text-white font-light transition-colors duration-200 hover:text-[#b8966a]"
-                    style={{ fontSize: '13px' }}
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
+          <motion.div
+            variants={colVariant(0, 0.1)}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            className="px-10 pb-12 lg:pb-0"
+            style={{ borderRight: '1px solid rgba(255,255,255,0.08)' }}
+          >
+            <h4 style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: 10,
+              letterSpacing: '0.25em',
+              textTransform: 'uppercase',
+              color: '#a18661',
+              marginBottom: 24,
+              fontWeight: 400,
+            }}>Navigate</h4>
+            <ul style={{ padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {navLinks.map(l => <FooterLink key={l.to} to={l.to} label={l.label} />)}
             </ul>
-          </div>
+          </motion.div>
 
-          {/* Column 3 — Services */}
-          <div className="px-10 pb-12 lg:pb-0" style={{ borderRight: '1px solid rgba(255,255,255,0.08)' }}>
-            <h4 className="text-[10px] tracking-[0.25em] uppercase text-[#b8966a] mb-6 font-normal">What We Do</h4>
-            <ul className="space-y-3">
-              {[
-                { to: '/services/residential', label: 'Residential Interiors' },
-                { to: '/services/commercial', label: 'Commercial Interiors' },
-                { to: '/services/architecture', label: 'Architecture' },
-              ].map(l => (
-                <li key={l.to}>
-                  <Link
-                    to={l.to}
-                    className="text-white font-light transition-colors duration-200 hover:text-[#b8966a]"
-                    style={{ fontSize: '13px' }}
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
+          {/* Column 3 — What We Do */}
+          <motion.div
+            variants={colVariant(0, 0.2)}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            className="px-10 pb-12 lg:pb-0"
+            style={{ borderRight: '1px solid rgba(255,255,255,0.08)' }}
+          >
+            <h4 style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: 10,
+              letterSpacing: '0.25em',
+              textTransform: 'uppercase',
+              color: '#a18661',
+              marginBottom: 24,
+              fontWeight: 400,
+            }}>What We Do</h4>
+            <ul style={{ padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {serviceLinks.map(l => <FooterLink key={l.to} to={l.to} label={l.label} />)}
             </ul>
-          </div>
+          </motion.div>
 
           {/* Column 4 — Find Us */}
-          <div className="pl-10 pb-12 lg:pb-0">
-            <h4 className="text-[10px] tracking-[0.25em] uppercase text-[#b8966a] mb-6 font-normal">Find Us</h4>
-            <div className="space-y-4">
-              <div>
-                <p className="text-white/50 font-light leading-relaxed" style={{ fontSize: '13px' }}>
-                  Bandra West,<br />Mumbai 400050
-                </p>
-              </div>
-              <div>
-                <p className="text-white/50 font-light leading-relaxed" style={{ fontSize: '13px' }}>
-                  Koregaon Park,<br />Pune 411001
-                </p>
-              </div>
-              <div className="pt-1 space-y-2">
-                <div>
-                  <a
-                    href="mailto:hello@nivorainteriors.com"
-                    className="transition-colors duration-200 hover:opacity-80 font-light"
-                    style={{ fontSize: '13px', color: '#b8966a' }}
-                  >
-                    hello@nivorainteriors.com
-                  </a>
-                </div>
-                <div>
-                  <a
-                    href="tel:+917276687805"
-                    className="text-white/50 font-light transition-colors duration-200 hover:text-white"
-                    style={{ fontSize: '13px' }}
-                  >
-                    +91 72766 87805
-                  </a>
-                </div>
-              </div>
-              <div className="pt-2">
+          <motion.div
+            variants={colVariant(20, 0.3)}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            className="pl-10 pb-12 lg:pb-0"
+          >
+            <h4 style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: 10,
+              letterSpacing: '0.25em',
+              textTransform: 'uppercase',
+              color: '#a18661',
+              marginBottom: 24,
+              fontWeight: 400,
+            }}>Find Us</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <p style={{
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 13,
+                fontWeight: 300,
+                color: 'rgba(245,242,237,0.5)',
+                lineHeight: 1.7,
+                margin: 0,
+              }}>
+                Bandra West,<br />Mumbai 400050
+              </p>
+              <p style={{
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 13,
+                fontWeight: 300,
+                color: 'rgba(245,242,237,0.5)',
+                lineHeight: 1.7,
+                margin: 0,
+              }}>
+                Koregaon Park,<br />Pune 411001
+              </p>
+              <p style={{
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 13,
+                fontWeight: 300,
+                color: 'rgba(245,242,237,0.5)',
+                lineHeight: 1.7,
+                margin: 0,
+              }}>
+                Ambernath,<br />Maharashtra 421505
+              </p>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 4 }}>
                 <a
-                  href="https://instagram.com/NivoraInteriors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/60 hover:text-white transition-colors duration-200 inline-block"
-                  aria-label="Instagram"
+                  href="mailto:hello@nivorainteriors.com"
+                  style={{
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: 13,
+                    fontWeight: 300,
+                    color: '#a18661',
+                    textDecoration: 'none',
+                    transition: 'opacity 0.25s ease',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = '0.75' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = '1' }}
                 >
-                  <Instagram size={18} />
+                  hello@nivorainteriors.com
+                </a>
+                <a
+                  href="tel:+917276687805"
+                  style={{
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: 13,
+                    fontWeight: 300,
+                    color: 'rgba(245,242,237,0.5)',
+                    textDecoration: 'none',
+                    transition: 'color 0.25s ease',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#a18661' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(245,242,237,0.5)' }}
+                >
+                  +91 72766 87805
                 </a>
               </div>
+
+              <a
+                href="https://instagram.com/NivoraInteriors"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                style={{
+                  color: 'rgba(245,242,237,0.6)',
+                  display: 'inline-block',
+                  marginTop: 4,
+                  transition: 'opacity 0.25s ease, transform 0.25s ease',
+                  opacity: 0.7,
+                }}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.opacity = '1'
+                  el.style.transform = 'scale(1.05)'
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.opacity = '0.7'
+                  el.style.transform = 'scale(1)'
+                }}
+              >
+                <Instagram size={18} />
+              </a>
             </div>
-          </div>
+          </motion.div>
+
         </div>
 
+        {/* Divider */}
+        <div style={{ height: 1, background: 'rgba(161,134,97,0.3)', margin: '56px 0 0' }} />
+
         {/* Bottom bar */}
-        <div
-          className="mt-16 pt-6 flex flex-col md:flex-row justify-between items-center gap-2"
-          style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}
+        <motion.div
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { duration: 0.5, delay: 0.5, ease: 'easeOut' } },
+          }}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          style={{
+            paddingTop: 20,
+            paddingBottom: 8,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: 8,
+            flexWrap: 'wrap',
+          }}
         >
-          <p className="text-white/50 font-light" style={{ fontSize: '11px' }}>
+          <p style={{
+            fontFamily: "'Montserrat', sans-serif",
+            fontSize: 12,
+            fontWeight: 300,
+            color: '#6d5a41',
+            margin: 0,
+          }}>
             © 2025 Nivora Interiors. All rights reserved.
           </p>
-          <p className="text-white/50 font-light" style={{ fontSize: '11px' }}>
-            Designed with intention. Built in India.
+          <p style={{
+            fontFamily: "'Montserrat', sans-serif",
+            fontSize: 12,
+            fontWeight: 300,
+            color: '#6d5a41',
+            margin: 0,
+          }}>
+            Designed with intention.
           </p>
-        </div>
+        </motion.div>
+
       </div>
     </footer>
   )
