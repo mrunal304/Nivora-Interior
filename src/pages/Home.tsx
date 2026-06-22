@@ -209,6 +209,30 @@ const testimonials = [
     project: 'COMMERCIAL — CO-WORKING SPACE',
     initials: 'ND',
   },
+  {
+    stars: 5,
+    text: 'Our café has become one of the most photographed spots in Pune. Every corner was designed with intention. The team was professional, transparent, and genuinely talented. What they delivered exceeded everything we imagined.',
+    name: 'Aditya Shinde',
+    location: 'FC Road, Pune',
+    project: 'COMMERCIAL — CAFE INTERIOR',
+    initials: 'AS',
+  },
+  {
+    stars: 5,
+    text: 'Our showroom went from generic to extraordinary. The design draws people in from the street and makes them linger. We have had multiple clients mention how beautiful the space is before they even look at the products.',
+    name: 'Kavya Nair',
+    location: 'Andheri, Mumbai',
+    project: 'COMMERCIAL — LUXURY SHOWROOM',
+    initials: 'KN',
+  },
+  {
+    stars: 5,
+    text: 'The turnkey process was seamless. We handed over the keys and came back to a completed home that required no corrections, no touch-ups, and no follow-ups. That kind of reliability is rare.',
+    name: 'Swati & Arjun Kulkarni',
+    location: 'Thane, Mumbai',
+    project: 'RESIDENTIAL — STUDIO APARTMENT',
+    initials: 'SK',
+  },
 ]
 
 const statsData = [
@@ -1010,6 +1034,255 @@ function HeroSection() {
   )
 }
 
+function TestimonialsCarousel() {
+  const [current, setCurrent] = useState(0)
+  const count = testimonials.length
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent(p => (p + 1) % count)
+    }, 5500)
+    return () => clearInterval(interval)
+  }, [count])
+
+  const prev = () => setCurrent(p => (p - 1 + count) % count)
+  const next = () => setCurrent(p => (p + 1) % count)
+
+  const t = testimonials[current]
+
+  return (
+    <section style={{ background: '#5f745e', padding: '80px 0' }}>
+      <style>{`
+        .htc-read-more {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-family: 'Montserrat', sans-serif;
+          font-weight: 400;
+          font-size: 13px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #f5f2ed;
+          text-decoration: none;
+          transition: color 0.25s ease;
+        }
+        .htc-read-more::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 0;
+          height: 1px;
+          background: #f5f2ed;
+          transition: width 0.3s ease;
+        }
+        .htc-read-more:hover::after { width: 100%; }
+        .htc-arrow {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          border: 1px solid rgba(161,134,97,0.5);
+          background: rgba(255,255,255,0.08);
+          color: #a18661;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: border-color 0.25s ease, background 0.25s ease;
+          flex-shrink: 0;
+        }
+        .htc-arrow:hover {
+          border-color: #a18661;
+          background: rgba(161,134,97,0.15);
+        }
+        .htc-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          border: 1.5px solid #a18661;
+          background: transparent;
+          cursor: pointer;
+          padding: 0;
+          transition: background 0.25s ease, transform 0.25s ease;
+        }
+        .htc-dot.active {
+          background: #a18661;
+          transform: scale(1.25);
+        }
+      `}</style>
+
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+
+        {/* Heading */}
+        <FadeIn className="text-center" style={{ marginBottom: 56 }}>
+          <p style={{
+            fontFamily: "'Montserrat', sans-serif",
+            fontSize: 11,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: '#a18661',
+            marginBottom: 14,
+          }}>Client Stories</p>
+          <h2 style={{
+            fontFamily: "'Playfair Display', serif",
+            fontWeight: 400,
+            fontSize: 'clamp(2rem, 5vw, 3.2rem)',
+            color: '#f5f2ed',
+            margin: '0 0 16px',
+          }}>What Clients Say</h2>
+          <p style={{
+            fontFamily: "'Lora', serif",
+            fontWeight: 300,
+            fontSize: 15,
+            color: 'rgba(245,242,237,0.75)',
+            maxWidth: 520,
+            margin: '0 auto',
+            lineHeight: 1.75,
+          }}>
+            Every project is a relationship. These are the words of people who trusted us with their spaces.
+          </p>
+        </FadeIn>
+
+        {/* Carousel row */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 24, maxWidth: 820, margin: '0 auto' }}>
+
+          {/* Prev arrow */}
+          <button className="htc-arrow" onClick={prev} aria-label="Previous testimonial">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+
+          {/* Card */}
+          <div style={{ flex: 1, overflow: 'hidden' }}>
+            <motion.div
+              key={current}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                background: '#f5f2ed',
+                border: '1.5px solid #4a5c49',
+                borderRadius: 10,
+                padding: 'clamp(28px, 4vw, 48px)',
+                position: 'relative',
+              }}
+            >
+              {/* Decorative quote mark */}
+              <span style={{
+                position: 'absolute',
+                top: 12,
+                right: 20,
+                fontSize: 72,
+                lineHeight: 1,
+                color: '#4a5c49',
+                fontFamily: "'Playfair Display', serif",
+                opacity: 0.18,
+                pointerEvents: 'none',
+                userSelect: 'none',
+              }}>"</span>
+
+              {/* Stars */}
+              <div style={{ fontSize: 15, color: '#a18661', letterSpacing: 3, marginBottom: 20 }}>
+                {'★'.repeat(t.stars)}
+              </div>
+
+              {/* Review text */}
+              <p style={{
+                fontFamily: "'Lora', serif",
+                fontStyle: 'italic',
+                fontSize: 'clamp(15px, 2vw, 18px)',
+                lineHeight: 1.85,
+                color: '#2c2c2c',
+                margin: '0 0 28px',
+              }}>
+                "{t.text}"
+              </p>
+
+              {/* Divider */}
+              <div style={{ width: 40, height: 1, background: '#a18661', marginBottom: 20 }} />
+
+              {/* Client info */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                <div style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: '50%',
+                  background: '#a18661',
+                  color: '#21291a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontWeight: 700,
+                  fontSize: 13,
+                  flexShrink: 0,
+                }}>
+                  {t.initials}
+                </div>
+                <div>
+                  <p style={{
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontWeight: 500,
+                    fontSize: 14,
+                    color: '#21291a',
+                    margin: 0,
+                  }}>{t.name}</p>
+                  <p style={{
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: 11,
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                    color: '#6d5a41',
+                    margin: '3px 0 0',
+                  }}>{t.location}</p>
+                  <p style={{
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: 10,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: 'rgba(109,90,65,0.6)',
+                    margin: '2px 0 0',
+                  }}>{t.project}</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Next arrow */}
+          <button className="htc-arrow" onClick={next} aria-label="Next testimonial">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Dots */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 32 }}>
+          {testimonials.map((_, i) => (
+            <button
+              key={i}
+              className={`htc-dot${i === current ? ' active' : ''}`}
+              onClick={() => setCurrent(i)}
+              aria-label={`Go to testimonial ${i + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* Read all link */}
+        <div style={{ textAlign: 'center', marginTop: 40 }}>
+          <Link to="/testimonials" className="htc-read-more">
+            Read All Client Stories <ArrowRight size={12} />
+          </Link>
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
 export default function Home() {
   const featured = projects.slice(0, 6)
 
@@ -1706,180 +1979,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section style={{ background: '#21291a', padding: '80px 0' }}>
-        <style>{`
-          .home-testi-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid #a18661;
-            border-radius: 8px;
-            padding: 32px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            transition: all 0.3s ease;
-          }
-          .home-testi-card:hover {
-            border-width: 1.5px;
-            transform: translateY(-4px);
-            background: rgba(161,134,97,0.08);
-          }
-          .home-testi-read-more {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-            font-size: 13px;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: #a18661;
-            text-decoration: none;
-            transition: color 0.25s ease;
-          }
-          .home-testi-read-more::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: #a18661;
-            transition: width 0.3s ease;
-          }
-          .home-testi-read-more:hover::after { width: 100%; }
-        `}</style>
-
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
-          <FadeIn className="text-center" style={{ marginBottom: 56 }}>
-            <p style={{
-              fontFamily: "'Montserrat', sans-serif",
-              fontSize: 11,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              color: '#a18661',
-              marginBottom: 14,
-            }}>Client Stories</p>
-            <h2 style={{
-              fontFamily: "'Playfair Display', serif",
-              fontWeight: 400,
-              fontSize: 'clamp(2rem, 5vw, 3.2rem)',
-              color: '#f5f2ed',
-              margin: '0 0 16px',
-            }}>What Clients Say</h2>
-            <p style={{
-              fontFamily: "'Lora', serif",
-              fontWeight: 300,
-              fontSize: 15,
-              color: 'rgba(245,242,237,0.6)',
-              maxWidth: 520,
-              margin: '0 auto',
-              lineHeight: 1.75,
-            }}>
-              Every project is a relationship. These are the words of people who trusted us with their spaces.
-            </p>
-          </FadeIn>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24 }} className="home-testi-grid">
-            <style>{`
-              @media (max-width: 1024px) { .home-testi-grid { grid-template-columns: repeat(2,1fr) !important; } }
-              @media (max-width: 640px) { .home-testi-grid { grid-template-columns: 1fr !important; } }
-            `}</style>
-            {testimonials.map((t, i) => (
-              <FadeIn key={i} delay={i * 0.12}>
-                <div className="home-testi-card">
-                  {/* Decorative quote mark */}
-                  <span style={{
-                    position: 'absolute',
-                    top: 14,
-                    right: 18,
-                    fontSize: 60,
-                    lineHeight: 1,
-                    color: '#a18661',
-                    fontFamily: "'Playfair Display', serif",
-                    opacity: 0.3,
-                    pointerEvents: 'none',
-                    userSelect: 'none',
-                  }}>"</span>
-
-                  {/* Stars */}
-                  <div style={{ fontSize: 14, color: '#a18661', letterSpacing: 2, marginBottom: 16 }}>
-                    {'★'.repeat(t.stars)}
-                  </div>
-
-                  {/* Review */}
-                  <p style={{
-                    fontFamily: "'Lora', serif",
-                    fontStyle: 'italic',
-                    fontSize: 16,
-                    lineHeight: 1.8,
-                    color: '#f5f2ed',
-                    flex: 1,
-                    margin: 0,
-                  }}>
-                    "{t.text}"
-                  </p>
-
-                  {/* Divider */}
-                  <div style={{ width: 40, height: 1, background: '#a18661', margin: '20px 0', flexShrink: 0 }} />
-
-                  {/* Client info */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: '50%',
-                      background: '#a18661',
-                      color: '#21291a',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontFamily: "'Montserrat', sans-serif",
-                      fontWeight: 700,
-                      fontSize: 12,
-                      flexShrink: 0,
-                    }}>
-                      {t.initials}
-                    </div>
-                    <div>
-                      <p style={{
-                        fontFamily: "'Montserrat', sans-serif",
-                        fontWeight: 500,
-                        fontSize: 14,
-                        color: '#f5f2ed',
-                        margin: 0,
-                      }}>{t.name}</p>
-                      <p style={{
-                        fontFamily: "'Montserrat', sans-serif",
-                        fontSize: 11,
-                        letterSpacing: '0.1em',
-                        textTransform: 'uppercase',
-                        color: '#a18661',
-                        margin: '3px 0 0',
-                      }}>{t.location}</p>
-                      <p style={{
-                        fontFamily: "'Montserrat', sans-serif",
-                        fontSize: 10,
-                        letterSpacing: '0.08em',
-                        textTransform: 'uppercase',
-                        color: 'rgba(161,134,97,0.55)',
-                        margin: '2px 0 0',
-                      }}>{t.project}</p>
-                    </div>
-                  </div>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-
-          <FadeIn delay={0.35} className="text-center" style={{ marginTop: 48 }}>
-            <Link to="/testimonials" className="home-testi-read-more">
-              Read All Client Stories <ArrowRight size={12} />
-            </Link>
-          </FadeIn>
-        </div>
-      </section>
+      <TestimonialsCarousel />
 
       {/* Instagram */}
       <section className="pt-12 pb-32 px-6 max-w-7xl mx-auto">
