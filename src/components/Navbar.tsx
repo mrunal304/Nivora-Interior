@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 
 const links = [
@@ -20,6 +20,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
@@ -31,6 +32,16 @@ export default function Navbar() {
 
   const isActive = (path: string) =>
     path === '/' ? location.pathname === '/' : location.pathname.startsWith(path)
+
+  const handleHomeNav = (e: React.MouseEvent) => {
+    e.preventDefault()
+    if (location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      navigate('/', { state: { _t: Date.now() } })
+    } else {
+      navigate('/')
+    }
+  }
 
   return (
     <>
@@ -50,10 +61,11 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-20">
 
           {/* Logo — text only, blends into olive bar */}
-          <Link
-            to="/"
+          <a
+            href="/"
             className="navbar-logo"
-            style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
+            onClick={handleHomeNav}
+            style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', cursor: 'pointer' }}
           >
             <span className="logo-text" style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
               <span
@@ -69,17 +81,20 @@ export default function Navbar() {
                 interiors
               </span>
             </span>
-          </Link>
+          </a>
 
           {/* Desktop nav links */}
           <nav className="hidden lg:flex items-center gap-8">
             {links.map(l => (
-              <Link
+              <a
                 key={l.to}
-                to={l.to}
+                href={l.to}
+                onClick={l.to === '/' ? handleHomeNav : undefined}
                 className="text-xs tracking-[0.2em] uppercase font-light transition-colors duration-300 relative pb-1"
                 style={{
                   color: isActive(l.to) ? GOLD : GOLD_LIGHT + 'B3',
+                  textDecoration: 'none',
+                  cursor: 'pointer',
                 }}
               >
                 {l.label}
@@ -96,7 +111,7 @@ export default function Navbar() {
                     }}
                   />
                 )}
-              </Link>
+              </a>
             ))}
           </nav>
 

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import imgCalista from '@assets/3_(1)_1781792140739.jpg'
 import imgNeelaya from '@assets/11_1781792153281.png'
 import imgSparsh from '@assets/6_(1)_1781792222998.jpg'
@@ -74,8 +74,8 @@ const heroContainerVariants = {
   hidden: {},
   visible: {
     transition: {
-      delayChildren: 3.3,
-      staggerChildren: 0.18,
+      delayChildren: 1.98,
+      staggerChildren: 0.11,
     },
   },
 }
@@ -85,7 +85,7 @@ const heroItemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: [0, 0, 0.2, 1] },
+    transition: { duration: 0.42, ease: [0, 0, 0.2, 1] },
   },
 }
 
@@ -95,7 +95,7 @@ const heroItalicVariants = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.7, ease: [0, 0, 0.2, 1] },
+    transition: { duration: 0.42, ease: [0, 0, 0.2, 1] },
   },
 }
 
@@ -840,7 +840,7 @@ function HeroSection() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1.2, delay: 1.2 }}
+        transition={{ duration: 0.72, delay: 0.72 }}
         style={{
           position: 'absolute', left: 36, top: '50%', zIndex: 10,
           transform: 'translateY(-50%) rotate(-90deg)',
@@ -861,7 +861,7 @@ function HeroSection() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1.2, delay: 1.2 }}
+        transition={{ duration: 0.72, delay: 0.72 }}
         style={{
           position: 'absolute', right: 36, top: '50%', zIndex: 10,
           transform: 'translateY(-50%) rotate(90deg)',
@@ -1057,7 +1057,7 @@ function HeroSection() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 1.0 }}
+        transition={{ duration: 0.6, delay: 0.6 }}
         style={{
           position: 'absolute',
           bottom: 64,
@@ -1111,7 +1111,7 @@ function HeroSection() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.6, duration: 0.8 }}
+        transition={{ delay: 0.96, duration: 0.48 }}
         className="scroll-indicator-bounce"
         style={{
           position: 'absolute',
@@ -1155,7 +1155,7 @@ function HeroSection() {
         .hero-italic-reveal {
           display: inline-block;
           opacity: 0;
-          animation: heroItalicReveal 0.6s ease-out 0.3s forwards;
+          animation: heroItalicReveal 0.36s ease-out 0.18s forwards;
         }
         @keyframes scrollBounce {
           0%, 100% { transform: translateX(-50%) translateY(0); }
@@ -1493,11 +1493,20 @@ function TestimonialsCarousel() {
 
 export default function Home() {
   const featured = projects.slice(0, 6)
+  const location = useLocation()
+  const [animKey, setAnimKey] = useState(0)
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setAnimKey(k => k + 1)
+      window.scrollTo(0, 0)
+    }
+  }, [location.key])
 
   return (
     <div style={{ backgroundColor: '#2D3E29' }}>
       {/* Hero */}
-      <HeroSection />
+      <HeroSection key={animKey} />
 
       {/* Philosophy */}
       <section className="philosophy-section" style={{ backgroundColor: '#f7f4ef', padding: '80px 1.5rem 110px' }}>
