@@ -1063,7 +1063,7 @@ function TestimonialsCarousel() {
   const t = testimonials[current]
 
   return (
-    <section style={{ background: '#5f745e', padding: '80px 0' }}>
+    <section style={{ background: '#283b22', padding: '80px 0' }}>
       <style>{`
         .htc-read-more {
           position: relative;
@@ -1153,86 +1153,156 @@ function TestimonialsCarousel() {
               borderRadius: 6,
               padding: 'clamp(32px, 4vw, 56px) clamp(28px, 5vw, 64px)',
               position: 'relative',
+              overflow: 'hidden',
             }}
           >
-            {/* Decorative quote mark */}
-            <span style={{
-              position: 'absolute',
-              top: 16,
-              right: 28,
-              fontSize: 88,
-              lineHeight: 1,
-              color: '#21291a',
-              fontFamily: "'Playfair Display', serif",
-              opacity: 0.1,
-              pointerEvents: 'none',
-              userSelect: 'none',
-            }}>"</span>
+            {/* Subtle linen texture overlay */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                borderRadius: 6,
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")`,
+                backgroundSize: '160px 160px',
+                opacity: 0.04,
+                pointerEvents: 'none',
+                zIndex: 0,
+              }}
+            />
 
-            {/* Stars */}
-            <div style={{ fontSize: 16, color: '#a18661', letterSpacing: 4, marginBottom: 22 }}>
-              {'★'.repeat(t.stars)}
-            </div>
-
-            {/* Review text */}
-            <p style={{
-              fontFamily: "'Lora', serif",
-              fontStyle: 'italic',
-              fontSize: 'clamp(15px, 1.8vw, 19px)',
-              lineHeight: 1.9,
-              color: '#2c2c2c',
-              margin: '0 0 32px',
-              maxWidth: '90%',
-            }}>
-              "{t.text}"
-            </p>
-
-            {/* Divider */}
-            <div style={{ width: 40, height: 1, background: '#a18661', marginBottom: 22 }} />
-
-            {/* Client info */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-              <div style={{
-                width: 44,
-                height: 44,
-                borderRadius: '50%',
-                background: '#a18661',
+            {/* Decorative quote mark — animated scale + rotation */}
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+              animate={{ opacity: 0.1, scale: 1, rotate: 0 }}
+              transition={{ duration: 0.55, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                position: 'absolute',
+                top: 16,
+                right: 28,
+                fontSize: 88,
+                lineHeight: 1,
                 color: '#21291a',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: "'Montserrat', sans-serif",
-                fontWeight: 700,
-                fontSize: 13,
-                flexShrink: 0,
+                fontFamily: "'Playfair Display', serif",
+                pointerEvents: 'none',
+                userSelect: 'none',
+                zIndex: 1,
+              }}
+            >"</motion.span>
+
+            {/* All content sits above texture */}
+            <div style={{ position: 'relative', zIndex: 1 }}>
+
+              {/* Stars — staggered one-by-one */}
+              <div style={{ display: 'flex', gap: 4, marginBottom: 22 }}>
+                {Array.from({ length: t.stars }).map((_, i) => (
+                  <motion.span
+                    key={i}
+                    initial={{ opacity: 0, scale: 0.4 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{
+                      duration: 0.28,
+                      delay: i * 0.09,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    style={{ fontSize: 16, color: '#a18661', lineHeight: 1 }}
+                  >★</motion.span>
+                ))}
+              </div>
+
+              {/* Review text — larger */}
+              <p style={{
+                fontFamily: "'Lora', serif",
+                fontStyle: 'italic',
+                fontSize: 'clamp(17px, 2vw, 22px)',
+                lineHeight: 1.85,
+                color: '#2c2c2c',
+                margin: '0 0 32px',
+                maxWidth: '90%',
               }}>
-                {t.initials}
+                "{t.text}"
+              </p>
+
+              {/* Divider */}
+              <div style={{ width: 40, height: 1, background: '#a18661', marginBottom: 22 }} />
+
+              {/* Client info */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+
+                {/* Avatar — animated */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.88 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                  style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: '50%',
+                    background: '#a18661',
+                    color: '#21291a',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontWeight: 700,
+                    fontSize: 13,
+                    flexShrink: 0,
+                  }}
+                >
+                  {t.initials}
+                </motion.div>
+
+                <div>
+                  {/* Name + Verified badge */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap', marginBottom: 0 }}>
+                    <p style={{
+                      fontFamily: "'Montserrat', sans-serif",
+                      fontWeight: 500,
+                      fontSize: 14,
+                      color: '#21291a',
+                      margin: 0,
+                    }}>{t.name}</p>
+                    <span style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 3,
+                      fontFamily: "'Montserrat', sans-serif",
+                      fontSize: 9,
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                      color: '#a18661',
+                      background: 'rgba(161,134,97,0.1)',
+                      border: '1px solid rgba(161,134,97,0.35)',
+                      borderRadius: 3,
+                      padding: '2px 6px 2px 5px',
+                      lineHeight: 1,
+                    }}>
+                      <svg width="8" height="8" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}>
+                        <circle cx="6" cy="6" r="5.25" stroke="#a18661" strokeWidth="1.2"/>
+                        <path d="M3.8 6.1L5.4 7.8L8.4 4.2" stroke="#a18661" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      Verified Client
+                    </span>
+                  </div>
+                  <p style={{
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: 11,
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                    color: '#6d5a41',
+                    margin: '4px 0 0',
+                  }}>{t.location}</p>
+                  <p style={{
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: 10,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: 'rgba(109,90,65,0.6)',
+                    margin: '2px 0 0',
+                  }}>{t.project}</p>
+                </div>
               </div>
-              <div>
-                <p style={{
-                  fontFamily: "'Montserrat', sans-serif",
-                  fontWeight: 500,
-                  fontSize: 14,
-                  color: '#21291a',
-                  margin: 0,
-                }}>{t.name}</p>
-                <p style={{
-                  fontFamily: "'Montserrat', sans-serif",
-                  fontSize: 11,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  color: '#6d5a41',
-                  margin: '3px 0 0',
-                }}>{t.location}</p>
-                <p style={{
-                  fontFamily: "'Montserrat', sans-serif",
-                  fontSize: 10,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(109,90,65,0.6)',
-                  margin: '2px 0 0',
-                }}>{t.project}</p>
-              </div>
+
             </div>
           </motion.div>
         </div>
