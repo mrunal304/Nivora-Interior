@@ -70,6 +70,35 @@ const portfolioProjects = [
     img: imgUrban,
   },
 ]
+const heroContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      delayChildren: 3.3,
+      staggerChildren: 0.18,
+    },
+  },
+}
+
+const heroItemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0, 0, 0.2, 1] },
+  },
+}
+
+const heroItalicVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.7, ease: [0, 0, 0.2, 1] },
+  },
+}
+
 const transformations = [
   {
     id: 1,
@@ -841,14 +870,17 @@ function HeroSection() {
         Mumbai &nbsp;&amp;&nbsp; Pune
       </motion.div>
 
-      {/* Centre content */}
-      <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '0 24px', maxWidth: 860, margin: '0 auto', width: '100%' }}>
+      {/* Centre content — staggered entrance, starts after intro overlay is fully gone */}
+      <motion.div
+        variants={heroContainerVariants}
+        initial="hidden"
+        animate="visible"
+        style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '0 24px', maxWidth: 860, margin: '0 auto', width: '100%' }}
+      >
 
-        {/* Location tabs */}
+        {/* 1. Location tabs */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 2.1, ease: [0.22, 1, 0.36, 1] }}
+          variants={heroItemVariants}
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 28, marginBottom: 32 }}
         >
           {(['Mumbai', 'Pune'] as const).map(city => (
@@ -874,11 +906,9 @@ function HeroSection() {
           ))}
         </motion.div>
 
-        {/* Main headline */}
+        {/* 2. "Thoughtfully Designed" */}
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 2.25, ease: [0.22, 1, 0.36, 1] }}
+          variants={heroItemVariants}
           style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
@@ -891,10 +921,10 @@ function HeroSection() {
         >
           Thoughtfully Designed
         </motion.h1>
+
+        {/* 3. "Interiors —" */}
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 2.40, ease: [0.22, 1, 0.36, 1] }}
+          variants={heroItemVariants}
           style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
@@ -907,10 +937,10 @@ function HeroSection() {
         >
           Interiors —
         </motion.h1>
+
+        {/* 4. "That Feel Effortless" — fade + slide + scale 0.95→1 */}
         <motion.h1
-          initial={{ opacity: 0, y: 20, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.75, delay: 2.55, ease: [0.22, 1, 0.36, 1] }}
+          variants={heroItalicVariants}
           style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
@@ -923,11 +953,9 @@ function HeroSection() {
           <em className="hero-italic-reveal" style={{ color: '#b8966a', fontStyle: 'italic' }}>That Feel Effortless</em>
         </motion.h1>
 
-        {/* Supporting copy */}
+        {/* 5. Supporting copy */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 2.70, ease: [0.22, 1, 0.36, 1] }}
+          variants={heroItemVariants}
           style={{
             fontFamily: "'DM Sans', sans-serif",
             fontWeight: 300,
@@ -941,11 +969,9 @@ function HeroSection() {
           We design homes and workspaces that are beautiful, functional, and built for everyday living.
         </motion.p>
 
-        {/* CTA buttons */}
+        {/* 6. CTA buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 2.85, ease: [0.22, 1, 0.36, 1] }}
+          variants={heroItemVariants}
           style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}
         >
           <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.25 }}>
@@ -1017,7 +1043,7 @@ function HeroSection() {
             </Link>
           </motion.div>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* Stats strip */}
       <motion.div
