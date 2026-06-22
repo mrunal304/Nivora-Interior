@@ -82,7 +82,7 @@ const transformations = [
   {
     id: 2,
     title: 'Master Bedroom Redesign',
-    beforeImg: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80',
+    beforeImg: 'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&q=80',
     afterImg: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=800&q=80',
     beforeDesc: 'Generic finishes, sparse furniture and poor spatial planning that felt impersonal and flat.',
     afterDesc: 'Warm textures, bespoke headboard, ambient lighting and a cohesive palette that feels like a boutique retreat.',
@@ -91,7 +91,7 @@ const transformations = [
     id: 3,
     title: 'Kitchen Transformation',
     beforeImg: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80',
-    afterImg: 'https://images.unsplash.com/photo-1556909045-9de404c69a78?w=800&q=80',
+    afterImg: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80',
     beforeDesc: 'Outdated cabinetry, inefficient workflow and ageing surfaces that lacked storage and style.',
     afterDesc: 'Streamlined handleless cabinetry, stone countertops, integrated appliances and smart lighting throughout.',
   },
@@ -709,8 +709,8 @@ function TransformationCarousel() {
                     color: 'rgba(38,36,33,0.35)', margin: '0 0 0.5rem',
                   }}>Before</p>
                   <p style={{
-                    fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 13.5,
-                    color: 'rgba(38,36,33,0.55)', lineHeight: 1.75, margin: 0,
+                    fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 15.5,
+                    color: 'rgba(38,36,33,0.55)', lineHeight: 1.8, margin: 0,
                   }}>{t.beforeDesc}</p>
                 </div>
                 <div>
@@ -720,8 +720,8 @@ function TransformationCarousel() {
                     color: '#C8A56A', margin: '0 0 0.5rem',
                   }}>After</p>
                   <p style={{
-                    fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 13.5,
-                    color: 'rgba(38,36,33,0.72)', lineHeight: 1.75, margin: 0,
+                    fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 15.5,
+                    color: 'rgba(38,36,33,0.72)', lineHeight: 1.8, margin: 0,
                   }}>{t.afterDesc}</p>
                 </div>
               </div>
