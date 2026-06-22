@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { X } from 'lucide-react'
 
@@ -8,27 +8,25 @@ export default function ConsultationPopup() {
   const [phone, setPhone] = useState('')
   const [spaceType, setSpaceType] = useState('')
   const navigate = useNavigate()
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const hasSetupRef = useRef(false)
 
   useEffect(() => {
     if (sessionStorage.getItem('popupShown')) return
-    if (hasSetupRef.current) return
-    hasSetupRef.current = true
+
+    let timer: ReturnType<typeof setTimeout> | null = null
 
     const onScroll = () => {
       window.removeEventListener('scroll', onScroll)
-      timerRef.current = setTimeout(() => {
+      timer = setTimeout(() => {
         setIsOpen(true)
         sessionStorage.setItem('popupShown', 'true')
       }, 6000)
     }
 
-    window.addEventListener('scroll', onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
 
     return () => {
       window.removeEventListener('scroll', onScroll)
-      if (timerRef.current) clearTimeout(timerRef.current)
+      if (timer) clearTimeout(timer)
     }
   }, [])
 
@@ -121,15 +119,14 @@ export default function ConsultationPopup() {
           margin-bottom: 24px;
           transition: border-color 0.25s ease;
           display: block;
+          box-sizing: border-box;
         }
         .cpopup-field::placeholder {
           color: rgba(33,41,26,0.4);
           font-family: 'Lora', serif;
           font-size: 14px;
         }
-        .cpopup-field:focus {
-          border-bottom-color: #a18661;
-        }
+        .cpopup-field:focus { border-bottom-color: #a18661; }
         .cpopup-btn {
           width: 100%;
           background: #a18661;
@@ -155,7 +152,10 @@ export default function ConsultationPopup() {
         }
       `}</style>
 
-      <div className="cpopup-overlay" onClick={e => { if (e.target === e.currentTarget) close() }}>
+      <div
+        className="cpopup-overlay"
+        onClick={e => { if (e.target === e.currentTarget) close() }}
+      >
         <div className="cpopup-card">
           <button className="cpopup-close" onClick={close} aria-label="Close">
             <X size={18} />
