@@ -134,20 +134,65 @@ export default function Footer() {
           animation: wa-pulse 1.8s ease-out infinite;
           pointer-events: none;
         }
+
+        /* ── Mobile footer: 2-column link grid ── */
+        @media (max-width: 768px) {
+          .footer-main-grid {
+            grid-template-columns: 1fr 1fr !important;
+          }
+          .footer-brand-col {
+            grid-column: 1 / -1 !important;
+            border-right: none !important;
+            padding-right: 0 !important;
+            align-items: center !important;
+            padding-bottom: 28px !important;
+          }
+          .footer-nav-col {
+            grid-column: 1 !important;
+            grid-row: 2 !important;
+            border-right: none !important;
+            padding-left: 0 !important;
+            padding-right: 8px !important;
+            padding-bottom: 0 !important;
+          }
+          .footer-services-col {
+            grid-column: 2 !important;
+            grid-row: 2 / 4 !important;
+            border-right: none !important;
+            padding-left: 16px !important;
+            padding-right: 0 !important;
+            padding-bottom: 24px !important;
+            border-left: 1px solid rgba(255,255,255,0.06);
+          }
+          .footer-findus-col {
+            grid-column: 1 !important;
+            grid-row: 3 !important;
+            padding-left: 0 !important;
+            padding-right: 8px !important;
+            padding-bottom: 0 !important;
+            padding-top: 28px;
+          }
+          .footer-bottom-bar {
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center;
+            gap: 4px !important;
+          }
+        }
       `}</style>
 
       <div
         className="max-w-7xl mx-auto px-6 lg:px-12"
         style={{ paddingTop: 56, paddingBottom: 28 }}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
+        <div className="footer-main-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
 
           {/* Column 1 — Brand */}
           <motion.div
             variants={colVariant(-20, 0)}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
-            className="pr-10 pb-12 lg:pb-0"
+            className="footer-brand-col pr-10 pb-12 lg:pb-0"
             style={{
               borderRight: '1px solid rgba(255,255,255,0.08)',
               display: 'flex',
@@ -237,7 +282,7 @@ export default function Footer() {
             variants={colVariant(0, 0.1)}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
-            className="px-10 pb-12 lg:pb-0"
+            className="footer-nav-col px-10 pb-12 lg:pb-0"
             style={{ borderRight: '1px solid rgba(255,255,255,0.08)' }}
           >
             <h4 style={{
@@ -259,7 +304,7 @@ export default function Footer() {
             variants={colVariant(0, 0.2)}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
-            className="px-10 pb-12 lg:pb-0"
+            className="footer-services-col px-10 pb-12 lg:pb-0"
             style={{ borderRight: '1px solid rgba(255,255,255,0.08)' }}
           >
             <h4 style={{
@@ -281,7 +326,7 @@ export default function Footer() {
             variants={colVariant(20, 0.3)}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
-            className="pl-10 pb-12 lg:pb-0"
+            className="footer-findus-col pl-10 pb-12 lg:pb-0"
           >
             <h4 style={{
               fontFamily: "'Montserrat', sans-serif",
@@ -386,6 +431,7 @@ export default function Footer() {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.5, delay: 0.5, ease: 'easeOut' }}
+          className="footer-bottom-bar"
           style={{
             paddingTop: 20,
             paddingBottom: 8,

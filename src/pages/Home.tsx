@@ -1316,9 +1316,14 @@ function TestimonialsCarousel() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      className="htc-section"
       style={{ background: '#283b22', padding: '80px 0' }}
     >
       <style>{`
+        @media (max-width: 768px) {
+          .htc-section { padding: 48px 0 !important; }
+          .htc-heading-wrap { margin-bottom: 32px !important; }
+        }
         .htc-read-more {
           position: relative;
           display: inline-flex;
@@ -1386,7 +1391,7 @@ function TestimonialsCarousel() {
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
 
         {/* Heading */}
-        <FadeIn className="text-center" style={{ marginBottom: 56 }}>
+        <FadeIn className="text-center htc-heading-wrap" style={{ marginBottom: 56 }}>
           <p style={{
             fontFamily: "'Montserrat', sans-serif",
             fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase',
