@@ -4,9 +4,6 @@ import { X } from 'lucide-react'
 
 export default function ConsultationPopup() {
   const [isOpen, setIsOpen] = useState(false)
-  const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
-  const [spaceType, setSpaceType] = useState('')
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -19,7 +16,7 @@ export default function ConsultationPopup() {
       timer = setTimeout(() => {
         setIsOpen(true)
         sessionStorage.setItem('popupShown', 'true')
-      }, 6000)
+      }, 5000)
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -62,7 +59,7 @@ export default function ConsultationPopup() {
           border-radius: 4px;
           box-shadow: 0 24px 80px rgba(0,0,0,0.35), 0 4px 20px rgba(0,0,0,0.15);
           width: 100%;
-          max-width: 480px;
+          max-width: 460px;
           padding: 48px 40px 40px;
           position: relative;
           animation: cpopup-slide-up 0.35s cubic-bezier(0.22,1,0.36,1);
@@ -84,7 +81,6 @@ export default function ConsultationPopup() {
           align-items: center;
           justify-content: center;
           transition: color 0.2s ease;
-          border-radius: 2px;
         }
         .cpopup-close:hover { color: #21291a; }
         .cpopup-sub {
@@ -95,38 +91,61 @@ export default function ConsultationPopup() {
           text-transform: uppercase;
           color: #a18661;
           text-align: center;
-          margin-bottom: 12px;
+          margin: 0 0 12px;
         }
         .cpopup-heading {
           font-family: 'Playfair Display', serif;
           font-weight: 400;
-          font-size: clamp(1.5rem, 4vw, 2rem);
+          font-size: clamp(1.4rem, 4vw, 1.85rem);
           color: #21291a;
           text-align: center;
           margin: 0 0 32px;
           line-height: 1.25;
         }
-        .cpopup-field {
-          width: 100%;
-          border: none;
-          border-bottom: 1px solid rgba(33,41,26,0.25);
-          background: transparent;
-          padding: 10px 0;
-          font-family: 'Lora', serif;
-          font-size: 14px;
+        .cpopup-stats {
+          display: flex;
+          justify-content: center;
+          gap: 0;
+          margin: 0 0 28px;
+          border: 1px solid rgba(161,134,97,0.2);
+          border-radius: 4px;
+          overflow: hidden;
+        }
+        .cpopup-stat {
+          flex: 1;
+          text-align: center;
+          padding: 20px 16px;
+          background: rgba(33,41,26,0.04);
+        }
+        .cpopup-stat + .cpopup-stat {
+          border-left: 1px solid rgba(161,134,97,0.2);
+        }
+        .cpopup-stat-value {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 2.4rem;
+          font-weight: 300;
           color: #21291a;
-          outline: none;
-          margin-bottom: 24px;
-          transition: border-color 0.25s ease;
-          display: block;
-          box-sizing: border-box;
+          line-height: 1;
+          margin: 0 0 6px;
         }
-        .cpopup-field::placeholder {
-          color: rgba(33,41,26,0.4);
+        .cpopup-stat-label {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 9px;
+          font-weight: 400;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: rgba(33,41,26,0.5);
+          margin: 0;
+        }
+        .cpopup-tagline {
           font-family: 'Lora', serif;
+          font-style: italic;
           font-size: 14px;
+          color: rgba(33,41,26,0.6);
+          text-align: center;
+          margin: 0 0 32px;
+          line-height: 1.6;
         }
-        .cpopup-field:focus { border-bottom-color: #a18661; }
         .cpopup-btn {
           width: 100%;
           background: #a18661;
@@ -140,7 +159,6 @@ export default function ConsultationPopup() {
           text-transform: uppercase;
           cursor: pointer;
           border-radius: 2px;
-          margin-top: 8px;
           transition: background 0.25s ease, transform 0.25s ease;
         }
         .cpopup-btn:hover {
@@ -164,27 +182,20 @@ export default function ConsultationPopup() {
           <p className="cpopup-sub">Get a Free 30-Min Design Consultation</p>
           <h2 className="cpopup-heading">Planning your dream home?</h2>
 
-          <input
-            className="cpopup-field"
-            type="text"
-            placeholder="Your Name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-          <input
-            className="cpopup-field"
-            type="tel"
-            placeholder="Phone Number"
-            value={phone}
-            onChange={e => setPhone(e.target.value)}
-          />
-          <input
-            className="cpopup-field"
-            type="text"
-            placeholder="Type of Space"
-            value={spaceType}
-            onChange={e => setSpaceType(e.target.value)}
-          />
+          <div className="cpopup-stats">
+            <div className="cpopup-stat">
+              <p className="cpopup-stat-value">8+</p>
+              <p className="cpopup-stat-label">Years Experience</p>
+            </div>
+            <div className="cpopup-stat">
+              <p className="cpopup-stat-value">90%</p>
+              <p className="cpopup-stat-label">Client Satisfaction</p>
+            </div>
+          </div>
+
+          <p className="cpopup-tagline">
+            Let's turn your vision into a beautifully designed space.
+          </p>
 
           <button className="cpopup-btn" onClick={handleBook}>
             Book My Free Consultation
