@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import FadeIn from '../components/FadeIn'
+import { motion } from 'framer-motion'
 
 const testimonials = [
   {
@@ -58,35 +58,83 @@ const stats = [
   { value: '100%', label: 'On-Time Handover' },
 ]
 
-function TestimonialCard({ t, delay }: { t: typeof testimonials[0]; delay: number }) {
+const fadeUp = (delay = 0) => ({
+  hidden: { opacity: 0, y: 25 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+  },
+})
+
+const fadeDown = (delay = 0) => ({
+  hidden: { opacity: 0, y: -15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+  },
+})
+
+function ProjectBadge({ project }: { project: string }) {
+  const isResidential = project.startsWith('RESIDENTIAL')
   return (
-    <FadeIn delay={delay}>
+    <span style={{
+      display: 'inline-block',
+      fontFamily: "'Montserrat', sans-serif",
+      fontSize: 9,
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase',
+      padding: '3px 8px',
+      borderRadius: 3,
+      lineHeight: 1.6,
+      background: isResidential ? 'rgba(161,134,97,0.15)' : 'rgba(95,116,94,0.25)',
+      color: isResidential ? '#c9a96e' : '#8db88b',
+      border: `1px solid ${isResidential ? 'rgba(161,134,97,0.4)' : 'rgba(141,184,139,0.35)'}`,
+    }}>
+      {project}
+    </span>
+  )
+}
+
+function TestimonialCard({ t, index }: { t: typeof testimonials[0]; index: number }) {
+  const colDelay = (index % 3) * 0.15
+
+  return (
+    <motion.div
+      variants={fadeUp(colDelay)}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.15 }}
+    >
       <div
         className="testimonial-card"
         style={{
-          background: 'rgba(255,255,255,0.05)',
-          border: '1px solid #a18661',
+          background: 'rgba(255,255,255,0.04)',
+          border: '1px solid rgba(161,134,97,0.45)',
           borderRadius: 8,
           padding: 32,
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
-          transition: 'all 0.3s ease',
+          transition: 'transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease',
         }}
         onMouseEnter={e => {
           const el = e.currentTarget as HTMLDivElement
           el.style.borderColor = '#a18661'
           el.style.borderWidth = '1.5px'
-          el.style.transform = 'translateY(-4px)'
-          el.style.background = 'rgba(161,134,97,0.08)'
+          el.style.transform = 'translateY(-5px)'
+          el.style.background = 'rgba(161,134,97,0.09)'
+          el.style.boxShadow = '0 12px 36px rgba(0,0,0,0.35)'
         }}
         onMouseLeave={e => {
           const el = e.currentTarget as HTMLDivElement
-          el.style.borderColor = '#a18661'
+          el.style.borderColor = 'rgba(161,134,97,0.45)'
           el.style.borderWidth = '1px'
           el.style.transform = 'translateY(0)'
-          el.style.background = 'rgba(255,255,255,0.05)'
+          el.style.background = 'rgba(255,255,255,0.04)'
+          el.style.boxShadow = 'none'
         }}
       >
         {/* Decorative large quote mark */}
@@ -98,7 +146,7 @@ function TestimonialCard({ t, delay }: { t: typeof testimonials[0]; delay: numbe
           lineHeight: 1,
           color: '#a18661',
           fontFamily: "'Playfair Display', serif",
-          opacity: 0.35,
+          opacity: 0.3,
           pointerEvents: 'none',
           userSelect: 'none',
         }}>"</span>
@@ -131,7 +179,7 @@ function TestimonialCard({ t, delay }: { t: typeof testimonials[0]; delay: numbe
         }} />
 
         {/* Client info */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
           <div style={{
             width: 40,
             height: 40,
@@ -165,45 +213,58 @@ function TestimonialCard({ t, delay }: { t: typeof testimonials[0]; delay: numbe
               color: '#a18661',
               margin: '3px 0 0',
             }}>{t.location}</p>
-            <p style={{
-              fontFamily: "'Montserrat', sans-serif",
-              fontSize: 10,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: 'rgba(161,134,97,0.6)',
-              margin: '2px 0 0',
-            }}>{t.project}</p>
           </div>
         </div>
+
+        {/* Project badge */}
+        <ProjectBadge project={t.project} />
       </div>
-    </FadeIn>
+    </motion.div>
   )
 }
 
 export default function Testimonials() {
   return (
-    <div style={{ background: '#21291a', minHeight: '100vh' }}>
+    <div style={{ background: '#1a2a1a', minHeight: '100vh' }}>
 
       {/* Page Hero */}
       <section style={{ paddingTop: 140, paddingBottom: 60, textAlign: 'center', paddingLeft: 24, paddingRight: 24 }}>
-        <FadeIn>
-          <p style={{
+        <motion.p
+          variants={fadeDown(0)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          style={{
             fontFamily: "'Montserrat', sans-serif",
             fontSize: 11,
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
             color: '#a18661',
             marginBottom: 16,
-          }}>Client Stories</p>
-          <h1 style={{
+          }}
+        >Client Stories</motion.p>
+
+        <motion.h1
+          variants={fadeUp(0.15)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          style={{
             fontFamily: "'Playfair Display', serif",
             fontWeight: 400,
             fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
             color: '#f5f2ed',
             margin: '0 0 20px',
             lineHeight: 1.1,
-          }}>What Clients Say</h1>
-          <p style={{
+          }}
+        >What Clients Say</motion.h1>
+
+        <motion.p
+          variants={fadeUp(0.3)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          style={{
             fontFamily: "'Lora', serif",
             fontWeight: 300,
             fontSize: 15,
@@ -211,19 +272,20 @@ export default function Testimonials() {
             maxWidth: 560,
             margin: '0 auto',
             lineHeight: 1.75,
-          }}>
-            Every project is a relationship. These are the words of people who trusted us with their spaces.
-          </p>
-        </FadeIn>
+          }}
+        >
+          Every project is a relationship. These are the words of people who trusted us with their spaces.
+        </motion.p>
       </section>
 
       {/* Cards Grid */}
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 24px 80px' }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 24,
-        }}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: 24,
+          }}
           className="testi-grid"
         >
           <style>{`
@@ -235,22 +297,23 @@ export default function Testimonials() {
             }
           `}</style>
           {testimonials.map((t, i) => (
-            <TestimonialCard key={i} t={t} delay={(i % 3) * 0.12} />
+            <TestimonialCard key={i} t={t} index={i} />
           ))}
         </div>
       </section>
 
       {/* Stats Bar */}
-      <section style={{ background: '#5f745e', padding: '64px 24px' }}>
-        <div style={{
-          maxWidth: 900,
-          margin: '0 auto',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: 0,
-          flexWrap: 'wrap',
-        }}
+      <section style={{ background: '#233223', padding: '64px 24px' }}>
+        <div
+          style={{
+            maxWidth: 900,
+            margin: '0 auto',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 0,
+            flexWrap: 'wrap',
+          }}
           className="stats-bar"
         >
           <style>{`
@@ -266,7 +329,15 @@ export default function Testimonials() {
             }
           `}</style>
           {stats.map((s, i) => (
-            <div key={i} className="stats-bar-item" style={{ flex: 1, textAlign: 'center', padding: '16px 40px', minWidth: 180 }}>
+            <motion.div
+              key={i}
+              className="stats-bar-item"
+              variants={fadeUp(i * 0.12)}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.4 }}
+              style={{ flex: 1, textAlign: 'center', padding: '16px 40px', minWidth: 180 }}
+            >
               <p style={{
                 fontFamily: "'Playfair Display', serif",
                 fontWeight: 400,
@@ -284,14 +355,19 @@ export default function Testimonials() {
                 color: 'rgba(245,242,237,0.7)',
                 margin: 0,
               }}>{s.label}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
 
       {/* CTA Section */}
-      <section style={{ background: '#21291a', padding: '80px 24px', textAlign: 'center' }}>
-        <FadeIn>
+      <section style={{ background: '#1a2a1a', padding: '80px 24px', textAlign: 'center' }}>
+        <motion.div
+          variants={fadeUp(0)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.4 }}
+        >
           <h2 style={{
             fontFamily: "'Playfair Display', serif",
             fontWeight: 400,
@@ -339,7 +415,7 @@ export default function Testimonials() {
           >
             Claim My Free Offer Now
           </Link>
-        </FadeIn>
+        </motion.div>
       </section>
     </div>
   )
