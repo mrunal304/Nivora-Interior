@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import WhatsAppButton from './components/WhatsAppButton'
 import IntroOverlay from './components/IntroOverlay'
+import ConsultationPopup from './components/ConsultationPopup'
 import Home from './pages/Home'
 import Portfolio from './pages/Portfolio'
 import Services from './pages/Services'
@@ -39,6 +40,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <IntroOverlay />
+      <ConsultationPopup />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout><Home /></Layout>} />
