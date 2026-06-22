@@ -1169,7 +1169,8 @@ function HeroSection() {
   )
 }
 
-function CarouselCard({ t }: { t: typeof testimonials[0] }) {
+function CarouselCard({ t, isCenter, slideKey, visibleCount }: { t: typeof testimonials[0]; isCenter?: boolean; slideKey?: number; visibleCount?: number }) {
+  const showHighlight = visibleCount === 3
   return (
     <div style={{
       background: '#f5f2ed',
@@ -1181,6 +1182,9 @@ function CarouselCard({ t }: { t: typeof testimonials[0] }) {
       height: '100%',
       display: 'flex',
       flexDirection: 'column',
+      transition: 'transform 300ms ease, opacity 300ms ease',
+      transform: showHighlight && isCenter ? 'scale(1.02)' : 'scale(1.0)',
+      opacity: showHighlight && !isCenter ? 0.85 : 1,
     }}>
       {/* Linen texture overlay */}
       <div aria-hidden="true" style={{
@@ -1189,10 +1193,11 @@ function CarouselCard({ t }: { t: typeof testimonials[0] }) {
         backgroundSize: '160px 160px', opacity: 0.04, pointerEvents: 'none', zIndex: 0,
       }} />
       {/* Decorative quote mark */}
-      <span style={{
+      <span key={slideKey} style={{
         position: 'absolute', top: 12, right: 18, fontSize: 72, lineHeight: 1,
         color: '#21291a', fontFamily: "'Playfair Display', serif",
         opacity: 0.1, pointerEvents: 'none', userSelect: 'none', zIndex: 1,
+        animation: 'quoteEntrance 350ms ease-out 200ms both',
       }}>"</span>
       {/* Content above texture */}
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', flex: 1 }}>
@@ -1246,8 +1251,12 @@ function CarouselCard({ t }: { t: typeof testimonials[0] }) {
 
 function TestimonialsCarousel() {
   const [current, setCurrent] = useState(0)
+  const [slideKey, setSlideKey] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
   const viewportRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState(0)
+  const autoScrollRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const maxIndexRef = useRef(0)
 
   useEffect(() => {
     const measure = () => {
@@ -1264,9 +1273,49 @@ function TestimonialsCarousel() {
   const cardWidth = containerWidth > 0 ? (containerWidth - GAP * (visibleCount - 1)) / visibleCount : 0
   const count = testimonials.length
   const maxIndex = Math.max(0, count - visibleCount)
+  maxIndexRef.current = maxIndex
 
-  const prev = () => setCurrent(c => (c <= 0 ? maxIndex : c - 1))
-  const next = () => setCurrent(c => (c >= maxIndex ? 0 : c + 1))
+  const advance = () => {
+    setCurrent(c => (c >= maxIndexRef.current ? 0 : c + 1))
+    setSlideKey(k => k + 1)
+  }
+
+  const retreat = () => {
+    setCurrent(c => (c <= 0 ? maxIndexRef.current : c - 1))
+    setSlideKey(k => k + 1)
+  }
+
+  const startAutoScroll = () => {
+    if (autoScrollRef.current) clearInterval(autoScrollRef.current)
+    autoScrollRef.current = setInterval(advance, 4000)
+  }
+
+  useEffect(() => {
+    startAutoScroll()
+    return () => {
+      if (autoScrollRef.current) clearInterval(autoScrollRef.current)
+    }
+  }, [])
+
+  const prev = () => {
+    retreat()
+    startAutoScroll()
+  }
+
+  const next = () => {
+    advance()
+    startAutoScroll()
+  }
+
+  const handleMouseEnter = () => {
+    setIsPaused(true)
+    if (autoScrollRef.current) clearInterval(autoScrollRef.current)
+  }
+
+  const handleMouseLeave = () => {
+    setIsPaused(false)
+    startAutoScroll()
+  }
 
   return (
     <motion.section
@@ -1327,6 +1376,18 @@ function TestimonialsCarousel() {
           background: rgba(161,134,97,0.1);
           color: #c8a96e;
         }
+        @keyframes cardEntrance {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes quoteEntrance {
+          from { opacity: 0; transform: translateY(-8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes progressFill {
+          from { width: 0%; }
+          to { width: 100%; }
+        }
       `}</style>
 
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
@@ -1351,7 +1412,11 @@ function TestimonialsCarousel() {
         </FadeIn>
 
         {/* Carousel: arrow + viewport + arrow */}
-        <div style={{ display: 'flex', alignItems: 'stretch', gap: 16 }}>
+        <div
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          style={{ display: 'flex', alignItems: 'stretch', gap: 16 }}
+        >
 
           <button className="htc-nav" onClick={prev} aria-label="Previous testimonial" style={{ alignSelf: 'center' }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
@@ -1364,22 +1429,29 @@ function TestimonialsCarousel() {
               display: 'flex',
               gap: GAP,
               transform: `translateX(${cardWidth > 0 ? -(current * (cardWidth + GAP)) : 0}px)`,
-              transition: 'transform 400ms ease-out',
+              transition: 'transform 500ms ease-in-out',
               willChange: 'transform',
               alignItems: 'stretch',
             }}>
-              {testimonials.map((t, i) => (
-                <div
-                  key={i}
-                  style={{
-                    width: cardWidth > 0 ? cardWidth : undefined,
-                    minWidth: cardWidth > 0 ? cardWidth : undefined,
-                    flexShrink: 0,
-                  }}
-                >
-                  <CarouselCard t={t} />
-                </div>
-              ))}
+              {testimonials.map((t, i) => {
+                const posInView = i - current
+                const isCenter = visibleCount === 3 && posInView === 1
+                const isVisible = posInView >= 0 && posInView < visibleCount
+                const animDelay = isVisible ? posInView * 100 : 0
+                return (
+                  <div
+                    key={`${slideKey}-${i}`}
+                    style={{
+                      width: cardWidth > 0 ? cardWidth : undefined,
+                      minWidth: cardWidth > 0 ? cardWidth : undefined,
+                      flexShrink: 0,
+                      animation: isVisible ? `cardEntrance 400ms ease-out ${animDelay}ms both` : undefined,
+                    }}
+                  >
+                    <CarouselCard t={t} isCenter={isCenter} slideKey={slideKey} visibleCount={visibleCount} />
+                  </div>
+                )
+              })}
             </div>
           </div>
 
@@ -1391,8 +1463,24 @@ function TestimonialsCarousel() {
 
         </div>
 
+        {/* Progress bar */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 28 }}>
+          <div style={{ width: 200, height: 2, background: 'rgba(245,242,237,0.15)', borderRadius: 2, overflow: 'hidden' }}>
+            <div
+              key={slideKey}
+              style={{
+                height: '100%',
+                background: '#a18661',
+                borderRadius: 2,
+                animation: `progressFill 4000ms linear forwards`,
+                animationPlayState: isPaused ? 'paused' : 'running',
+              }}
+            />
+          </div>
+        </div>
+
         {/* Read all link */}
-        <div style={{ textAlign: 'center', marginTop: 40 }}>
+        <div style={{ textAlign: 'center', marginTop: 32 }}>
           <Link to="/testimonials" className="htc-read-more">
             Read All Client Stories <span className="htc-arrow"><ArrowRight size={12} /></span>
           </Link>
