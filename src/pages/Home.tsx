@@ -760,9 +760,9 @@ function HeroSection() {
 
         {/* Location tabs */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: 'easeOut' }}
+          transition={{ duration: 0.65, delay: 0, ease: [0.22, 1, 0.36, 1] }}
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 28, marginBottom: 32 }}
         >
           {(['Mumbai', 'Pune'] as const).map(city => (
@@ -790,9 +790,9 @@ function HeroSection() {
 
         {/* Main headline */}
         <motion.h1
-          initial={{ opacity: 0, y: 36 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.1, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
@@ -806,9 +806,25 @@ function HeroSection() {
           Thoughtfully Designed
         </motion.h1>
         <motion.h1
-          initial={{ opacity: 0, y: 36 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.1, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, delay: 0.30, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontWeight: 300,
+            fontSize: 'clamp(46px, 7vw, 88px)',
+            lineHeight: 1.05,
+            color: '#f5f0e8',
+            letterSpacing: '-0.01em',
+            marginBottom: 12,
+          }}
+        >
+          Interiors —
+        </motion.h1>
+        <motion.h1
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.75, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
@@ -818,15 +834,14 @@ function HeroSection() {
             marginBottom: 32,
           }}
         >
-          <span style={{ color: '#f5f0e8' }}>Interiors —&nbsp;</span>
           <em className="hero-italic-reveal" style={{ color: '#b8966a', fontStyle: 'italic' }}>That Feel Effortless</em>
         </motion.h1>
 
         {/* Supporting copy */}
         <motion.p
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.48, ease: 'easeOut' }}
+          transition={{ duration: 0.7, delay: 0.60, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fontFamily: "'DM Sans', sans-serif",
             fontWeight: 300,
@@ -844,7 +859,7 @@ function HeroSection() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.65 }}
+          transition={{ duration: 0.7, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
           style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}
         >
           <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.25 }}>
