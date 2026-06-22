@@ -1041,12 +1041,9 @@ function TestimonialsCarousel() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrent(p => (p + 1) % count)
-    }, 5500)
+    }, 5000)
     return () => clearInterval(interval)
   }, [count])
-
-  const prev = () => setCurrent(p => (p - 1 + count) % count)
-  const next = () => setCurrent(p => (p + 1) % count)
 
   const t = testimonials[current]
 
@@ -1078,24 +1075,6 @@ function TestimonialsCarousel() {
           transition: width 0.3s ease;
         }
         .htc-read-more:hover::after { width: 100%; }
-        .htc-arrow {
-          width: 48px;
-          height: 48px;
-          border-radius: 50%;
-          border: 1px solid rgba(161,134,97,0.5);
-          background: rgba(255,255,255,0.08);
-          color: #a18661;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: border-color 0.25s ease, background 0.25s ease;
-          flex-shrink: 0;
-        }
-        .htc-arrow:hover {
-          border-color: #a18661;
-          background: rgba(161,134,97,0.15);
-        }
         .htc-dot {
           width: 8px;
           height: 8px;
@@ -1107,12 +1086,13 @@ function TestimonialsCarousel() {
           transition: background 0.25s ease, transform 0.25s ease;
         }
         .htc-dot.active {
-          background: #a18661;
-          transform: scale(1.25);
+          background: #21291a;
+          border-color: #21291a;
+          transform: scale(1.3);
         }
       `}</style>
 
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px' }}>
 
         {/* Heading */}
         <FadeIn className="text-center" style={{ marginBottom: 56 }}>
@@ -1144,123 +1124,106 @@ function TestimonialsCarousel() {
           </p>
         </FadeIn>
 
-        {/* Carousel row */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24, maxWidth: 820, margin: '0 auto' }}>
+        {/* Card */}
+        <div style={{ overflow: 'hidden' }}>
+          <motion.div
+            key={current}
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -40 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              background: '#f5f2ed',
+              border: '1.5px solid #21291a',
+              borderRadius: 6,
+              padding: 'clamp(32px, 4vw, 56px) clamp(28px, 5vw, 64px)',
+              position: 'relative',
+            }}
+          >
+            {/* Decorative quote mark */}
+            <span style={{
+              position: 'absolute',
+              top: 16,
+              right: 28,
+              fontSize: 88,
+              lineHeight: 1,
+              color: '#21291a',
+              fontFamily: "'Playfair Display', serif",
+              opacity: 0.1,
+              pointerEvents: 'none',
+              userSelect: 'none',
+            }}>"</span>
 
-          {/* Prev arrow */}
-          <button className="htc-arrow" onClick={prev} aria-label="Previous testimonial">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
+            {/* Stars */}
+            <div style={{ fontSize: 16, color: '#a18661', letterSpacing: 4, marginBottom: 22 }}>
+              {'★'.repeat(t.stars)}
+            </div>
 
-          {/* Card */}
-          <div style={{ flex: 1, overflow: 'hidden' }}>
-            <motion.div
-              key={current}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              style={{
-                background: '#f5f2ed',
-                border: '1.5px solid #4a5c49',
-                borderRadius: 10,
-                padding: 'clamp(28px, 4vw, 48px)',
-                position: 'relative',
-              }}
-            >
-              {/* Decorative quote mark */}
-              <span style={{
-                position: 'absolute',
-                top: 12,
-                right: 20,
-                fontSize: 72,
-                lineHeight: 1,
-                color: '#4a5c49',
-                fontFamily: "'Playfair Display', serif",
-                opacity: 0.18,
-                pointerEvents: 'none',
-                userSelect: 'none',
-              }}>"</span>
+            {/* Review text */}
+            <p style={{
+              fontFamily: "'Lora', serif",
+              fontStyle: 'italic',
+              fontSize: 'clamp(15px, 1.8vw, 19px)',
+              lineHeight: 1.9,
+              color: '#2c2c2c',
+              margin: '0 0 32px',
+              maxWidth: '90%',
+            }}>
+              "{t.text}"
+            </p>
 
-              {/* Stars */}
-              <div style={{ fontSize: 15, color: '#a18661', letterSpacing: 3, marginBottom: 20 }}>
-                {'★'.repeat(t.stars)}
-              </div>
+            {/* Divider */}
+            <div style={{ width: 40, height: 1, background: '#a18661', marginBottom: 22 }} />
 
-              {/* Review text */}
-              <p style={{
-                fontFamily: "'Lora', serif",
-                fontStyle: 'italic',
-                fontSize: 'clamp(15px, 2vw, 18px)',
-                lineHeight: 1.85,
-                color: '#2c2c2c',
-                margin: '0 0 28px',
+            {/* Client info */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+              <div style={{
+                width: 44,
+                height: 44,
+                borderRadius: '50%',
+                background: '#a18661',
+                color: '#21291a',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: "'Montserrat', sans-serif",
+                fontWeight: 700,
+                fontSize: 13,
+                flexShrink: 0,
               }}>
-                "{t.text}"
-              </p>
-
-              {/* Divider */}
-              <div style={{ width: 40, height: 1, background: '#a18661', marginBottom: 20 }} />
-
-              {/* Client info */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                <div style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: '50%',
-                  background: '#a18661',
-                  color: '#21291a',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontFamily: "'Montserrat', sans-serif",
-                  fontWeight: 700,
-                  fontSize: 13,
-                  flexShrink: 0,
-                }}>
-                  {t.initials}
-                </div>
-                <div>
-                  <p style={{
-                    fontFamily: "'Montserrat', sans-serif",
-                    fontWeight: 500,
-                    fontSize: 14,
-                    color: '#21291a',
-                    margin: 0,
-                  }}>{t.name}</p>
-                  <p style={{
-                    fontFamily: "'Montserrat', sans-serif",
-                    fontSize: 11,
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    color: '#6d5a41',
-                    margin: '3px 0 0',
-                  }}>{t.location}</p>
-                  <p style={{
-                    fontFamily: "'Montserrat', sans-serif",
-                    fontSize: 10,
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    color: 'rgba(109,90,65,0.6)',
-                    margin: '2px 0 0',
-                  }}>{t.project}</p>
-                </div>
+                {t.initials}
               </div>
-            </motion.div>
-          </div>
-
-          {/* Next arrow */}
-          <button className="htc-arrow" onClick={next} aria-label="Next testimonial">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 18l6-6-6-6" />
-            </svg>
-          </button>
+              <div>
+                <p style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontWeight: 500,
+                  fontSize: 14,
+                  color: '#21291a',
+                  margin: 0,
+                }}>{t.name}</p>
+                <p style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 11,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: '#6d5a41',
+                  margin: '3px 0 0',
+                }}>{t.location}</p>
+                <p style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 10,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: 'rgba(109,90,65,0.6)',
+                  margin: '2px 0 0',
+                }}>{t.project}</p>
+              </div>
+            </div>
+          </motion.div>
         </div>
 
         {/* Dots */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 32 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 28 }}>
           {testimonials.map((_, i) => (
             <button
               key={i}
@@ -1272,7 +1235,7 @@ function TestimonialsCarousel() {
         </div>
 
         {/* Read all link */}
-        <div style={{ textAlign: 'center', marginTop: 40 }}>
+        <div style={{ textAlign: 'center', marginTop: 36 }}>
           <Link to="/testimonials" className="htc-read-more">
             Read All Client Stories <ArrowRight size={12} />
           </Link>
