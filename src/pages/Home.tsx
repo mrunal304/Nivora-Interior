@@ -2285,7 +2285,7 @@ export default function Home() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#33452F' }}>
+      <section className="relative overflow-hidden" style={{ backgroundColor: '#33452F', paddingTop: 70, paddingBottom: 70 }}>
         <div className="absolute inset-0 opacity-5">
           <div className="w-full h-full" style={{ backgroundImage: 'radial-gradient(circle at 30% 50%, #b8966a 0%, transparent 60%)' }} />
         </div>
