@@ -9,55 +9,30 @@ const serviceCards = [
     title: 'Residential Interiors',
     desc: 'Designing elegant homes and living spaces that blend comfort, functionality, and timeless beauty.',
     img: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900&q=80',
-    href: '/services/residential',
   },
   {
     num: '02',
     title: 'Commercial Interiors',
     desc: 'Creating productive offices, clinics, retail stores, and professional workspaces.',
     img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&q=80',
-    href: '/services/commercial',
   },
   {
     num: '03',
     title: 'Hospitality Interiors',
     desc: 'Crafting memorable guest experiences through hotels, cafés, restaurants, and hospitality environments.',
     img: 'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=900&q=80',
-    href: '/services/hospitality',
   },
   {
     num: '04',
     title: 'Architecture & Space Planning',
     desc: 'Planning layouts, elevations, facades, and architectural concepts for optimized spaces.',
     img: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=900&q=80',
-    href: '/services/architecture',
-  },
-  {
-    num: '05',
-    title: '2D & 3D Visualization',
-    desc: 'Creating drawings, renders, and visual presentations that bring ideas to life.',
-    img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80',
-    href: '/services/visualization',
-  },
-  {
-    num: '06',
-    title: 'Developer Solutions',
-    desc: 'Design support for sample flats, amenities, marketing suites, and property enhancement.',
-    img: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=80',
-    href: '/services/developer',
-  },
-  {
-    num: '07',
-    title: 'Renovation & Makeovers',
-    desc: 'Transforming existing spaces through upgrades, modernization, and complete redesigns.',
-    img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=80',
-    href: '/services/renovation',
   },
 ]
 
-const STAGGER = [100, 200, 300, 400, 500, 600, 700]
+const STAGGER = [100, 200, 300, 400]
 
-function ServiceCard({ card, index }: { card: typeof serviceCards[0]; index: number }) {
+function ServiceCard({ card, index, onCardClick }: { card: typeof serviceCards[0]; index: number; onCardClick: () => void }) {
   const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
   const [imgLoaded, setImgLoaded] = useState(false)
@@ -84,8 +59,8 @@ function ServiceCard({ card, index }: { card: typeof serviceCards[0]; index: num
         transition: `opacity 0.65s cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 0.65s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
       }}
     >
-      <Link
-        to={card.href}
+      <div
+        onClick={onCardClick}
         className="svc-card-pm"
         style={{
           display: 'block',
@@ -93,7 +68,6 @@ function ServiceCard({ card, index }: { card: typeof serviceCards[0]; index: num
           overflow: 'hidden',
           borderRadius: 18,
           height: 'var(--card-h)',
-          textDecoration: 'none',
           cursor: 'pointer',
         }}
       >
@@ -215,42 +189,24 @@ function ServiceCard({ card, index }: { card: typeof serviceCards[0]; index: num
               color: 'rgba(245,240,232,0.78)',
               lineHeight: 1.65,
               margin: 0,
-              marginBottom: '1rem',
               opacity: 0,
               transform: 'translateY(12px)',
               transition: 'opacity 0.45s ease, transform 0.45s cubic-bezier(0.16,1,0.3,1)',
             }}
           >{card.desc}</p>
-
-          {/* CTA */}
-          <div
-            className="svc-cta-pm"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 7,
-              opacity: 0,
-              transform: 'translateY(10px)',
-              transition: 'opacity 0.45s ease 0.07s, transform 0.45s cubic-bezier(0.16,1,0.3,1) 0.07s',
-            }}
-          >
-            <span style={{
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 400,
-              fontSize: 10,
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase',
-              color: '#C9A96E',
-            }}>Explore Service</span>
-            <ArrowRight size={11} color="#C9A96E" strokeWidth={1.5} />
-          </div>
         </div>
-      </Link>
+      </div>
     </div>
   )
 }
 
 export default function Services() {
+  const ctaRef = useRef<HTMLElement>(null)
+
+  const scrollToCta = () => {
+    ctaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
     <div style={{ backgroundColor: '#F7F4EF', minHeight: '100vh' }}>
       <style>{`
@@ -294,10 +250,6 @@ export default function Services() {
           opacity: 1 !important;
           transform: translateY(0) !important;
         }
-        .svc-card-pm:hover .svc-cta-pm {
-          opacity: 1 !important;
-          transform: translateY(0) !important;
-        }
         .svc-card-pm:hover .svc-accent-pm {
           width: calc(100% - 36px) !important;
         }
@@ -307,25 +259,16 @@ export default function Services() {
           grid-template-columns: repeat(4, 1fr);
           gap: var(--svc-gap);
         }
-        .svc-grid-row2-pm {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: var(--svc-gap);
-          margin-top: var(--svc-gap);
-        }
         @media (max-width: 1024px) {
-          .svc-grid-pm,
-          .svc-grid-row2-pm {
+          .svc-grid-pm {
             grid-template-columns: repeat(2, 1fr) !important;
           }
         }
         @media (max-width: 640px) {
-          .svc-grid-pm,
-          .svc-grid-row2-pm {
+          .svc-grid-pm {
             grid-template-columns: 1fr !important;
           }
-          .svc-desc-pm,
-          .svc-cta-pm {
+          .svc-desc-pm {
             opacity: 1 !important;
             transform: translateY(0) !important;
           }
@@ -391,23 +334,21 @@ export default function Services() {
         padding: '0 2rem 96px',
       }}>
         <div className="svc-grid-pm">
-          {serviceCards.slice(0, 4).map((card, i) => (
-            <ServiceCard key={card.num} card={card} index={i} />
-          ))}
-        </div>
-        <div className="svc-grid-row2-pm">
-          {serviceCards.slice(4).map((card, i) => (
-            <ServiceCard key={card.num} card={card} index={i + 4} />
+          {serviceCards.map((card, i) => (
+            <ServiceCard key={card.num} card={card} index={i} onCardClick={scrollToCta} />
           ))}
         </div>
       </section>
 
       {/* CTA */}
-      <section style={{
-        backgroundColor: '#2A3926',
-        padding: '88px 1.5rem',
-        textAlign: 'center',
-      }}>
+      <section
+        ref={ctaRef}
+        style={{
+          backgroundColor: '#2A3926',
+          padding: '88px 1.5rem',
+          textAlign: 'center',
+        }}
+      >
         <FadeIn>
           <p style={{
             fontFamily: "'Inter', sans-serif",
