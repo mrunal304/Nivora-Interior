@@ -1490,7 +1490,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
     if (!section) return
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setPhilosophyInView(true); observer.disconnect() } },
-      { threshold: 0.2 }
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
     )
     observer.observe(section)
     return () => observer.disconnect()
@@ -1522,7 +1522,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
       <HeroSection key={animKey} splashDone={splashDone} />
 
       {/* Philosophy */}
-      <section ref={philosophySectionRef} className="philosophy-section" style={{ backgroundColor: '#f7f4ef', padding: '80px 1.5rem 110px' }}>
+      <section ref={philosophySectionRef} className="philosophy-section" style={{ backgroundColor: '#f7f4ef', padding: '60px 1.5rem 60px' }}>
         <div className="philosophy-flex" style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', gap: '4rem', alignItems: 'center', flexWrap: 'wrap' }}>
 
           {/* Left — text block (55%) */}
@@ -1621,13 +1621,24 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
                 style={{
                   fontFamily: "'Cormorant Garamond', serif",
                   fontStyle: 'italic',
-                  fontSize: 14,
+                  fontWeight: 400,
+                  fontSize: 15,
                   color: '#C9A96E',
                   textDecoration: 'none',
-                  letterSpacing: '0.08em',
+                  letterSpacing: '0.06em',
+                  display: 'inline-block',
+                  borderBottom: '1px solid #C9A96E',
+                  paddingBottom: 2,
+                  transition: 'color 0.2s ease, border-color 0.2s ease',
                 }}
-                onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
-                onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}
+                onMouseEnter={e => {
+                  e.currentTarget.style.color = '#A07840'
+                  e.currentTarget.style.borderBottomColor = '#A07840'
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.color = '#C9A96E'
+                  e.currentTarget.style.borderBottomColor = '#C9A96E'
+                }}
               >
                 Discover Our Story →
               </Link>
@@ -1641,12 +1652,13 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
             style={{
               flex: 1,
               minWidth: 240,
+              alignSelf: 'stretch',
               opacity: philosophyInView ? 1 : 0,
               transform: philosophyInView ? 'scale(1)' : 'scale(0.95)',
               transition: 'opacity 800ms ease-out 200ms, transform 800ms ease-out 200ms',
             }}
           >
-            <div className="philosophy-image-wrap" style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+            <div className="philosophy-image-wrap" style={{ position: 'relative', display: 'block', width: '100%', height: '100%' }}>
               {/* Offset gold frame */}
               <div className="philosophy-frame" style={{
                 position: 'absolute',
@@ -1659,7 +1671,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
                 zIndex: 0,
               }} />
               {/* Photo */}
-              <div className="philosophy-photo-inner" style={{ position: 'relative', zIndex: 1, overflow: 'hidden' }}>
+              <div className="philosophy-photo-inner" style={{ position: 'relative', zIndex: 1, overflow: 'hidden', height: '100%' }}>
                 <img
                   ref={philosophyImgRef}
                   src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=700&q=85"
@@ -1667,7 +1679,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
                   className="philosophy-photo"
                   style={{
                     width: '100%',
-                    aspectRatio: '3/4',
+                    height: '100%',
                     objectFit: 'cover',
                     display: 'block',
                   }}
