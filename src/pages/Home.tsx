@@ -878,10 +878,16 @@ function TransformationCarousel() {
     scheduleAdvance(0, end)
   }, [cardsPerPage, scheduleAdvance])
 
-  const cardBlock = (globalIndex: number) => {
+  const STAGGER_OFFSET = 72
+
+  const cardBlock = (globalIndex: number, pageIdx: number = 0) => {
     const t = transformations[globalIndex]
+    const verticalShift = cardsPerPage === 2 && pageIdx === 1 ? STAGGER_OFFSET : 0
     return (
-      <div key={t.id} className="trf-card" style={{ flex: cardsPerPage === 1 ? '0 0 100%' : '0 0 calc(50% - 12px)' }}>
+      <div key={t.id} className="trf-card" style={{
+        flex: cardsPerPage === 1 ? '0 0 100%' : '0 0 calc(50% - 12px)',
+        marginTop: verticalShift,
+      }}>
         <CompareSlider
           beforeImg={t.beforeImg}
           afterImg={t.afterImg}
@@ -975,7 +981,7 @@ function TransformationCarousel() {
             const indices = Array.from({ length: end - start }, (_, i) => start + i)
             return (
               <div key={p} className="trf-carousel-page">
-                {indices.map(i => cardBlock(i))}
+                {indices.map((i, pageIdx) => cardBlock(i, pageIdx))}
               </div>
             )
           })}
@@ -2294,35 +2300,66 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
       <section style={{ backgroundColor: '#FAF8F4', padding: '7rem 1.5rem' }}>
         <style>{`
           .compare-slider-container {
-            aspect-ratio: 4 / 3;
+            aspect-ratio: 16 / 10;
           }
           @media (max-width: 640px) {
             .compare-slider-container {
-              aspect-ratio: 3 / 2;
+              aspect-ratio: 16 / 10;
             }
           }
         `}</style>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           {/* Header */}
           <FadeIn>
-            <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-              <p style={{
-                fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 10,
-                letterSpacing: '0.45em', textTransform: 'uppercase',
-                color: '#C8A56A', marginBottom: '1rem',
-              }}>Transformations</p>
-              <h2 style={{
-                fontFamily: "'Playfair Display', serif", fontWeight: 400,
-                fontSize: 'clamp(2rem, 4vw, 3.25rem)',
-                color: '#262421', lineHeight: 1.1, marginBottom: '1rem',
-                letterSpacing: '-0.01em',
-              }}>Before &amp; After</h2>
-              <p style={{
-                fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 14,
-                color: 'rgba(38,36,33,0.5)', lineHeight: 1.85, margin: 0,
-              }}>
-                See how thoughtful design transforms spaces into refined living experiences.
-              </p>
+            <style>{`
+              .trf-header-row {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 2rem;
+                margin-bottom: 4rem;
+              }
+              .trf-header-left { flex: 1; }
+              .trf-header-right {
+                flex: 0 1 320px;
+                padding-top: 0.35rem;
+                text-align: right;
+              }
+              @media (max-width: 700px) {
+                .trf-header-row { flex-direction: column; align-items: center; }
+                .trf-header-left { text-align: center; }
+                .trf-header-right { flex: none; text-align: center; padding-top: 0; }
+              }
+            `}</style>
+            <div className="trf-header-row">
+              <div className="trf-header-left">
+                <p style={{
+                  fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 10,
+                  letterSpacing: '0.45em', textTransform: 'uppercase',
+                  color: '#C8A56A', marginBottom: '1rem',
+                }}>Transformations</p>
+                <h2 style={{
+                  fontFamily: "'Playfair Display', serif", fontWeight: 400,
+                  fontSize: 'clamp(2rem, 4vw, 3.25rem)',
+                  color: '#262421', lineHeight: 1.1, marginBottom: '1rem',
+                  letterSpacing: '-0.01em',
+                }}>Before &amp; After</h2>
+                <p style={{
+                  fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 14,
+                  color: 'rgba(38,36,33,0.5)', lineHeight: 1.85, margin: 0,
+                }}>
+                  See how thoughtful design transforms spaces into refined living experiences.
+                </p>
+              </div>
+              <div className="trf-header-right">
+                <p style={{
+                  fontFamily: "'Montserrat', sans-serif", fontWeight: 400,
+                  fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase',
+                  color: 'rgba(38,36,33,0.38)', lineHeight: 1.9, margin: 0,
+                }}>
+                  Slide to discover how we transform raw spaces into refined living experiences.
+                </p>
+              </div>
             </div>
           </FadeIn>
 
