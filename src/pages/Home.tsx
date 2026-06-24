@@ -476,23 +476,27 @@ function StatsSection() {
 function CompareSlider({
   beforeImg, afterImg, title,
   beforeLabel = 'Before', afterLabel = 'After',
-  staggerIndex = 0,
+  autoPlayKey = 0,
+  onDragChange,
 }: {
   beforeImg: string; afterImg: string; title: string;
   beforeLabel?: string; afterLabel?: string;
-  staggerIndex?: number;
+  autoPlayKey?: number;
+  onDragChange?: (isDragging: boolean) => void;
 }) {
   const [pos, setPos] = useState(50)
   const [transitionMs, setTransitionMs] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
   const draggingRef = useRef(false)
-  const hasScrollPlayedRef = useRef(false)
   const isAnimatingRef = useRef(false)
   const mountedRef = useRef(true)
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([])
+  const onDragChangeRef = useRef(onDragChange)
   const [handleScale, setHandleScale] = useState(1)
   const [beforeHover, setBeforeHover] = useState(false)
   const [afterHover, setAfterHover] = useState(false)
+
+  useEffect(() => { onDragChangeRef.current = onDragChange }, [onDragChange])
 
   useEffect(() => {
     mountedRef.current = true
@@ -542,22 +546,16 @@ function CompareSlider({
     isAnimatingRef.current = false
   }
 
+  // Carousel-triggered play: when autoPlayKey increments, run the reveal
+  const prevAutoPlayKeyRef = useRef(autoPlayKey)
   useEffect(() => {
-    const el = containerRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !hasScrollPlayedRef.current) {
-        hasScrollPlayedRef.current = true
-        observer.disconnect()
-        const t = setTimeout(() => {
-          if (!draggingRef.current) playReveal()
-        }, staggerIndex * 2500)
-        timeoutsRef.current.push(t)
-      }
-    }, { threshold: 0.5 })
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [staggerIndex])
+    if (autoPlayKey === prevAutoPlayKeyRef.current) return
+    prevAutoPlayKeyRef.current = autoPlayKey
+    cancelAnim()
+    const t = setTimeout(() => { if (mountedRef.current) playReveal() }, 30)
+    timeoutsRef.current.push(t)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoPlayKey])
 
   const updatePos = (clientX: number) => {
     if (!containerRef.current) return
@@ -569,6 +567,7 @@ function CompareSlider({
 
   const startDrag = (clientX: number) => {
     draggingRef.current = true
+    onDragChangeRef.current?.(true)
     cancelAnim()
     setHandleScale(1.15)
     updatePos(clientX)
@@ -576,7 +575,11 @@ function CompareSlider({
 
   const onMouseDown = (e: React.MouseEvent) => { startDrag(e.clientX); e.preventDefault() }
   const onMouseMove = (e: React.MouseEvent) => { if (draggingRef.current) updatePos(e.clientX) }
-  const endDrag = () => { draggingRef.current = false; setHandleScale(1) }
+  const endDrag = () => {
+    draggingRef.current = false
+    onDragChangeRef.current?.(false)
+    setHandleScale(1)
+  }
   const onTouchStart = (e: React.TouchEvent) => startDrag(e.touches[0].clientX)
   const onTouchMove = (e: React.TouchEvent) => {
     if (!draggingRef.current) return
@@ -726,9 +729,204 @@ function CompareSlider({
   )
 }
 
-function TransformationGrid() {
+function TransformationCarousel() {
+  const TOTAL = transformations.length
+  // Reveal sequence: moveTo(98,900) + sleep(600) + moveTo(2,900) + sleep(600) + moveTo(50,600) = 3600ms
+  const REVEAL_MS = 3600
+  const STAGGER_MS = 1200
+  const PAUSE_AFTER_MS = 1500
+
+  const [cardsPerPage, setCardsPerPage] = useState(2)
+  const [currentPage, setCurrentPage] = useState(0)
+  const [playKeys, setPlayKeys] = useState<number[]>(() => new Array(TOTAL).fill(0))
+  const [sliding, setSliding] = useState(false)
+
+  const cardsPerPageRef = useRef(cardsPerPage)
+  const currentPageRef = useRef(currentPage)
+  const autoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const draggingSetRef = useRef<Set<number>>(new Set())
+  const mountedRef = useRef(true)
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const hasEnteredRef = useRef(false)
+
+  useEffect(() => { cardsPerPageRef.current = cardsPerPage }, [cardsPerPage])
+  useEffect(() => { currentPageRef.current = currentPage }, [currentPage])
+  useEffect(() => { mountedRef.current = true; return () => { mountedRef.current = false } }, [])
+
+  const pageCount = Math.ceil(TOTAL / cardsPerPage)
+
+  const clearAutoTimer = () => {
+    if (autoTimerRef.current) { clearTimeout(autoTimerRef.current); autoTimerRef.current = null }
+  }
+
+  const scheduleAdvance = useCallback((fromPage: number, pageSize: number) => {
+    clearAutoTimer()
+    const delay = (pageSize - 1) * STAGGER_MS + REVEAL_MS + PAUSE_AFTER_MS
+    autoTimerRef.current = setTimeout(() => {
+      if (!mountedRef.current) return
+      if (draggingSetRef.current.size > 0) {
+        scheduleAdvance(fromPage, pageSize)
+        return
+      }
+      const cpp = cardsPerPageRef.current
+      const pc = Math.ceil(TOTAL / cpp)
+      const nextPage = (fromPage + 1) % pc
+      setSliding(true)
+      setTimeout(() => {
+        if (!mountedRef.current) return
+        setCurrentPage(nextPage)
+        currentPageRef.current = nextPage
+        const start = nextPage * cpp
+        const end = Math.min(start + cpp, TOTAL)
+        setPlayKeys(prev => {
+          const next = [...prev]
+          for (let i = start; i < end; i++) next[i]++
+          return next
+        })
+        setTimeout(() => {
+          if (mountedRef.current) setSliding(false)
+          scheduleAdvance(nextPage, end - start)
+        }, 520)
+      }, 0)
+    }, delay)
+  }, [])
+
+  const goToPage = useCallback((page: number) => {
+    clearAutoTimer()
+    const cpp = cardsPerPageRef.current
+    const pc = Math.ceil(TOTAL / cpp)
+    const target = ((page % pc) + pc) % pc
+    draggingSetRef.current.clear()
+    setSliding(true)
+    setTimeout(() => {
+      if (!mountedRef.current) return
+      setCurrentPage(target)
+      currentPageRef.current = target
+      const start = target * cpp
+      const end = Math.min(start + cpp, TOTAL)
+      setPlayKeys(prev => {
+        const next = [...prev]
+        for (let i = start; i < end; i++) next[i]++
+        return next
+      })
+      setTimeout(() => {
+        if (mountedRef.current) setSliding(false)
+        scheduleAdvance(target, end - start)
+      }, 520)
+    }, 0)
+  }, [scheduleAdvance])
+
+  // Responsive cardsPerPage
+  useEffect(() => {
+    const update = () => {
+      const cpp = window.innerWidth < 641 ? 1 : 2
+      if (cpp !== cardsPerPageRef.current) {
+        cardsPerPageRef.current = cpp
+        setCardsPerPage(cpp)
+        clearAutoTimer()
+        setCurrentPage(0)
+        currentPageRef.current = 0
+        setPlayKeys(new Array(TOTAL).fill(0))
+        draggingSetRef.current.clear()
+        setSliding(false)
+      }
+    }
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
+  // Trigger page 0 when section enters viewport
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !hasEnteredRef.current) {
+        hasEnteredRef.current = true
+        observer.disconnect()
+        const cpp = cardsPerPageRef.current
+        const end = Math.min(cpp, TOTAL)
+        setPlayKeys(prev => {
+          const next = [...prev]
+          for (let i = 0; i < end; i++) next[i]++
+          return next
+        })
+        scheduleAdvance(0, end)
+      }
+    }, { threshold: 0.25 })
+    observer.observe(el)
+    return () => { observer.disconnect(); clearAutoTimer() }
+  }, [scheduleAdvance])
+
+  const handleDragChange = (globalIndex: number, dragging: boolean) => {
+    if (dragging) draggingSetRef.current.add(globalIndex)
+    else draggingSetRef.current.delete(globalIndex)
+  }
+
+  // Responsive: re-trigger page 0 when cardsPerPage resets
+  const prevCppRef = useRef(cardsPerPage)
+  useEffect(() => {
+    if (!hasEnteredRef.current || cardsPerPage === prevCppRef.current) { prevCppRef.current = cardsPerPage; return }
+    prevCppRef.current = cardsPerPage
+    const end = Math.min(cardsPerPage, TOTAL)
+    setPlayKeys(prev => {
+      const next = [...prev]
+      for (let i = 0; i < end; i++) next[i]++
+      return next
+    })
+    scheduleAdvance(0, end)
+  }, [cardsPerPage, scheduleAdvance])
+
+  const cardBlock = (globalIndex: number) => {
+    const t = transformations[globalIndex]
+    return (
+      <div key={t.id} className="trf-card" style={{ flex: cardsPerPage === 1 ? '0 0 100%' : '0 0 calc(50% - 12px)' }}>
+        <CompareSlider
+          beforeImg={t.beforeImg}
+          afterImg={t.afterImg}
+          title={t.title}
+          beforeLabel={t.beforeLabel}
+          afterLabel={t.afterLabel}
+          autoPlayKey={playKeys[globalIndex]}
+          onDragChange={(d) => handleDragChange(globalIndex, d)}
+        />
+        <div style={{ padding: '1.5rem 1.75rem 1.75rem', borderTop: '1px solid #F5F1EA' }}>
+          <h3 style={{
+            fontFamily: "'Playfair Display', serif", fontWeight: 400,
+            fontSize: 'clamp(1.1rem, 1.8vw, 1.4rem)', color: '#262421',
+            margin: '0 0 0.9rem', letterSpacing: '-0.01em',
+          }}>{t.title}</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem 1.5rem' }}>
+            <div>
+              <p style={{
+                fontFamily: "'Montserrat', sans-serif", fontWeight: 400, fontSize: 9,
+                letterSpacing: '0.25em', textTransform: 'uppercase',
+                color: 'rgba(38,36,33,0.35)', margin: '0 0 0.4rem',
+              }}>Before</p>
+              <p style={{
+                fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 14,
+                color: 'rgba(38,36,33,0.55)', lineHeight: 1.75, margin: 0,
+              }}>{t.beforeDesc}</p>
+            </div>
+            <div>
+              <p style={{
+                fontFamily: "'Montserrat', sans-serif", fontWeight: 400, fontSize: 9,
+                letterSpacing: '0.25em', textTransform: 'uppercase',
+                color: '#C8A56A', margin: '0 0 0.4rem',
+              }}>After</p>
+              <p style={{
+                fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 14,
+                color: 'rgba(38,36,33,0.72)', lineHeight: 1.75, margin: 0,
+              }}>{t.afterDesc}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px' }}>
+    <div ref={sectionRef} style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px' }}>
       <style>{`
         .trf-card {
           border-radius: 20px;
@@ -736,69 +934,97 @@ function TransformationGrid() {
           box-shadow: 0 8px 48px rgba(38,36,33,0.09), 0 2px 12px rgba(38,36,33,0.05);
           overflow: hidden;
         }
-        .trf-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
+        .trf-carousel-viewport { overflow: hidden; }
+        .trf-carousel-track {
+          display: flex;
+          transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          will-change: transform;
+        }
+        .trf-carousel-page {
+          flex: 0 0 100%;
+          display: flex;
           gap: 24px;
+          align-items: flex-start;
         }
-        .trf-grid .trf-card:last-child:nth-child(odd) {
-          grid-column: 1 / -1;
-          max-width: calc(50% - 12px);
-          margin: 0 auto;
+        .trf-nav-btn {
+          width: 46px; height: 46px; border-radius: 50%;
+          border: 1px solid #E8DED1; background: #fff; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          transition: border-color 250ms ease, background 250ms ease, opacity 250ms ease;
+          flex-shrink: 0;
         }
-        @media (max-width: 640px) {
-          .trf-grid { grid-template-columns: 1fr; }
-          .trf-grid .trf-card:last-child:nth-child(odd) {
-            grid-column: unset;
-            max-width: 100%;
-          }
+        .trf-nav-btn:hover { border-color: #C8A56A; background: #FAF8F4; }
+        .trf-dot {
+          width: 8px; height: 8px; border-radius: 50%;
+          background: #E8DED1; border: none; cursor: pointer; padding: 0;
+          transition: background 300ms ease, transform 300ms ease;
         }
+        .trf-dot.active { background: #C8A56A; transform: scale(1.35); }
       `}</style>
-      <div className="trf-grid">
-        {transformations.map((t, i) => (
-          <div key={t.id} className="trf-card">
-            <CompareSlider
-              beforeImg={t.beforeImg}
-              afterImg={t.afterImg}
-              title={t.title}
-              beforeLabel={t.beforeLabel}
-              afterLabel={t.afterLabel}
-              staggerIndex={i}
-            />
-            <div style={{ padding: '1.5rem 1.75rem 1.75rem', borderTop: '1px solid #F5F1EA' }}>
-              <h3 style={{
-                fontFamily: "'Playfair Display', serif", fontWeight: 400,
-                fontSize: 'clamp(1.1rem, 1.8vw, 1.4rem)', color: '#262421',
-                margin: '0 0 0.9rem', letterSpacing: '-0.01em',
-              }}>{t.title}</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem 1.5rem' }}>
-                <div>
-                  <p style={{
-                    fontFamily: "'Montserrat', sans-serif", fontWeight: 400, fontSize: 9,
-                    letterSpacing: '0.25em', textTransform: 'uppercase',
-                    color: 'rgba(38,36,33,0.35)', margin: '0 0 0.4rem',
-                  }}>Before</p>
-                  <p style={{
-                    fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 14,
-                    color: 'rgba(38,36,33,0.55)', lineHeight: 1.75, margin: 0,
-                  }}>{t.beforeDesc}</p>
-                </div>
-                <div>
-                  <p style={{
-                    fontFamily: "'Montserrat', sans-serif", fontWeight: 400, fontSize: 9,
-                    letterSpacing: '0.25em', textTransform: 'uppercase',
-                    color: '#C8A56A', margin: '0 0 0.4rem',
-                  }}>After</p>
-                  <p style={{
-                    fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 14,
-                    color: 'rgba(38,36,33,0.72)', lineHeight: 1.75, margin: 0,
-                  }}>{t.afterDesc}</p>
-                </div>
+
+      {/* Viewport + track */}
+      <div className="trf-carousel-viewport">
+        <div
+          className="trf-carousel-track"
+          style={{ transform: `translateX(-${currentPage * 100}%)` }}
+        >
+          {Array.from({ length: pageCount }, (_, p) => {
+            const start = p * cardsPerPage
+            const end = Math.min(start + cardsPerPage, TOTAL)
+            const indices = Array.from({ length: end - start }, (_, i) => start + i)
+            return (
+              <div key={p} className="trf-carousel-page">
+                {indices.map(i => cardBlock(i))}
               </div>
-            </div>
-          </div>
-        ))}
+            )
+          })}
+        </div>
       </div>
+
+      {/* Controls row */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20, marginTop: '2.25rem' }}>
+        <button
+          className="trf-nav-btn"
+          onClick={() => goToPage(currentPage - 1)}
+          aria-label="Previous page"
+          style={{ opacity: sliding ? 0.45 : 1, pointerEvents: sliding ? 'none' : 'auto' }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#262421" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 12H5M11 6l-6 6 6 6" />
+          </svg>
+        </button>
+
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          {Array.from({ length: pageCount }, (_, p) => (
+            <button
+              key={p}
+              className={`trf-dot${p === currentPage ? ' active' : ''}`}
+              onClick={() => goToPage(p)}
+              aria-label={`Page ${p + 1}`}
+            />
+          ))}
+        </div>
+
+        <button
+          className="trf-nav-btn"
+          onClick={() => goToPage(currentPage + 1)}
+          aria-label="Next page"
+          style={{ opacity: sliding ? 0.45 : 1, pointerEvents: sliding ? 'none' : 'auto' }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#262421" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Page counter */}
+      <p style={{
+        textAlign: 'center', marginTop: '1rem',
+        fontFamily: "'Montserrat', sans-serif", fontWeight: 300, fontSize: 11,
+        letterSpacing: '0.2em', color: 'rgba(38,36,33,0.3)',
+      }}>
+        {String(currentPage + 1).padStart(2, '0')} / {String(pageCount).padStart(2, '0')}
+      </p>
     </div>
   )
 }
@@ -2099,9 +2325,9 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
             </div>
           </FadeIn>
 
-          {/* Grid */}
+          {/* Carousel */}
           <FadeIn delay={0.18}>
-            <TransformationGrid />
+            <TransformationCarousel />
           </FadeIn>
         </div>
       </section>
