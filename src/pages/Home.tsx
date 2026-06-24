@@ -1973,199 +1973,159 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Spaces */}
-      <section style={{ backgroundColor: '#F5F1EA', padding: '7rem 0' }}>
+      {/* Editorial Portfolio — Featured Spaces */}
+      <section style={{ backgroundColor: '#FAF8F4', padding: '120px 0' }}>
         <style>{`
-          .fs-card {
-            display: block;
-            text-decoration: none;
-            border-radius: 24px;
-            overflow: hidden;
-            background: #e2dbd2;
-            box-shadow: 0 4px 20px rgba(30,24,16,0.07);
-            transition: box-shadow 0.55s cubic-bezier(0.16,1,0.3,1),
-                        transform 0.55s cubic-bezier(0.16,1,0.3,1);
-            cursor: pointer;
+          .ep-block {
+            display: flex;
+            align-items: center;
+            gap: clamp(48px, 7vw, 100px);
           }
-          .fs-card:hover {
-            box-shadow: 0 22px 60px rgba(30,24,16,0.16), 0 4px 16px rgba(30,24,16,0.08);
-            transform: translateY(-8px);
+          .ep-block.ep-reverse { flex-direction: row-reverse; }
+
+          .ep-img-col {
+            flex: 0 0 55%;
+            min-width: 0;
           }
-          .fs-img-wrap {
+          .ep-img-wrap {
             position: relative;
-            width: 100%;
-            aspect-ratio: 4 / 3;
+            border-radius: 28px;
             overflow: hidden;
+            aspect-ratio: 4 / 3;
+            box-shadow: 0 8px 40px rgba(20,18,14,0.10);
           }
-          .fs-img {
+          .ep-img {
             width: 100%; height: 100%;
             object-fit: cover; display: block;
-            transition: transform 0.65s cubic-bezier(0.16,1,0.3,1);
+            transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
           }
-          .fs-card:hover .fs-img { transform: scale(1.04); }
-          .fs-img-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(to bottom, transparent 50%, rgba(10,14,10,0.45) 100%);
-            pointer-events: none;
+          .ep-block:hover .ep-img { transform: scale(1.03); }
+
+          .ep-content-col {
+            flex: 0 0 45%;
+            min-width: 0;
+            transition: transform 0.5s ease;
           }
-          .fs-num {
-            position: absolute; top: 16px; left: 18px;
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 400; font-size: 0.85rem;
-            letter-spacing: 0.1em;
-            color: rgba(201,169,110,0.78);
-            line-height: 1;
-          }
-          .fs-body {
-            padding: 20px 22px 22px;
-            background: #FAF7F2;
-          }
-          .fs-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 300;
-            font-size: clamp(1.15rem, 1.6vw, 1.4rem);
-            color: #1C2818;
-            line-height: 1.15;
-            margin: 0 0 7px;
-            letter-spacing: 0.005em;
-            transition: color 0.3s ease;
-          }
-          .fs-card:hover .fs-title { color: #3a5e3c; }
-          .fs-meta {
-            display: flex; align-items: center;
-            justify-content: space-between;
-          }
-          .fs-desc {
+          .ep-block:hover .ep-content-col { transform: translateY(-4px); }
+
+          .ep-num {
             font-family: 'Inter', sans-serif;
-            font-weight: 300; font-size: 12px;
-            color: rgba(28,40,24,0.5);
-            line-height: 1.65; margin: 0;
-            flex: 1;
+            font-weight: 300; font-size: 11px;
+            letter-spacing: 0.32em; text-transform: uppercase;
+            color: rgba(155,125,78,0.65);
+            margin: 0 0 18px; display: block;
+          }
+          .ep-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            font-size: clamp(1.75rem, 2.8vw, 2.6rem);
+            color: #1a1612;
+            line-height: 1.12;
+            margin: 0 0 16px;
+            letter-spacing: -0.01em;
+          }
+          .ep-divider-line {
+            width: 36px; height: 1px;
+            background: #C9A96E;
+            margin: 0 0 18px;
+            display: block;
+          }
+          .ep-desc {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300; font-size: 14.5px;
+            color: rgba(26,22,18,0.52);
+            line-height: 1.82; margin: 0 0 28px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
           }
-          .fs-arrow {
-            flex-shrink: 0;
-            width: 34px; height: 34px;
-            border-radius: 50%;
-            border: 1px solid rgba(201,169,110,0.4);
-            display: flex; align-items: center; justify-content: center;
-            margin-left: 14px;
-            transition: background 0.3s ease, border-color 0.3s ease;
+          .ep-arrow-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 48px; height: 48px; border-radius: 50%;
+            border: 1px solid rgba(201,169,110,0.55);
+            text-decoration: none;
+            transition: background 0.4s ease, border-color 0.4s ease;
           }
-          .fs-card:hover .fs-arrow {
-            background: #C9A96E;
+          .ep-arrow-btn svg {
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), color 0.3s ease;
+            color: #C9A96E;
+          }
+          .ep-arrow-btn:hover {
+            background: rgba(201,169,110,0.12);
             border-color: #C9A96E;
           }
-          .fs-card:hover .fs-arrow svg { color: #fff; }
+          .ep-arrow-btn:hover svg { transform: rotate(20deg); }
 
-          .fs-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-          }
-          @media (max-width: 1024px) {
-            .fs-grid { grid-template-columns: repeat(2, 1fr) !important; }
-          }
-          @media (max-width: 640px) {
-            .fs-grid {
-              grid-template-columns: 1fr !important;
-              overflow-x: auto;
+          @media (max-width: 900px) {
+            .ep-block, .ep-block.ep-reverse {
+              flex-direction: column !important;
+              gap: 32px;
             }
+            .ep-img-col, .ep-content-col { flex: 0 0 100% !important; }
           }
         `}</style>
 
-        <div style={{ maxWidth: 1240, margin: '0 auto', padding: '0 2rem' }}>
+        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 2rem' }}>
 
-          {/* Header */}
+          {/* Section header */}
           <FadeIn>
-            <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <div style={{ textAlign: 'center', marginBottom: '80px' }}>
               <p style={{
                 fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 10,
-                letterSpacing: '0.45em', textTransform: 'uppercase',
-                color: '#9B7D4E', marginBottom: '1rem',
-              }}>Featured Spaces</p>
+                letterSpacing: '0.48em', textTransform: 'uppercase',
+                color: '#9B7D4E', marginBottom: '20px',
+              }}>Our Portfolio</p>
               <h2 style={{
-                fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
-                fontSize: 'clamp(2.2rem, 4.5vw, 3.5rem)',
-                color: '#1C2818', lineHeight: 1.06,
-                marginBottom: '1.1rem', letterSpacing: '-0.01em',
-              }}>Spaces That Tell Your Story</h2>
+                fontFamily: "'Playfair Display', serif", fontWeight: 400,
+                fontSize: 'clamp(2.4rem, 5vw, 4rem)',
+                color: '#1a1612', lineHeight: 1.08,
+                margin: '0 0 24px', letterSpacing: '-0.015em',
+              }}>Designed to Inspire<br />Modern Living</h2>
               <div style={{
-                width: 44, height: 1,
-                background: 'linear-gradient(90deg, transparent, #C9A96E, transparent)',
-                margin: '0 auto 18px',
+                width: 56, height: 1,
+                background: 'linear-gradient(90deg, transparent, #C9A96E 40%, transparent)',
+                margin: '0 auto 22px',
               }} />
               <p style={{
-                fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 14,
-                color: 'rgba(28,40,24,0.44)', lineHeight: 1.85,
-                maxWidth: 560, margin: '0 auto',
+                fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 15,
+                color: 'rgba(26,22,18,0.46)', lineHeight: 1.8,
+                maxWidth: 520, margin: '0 auto',
               }}>
-                Thoughtfully designed interiors crafted for modern living.
+                Thoughtfully crafted interiors that blend elegance,<br />comfort, and timeless design.
               </p>
             </div>
           </FadeIn>
 
-          {/* 3-column card grid */}
-          <div className="fs-grid">
+          {/* Alternating editorial blocks */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(64px, 10vw, 120px)' }}>
             {portfolioProjects.map((p, i) => (
-              <FadeIn key={p.id} delay={i * 0.08}>
-                <Link to="/portfolio" className="fs-card">
-                  {/* Image */}
-                  <div className="fs-img-wrap">
-                    <img src={p.img} alt={p.name} className="fs-img" loading="lazy" draggable={false} />
-                    <div className="fs-img-overlay" />
-                    <span className="fs-num">{String(i + 1).padStart(2, '0')}</span>
-                  </div>
+              <FadeIn key={p.id} delay={0.05}>
+                <div className={`ep-block${i % 2 === 1 ? ' ep-reverse' : ''}`}>
 
-                  {/* Text body */}
-                  <div className="fs-body">
-                    <h3 className="fs-title">{p.name}</h3>
-                    <div className="fs-meta">
-                      <p className="fs-desc">{p.desc}</p>
-                      <div className="fs-arrow">
-                        <ArrowRight size={13} strokeWidth={1.5} color="#C9A96E" />
-                      </div>
+                  {/* Image */}
+                  <div className="ep-img-col">
+                    <div className="ep-img-wrap">
+                      <img src={p.img} alt={p.name} className="ep-img" loading="lazy" draggable={false} />
                     </div>
                   </div>
-                </Link>
+
+                  {/* Content */}
+                  <div className="ep-content-col">
+                    <span className="ep-num">{String(i + 1).padStart(2, '0')}</span>
+                    <h3 className="ep-title">{p.name}</h3>
+                    <span className="ep-divider-line" />
+                    <p className="ep-desc">{p.desc}</p>
+                    <Link to="/portfolio" className="ep-arrow-btn" aria-label={`View ${p.name}`}>
+                      <ArrowRight size={18} strokeWidth={1.4} />
+                    </Link>
+                  </div>
+
+                </div>
               </FadeIn>
             ))}
           </div>
 
-          {/* View all link */}
-          <FadeIn delay={0.25}>
-            <div style={{ textAlign: 'center', marginTop: '3.5rem' }}>
-              <Link
-                to="/portfolio"
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 10,
-                  fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 10,
-                  letterSpacing: '0.28em', textTransform: 'uppercase',
-                  color: '#1C2818', textDecoration: 'none',
-                  border: '1px solid rgba(28,40,24,0.28)',
-                  padding: '15px 40px', borderRadius: 2,
-                  transition: 'background 0.35s ease, color 0.35s ease, border-color 0.35s ease',
-                }}
-                onMouseEnter={e => {
-                  const el = e.currentTarget as HTMLElement
-                  el.style.background = '#2A3926'
-                  el.style.color = '#f5f0e8'
-                  el.style.borderColor = '#2A3926'
-                }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget as HTMLElement
-                  el.style.background = 'transparent'
-                  el.style.color = '#1C2818'
-                  el.style.borderColor = 'rgba(28,40,24,0.28)'
-                }}
-              >
-                View All Projects <ArrowRight size={12} strokeWidth={1.5} />
-              </Link>
-            </div>
-          </FadeIn>
         </div>
       </section>
 
