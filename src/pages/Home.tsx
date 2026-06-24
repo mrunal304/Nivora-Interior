@@ -6,7 +6,7 @@ import imgOffice from '@assets/16_1781792239759.jpg'
 import imgAurelia from '@assets/2_(2)_1781792402795.jpg'
 import imgUrban from '@assets/3_(2)_1781792428831.jpg'
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion'
-import { ArrowRight, Home as HomeIcon, Building2, Coffee, Layers, Monitor, Gem, Wrench } from 'lucide-react'
+import { ArrowRight, Home as HomeIcon, Building2, Coffee, Layers, Monitor, Gem, Wrench, Clock, Settings, Heart } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { projects } from '../data/projects'
@@ -1480,6 +1480,39 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
   const featured = projects.slice(0, 6)
   const location = useLocation()
   const [animKey, setAnimKey] = useState(0)
+  const philosophySectionRef = useRef<HTMLElement>(null)
+  const philosophyImgRef = useRef<HTMLImageElement>(null)
+  const [philosophyInView, setPhilosophyInView] = useState(false)
+
+  const philEl = (delay: number): React.CSSProperties => ({
+    opacity: philosophyInView ? 1 : 0,
+    transform: philosophyInView ? 'translateY(0)' : 'translateY(20px)',
+    transition: `opacity 600ms ease-out ${delay}ms, transform 600ms ease-out ${delay}ms`,
+  })
+
+  useEffect(() => {
+    const section = philosophySectionRef.current
+    if (!section) return
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setPhilosophyInView(true); observer.disconnect() } },
+      { threshold: 0.2 }
+    )
+    observer.observe(section)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const section = philosophySectionRef.current
+    const img = philosophyImgRef.current
+    if (!img || !section) return
+    const handleScroll = () => {
+      const rect = section.getBoundingClientRect()
+      const progress = -rect.top / window.innerHeight
+      img.style.transform = `translateY(${progress * 30}px)`
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     if (location.pathname === '/') {
@@ -1494,79 +1527,130 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
       <HeroSection key={animKey} splashDone={splashDone} />
 
       {/* Philosophy */}
-      <section className="philosophy-section" style={{ backgroundColor: '#f7f4ef', padding: '80px 1.5rem 110px' }}>
+      <section ref={philosophySectionRef} className="philosophy-section" style={{ backgroundColor: '#f7f4ef', padding: '80px 1.5rem 110px' }}>
         <div className="philosophy-flex" style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', gap: '4rem', alignItems: 'center', flexWrap: 'wrap' }}>
 
           {/* Left — text block (55%) */}
-          <div className="philosophy-text-block" style={{ flex: '0 0 55%', minWidth: 280 }}>
+          <div
+            className="philosophy-text-block"
+            style={{
+              flex: '0 0 55%',
+              minWidth: 280,
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C9A96E' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E")`,
+              backgroundRepeat: 'repeat',
+            }}
+          >
 
             {/* Label with flanking rules */}
-            <FadeIn>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: '2.5rem' }}>
-                <div style={{ height: '0.5px', backgroundColor: '#b8966a', width: 60 }} />
-                <span style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontWeight: 300,
-                  fontSize: 10,
-                  letterSpacing: '0.35em',
-                  color: '#b8966a',
-                  textTransform: 'uppercase',
-                  whiteSpace: 'nowrap',
-                }}>Our Philosophy</span>
-                <div style={{ height: '0.5px', backgroundColor: '#b8966a', width: 60 }} />
-              </div>
-            </FadeIn>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: '2.5rem', ...philEl(0) }}>
+              <div style={{ height: '0.5px', backgroundColor: '#b8966a', width: 60 }} />
+              <span style={{
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: 300,
+                fontSize: 10,
+                letterSpacing: '0.35em',
+                color: '#b8966a',
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap',
+              }}>Our Philosophy</span>
+              <div style={{ height: '0.5px', backgroundColor: '#b8966a', width: 60 }} />
+            </div>
 
             {/* Quote */}
-            <FadeIn delay={0.1}>
-              <p style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: 'clamp(1.8rem, 3.2vw, 2.75rem)',
-                fontWeight: 300,
-                lineHeight: 1.25,
-                color: '#3b2f1e',
-                marginBottom: '1.75rem',
-              }}>
-                "Design is not just seen —{' '}
-                <em style={{ color: '#8b6914', fontStyle: 'italic' }}>it is experienced.</em>"
-              </p>
-            </FadeIn>
+            <p style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: 'clamp(1.8rem, 3.2vw, 2.75rem)',
+              fontWeight: 300,
+              lineHeight: 1.25,
+              color: '#3b2f1e',
+              marginBottom: '1.75rem',
+              ...philEl(120),
+            }}>
+              "Design is not just seen —{' '}
+              <em style={{ color: '#8b6914', fontStyle: 'italic' }}>it is experienced.</em>"
+            </p>
 
             {/* Body */}
-            <FadeIn delay={0.2}>
+            <p style={{
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 300,
+              fontSize: '0.9375rem',
+              lineHeight: 1.85,
+              color: '#6b5240',
+              marginBottom: '2.5rem',
+              ...philEl(240),
+            }}>
+              At NIVORA, every project begins with understanding — how you move through a space, what you need from it, and what makes it feel unmistakably yours. We work with refined materials, considered proportions, and timeless palettes to create interiors that hold their beauty for years, not seasons.
+            </p>
+
+            {/* Divider + brand values */}
+            <div style={{ ...philEl(360) }}>
+              {/* Animated divider draw */}
+              <div style={{ overflow: 'hidden', marginBottom: '1.5rem' }}>
+                <div style={{
+                  height: '0.5px',
+                  backgroundColor: '#c9b99a',
+                  width: philosophyInView ? '100%' : '0%',
+                  transition: 'width 800ms ease-out 400ms',
+                }} />
+              </div>
               <p style={{
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: 300,
-                fontSize: '0.9375rem',
-                lineHeight: 1.85,
-                color: '#6b5240',
-                marginBottom: '2.5rem',
+                fontSize: 11,
+                letterSpacing: '3px',
+                color: '#C9A96E',
+                textAlign: 'center',
+                textTransform: 'uppercase',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+                margin: 0,
               }}>
-                At NIVORA, every project begins with understanding — how you move through a space, what you need from it, and what makes it feel unmistakably yours. We work with refined materials, considered proportions, and timeless palettes to create interiors that hold their beauty for years, not seasons.
+                <Clock size={14} color="#C9A96E" strokeWidth={1.5} />
+                Timeless
+                <span style={{ fontSize: 8, opacity: 0.5 }}>◆</span>
+                <Settings size={14} color="#C9A96E" strokeWidth={1.5} />
+                Functional
+                <span style={{ fontSize: 8, opacity: 0.5 }}>◆</span>
+                <Heart size={14} color="#C9A96E" strokeWidth={1.5} />
+                Personal
               </p>
-            </FadeIn>
+            </div>
 
-            {/* Divider + brand values */}
-            <FadeIn delay={0.3}>
-              <div style={{ borderTop: '0.5px solid #c9b99a', paddingTop: '1.5rem' }}>
-                <p style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontWeight: 300,
-                  fontSize: 11,
-                  letterSpacing: '3px',
+            {/* Discover Our Story link */}
+            <div style={{ marginTop: 28, ...philEl(480) }}>
+              <Link
+                to="/about"
+                style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontStyle: 'italic',
+                  fontSize: 14,
                   color: '#C9A96E',
-                  textAlign: 'center',
-                  textTransform: 'uppercase',
-                }}>
-                  Timeless &nbsp;<span style={{ fontSize: 8 }}>◆</span>&nbsp; Functional &nbsp;<span style={{ fontSize: 8 }}>◆</span>&nbsp; Personal
-                </p>
-              </div>
-            </FadeIn>
+                  textDecoration: 'none',
+                  letterSpacing: '0.08em',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
+                onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}
+              >
+                Discover Our Story →
+              </Link>
+            </div>
 
           </div>
 
           {/* Right — editorial photo (45%) */}
-          <FadeIn delay={0.2} direction="left" className="philosophy-image-col flex-1" style={{ minWidth: 240 }}>
+          <div
+            className="philosophy-image-col"
+            style={{
+              flex: 1,
+              minWidth: 240,
+              opacity: philosophyInView ? 1 : 0,
+              transform: philosophyInView ? 'scale(1)' : 'scale(0.95)',
+              transition: 'opacity 800ms ease-out 200ms, transform 800ms ease-out 200ms',
+            }}
+          >
             <div className="philosophy-image-wrap" style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
               {/* Offset gold frame */}
               <div className="philosophy-frame" style={{
@@ -1582,6 +1666,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
               {/* Photo */}
               <div className="philosophy-photo-inner" style={{ position: 'relative', zIndex: 1, overflow: 'hidden' }}>
                 <img
+                  ref={philosophyImgRef}
                   src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=700&q=85"
                   alt="NIVORA Studio — editorial"
                   className="philosophy-photo"
@@ -1595,20 +1680,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
                 />
               </div>
 
-              {/* Floating quote card — bottom-left overlap */}
-              <style>{`
-                @keyframes quoteCardIn {
-                  from { opacity: 0; transform: translateY(18px); }
-                  to   { opacity: 1; transform: translateY(0); }
-                }
-                .philosophy-quote-card {
-                  animation: quoteCardIn 0.75s cubic-bezier(0.16,1,0.3,1) 0.55s both;
-                }
-                .philosophy-quote-card:hover {
-                  transform: translateY(-5px) !important;
-                  box-shadow: 0 20px 52px rgba(0,0,0,0.38) !important;
-                }
-              `}</style>
+              {/* Floating quote card — stamp pop-in */}
               <div
                 className="philosophy-quote-card"
                 style={{
@@ -1621,8 +1693,24 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
                   background: 'linear-gradient(135deg, #E0C38A 0%, #C8A46A 50%, #A8854F 100%)',
                   borderRadius: 11,
                   boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
-                  transition: 'transform 0.35s ease, box-shadow 0.35s ease',
                   cursor: 'default',
+                  opacity: philosophyInView ? 1 : 0,
+                  transform: philosophyInView ? 'scale(1)' : 'scale(0.9)',
+                  transition: philosophyInView
+                    ? 'opacity 500ms cubic-bezier(0.34, 1.56, 0.64, 1) 900ms, transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1) 900ms'
+                    : 'none',
+                }}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLDivElement
+                  el.style.transition = 'transform 0.35s ease, box-shadow 0.35s ease'
+                  el.style.transform = 'translateY(-5px) scale(1)'
+                  el.style.boxShadow = '0 20px 52px rgba(0,0,0,0.38)'
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLDivElement
+                  el.style.transition = 'transform 0.35s ease, box-shadow 0.35s ease'
+                  el.style.transform = 'scale(1)'
+                  el.style.boxShadow = '0 8px 24px rgba(0,0,0,0.25)'
                 }}
               >
                 {/* Large decorative quotation mark */}
@@ -1646,9 +1734,19 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
                 }}>
                   We don't just design spaces, we create legacies.
                 </p>
+                {/* Founder signature */}
+                <p style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: 12,
+                  fontStyle: 'italic',
+                  color: '#4a3520',
+                  marginTop: 12,
+                  marginBottom: 0,
+                  lineHeight: 1.4,
+                }}>— Shweta, Founder</p>
               </div>
             </div>
-          </FadeIn>
+          </div>
 
         </div>
       </section>
