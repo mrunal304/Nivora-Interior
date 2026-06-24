@@ -347,7 +347,7 @@ function StatsSection() {
     <div style={{
       position: 'relative',
       zIndex: 10,
-      marginTop: -68,
+      marginTop: 48,
       padding: '0 1.5rem 56px',
       display: 'flex',
       justifyContent: 'center',
@@ -1661,13 +1661,13 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
                   fontFamily: "'Cormorant Garamond', serif",
                   fontStyle: 'italic',
                   fontWeight: 400,
-                  fontSize: 15,
+                  fontSize: 'clamp(1.35rem, 2.2vw, 1.85rem)',
                   color: '#C9A96E',
                   textDecoration: 'none',
                   letterSpacing: '0.06em',
                   display: 'inline-block',
                   borderBottom: '1px solid #C9A96E',
-                  paddingBottom: 2,
+                  paddingBottom: 3,
                   transition: 'color 0.2s ease, border-color 0.2s ease',
                 }}
                 onMouseEnter={e => {
