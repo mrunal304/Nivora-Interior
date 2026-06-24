@@ -1442,153 +1442,38 @@ function HeroSection({ splashDone }: { splashDone: boolean }) {
   )
 }
 
-function CarouselCard({ t, isCenter, slideKey, visibleCount }: { t: typeof testimonials[0]; isCenter?: boolean; slideKey?: number; visibleCount?: number }) {
-  const showHighlight = visibleCount === 3
-  return (
-    <div style={{
-      background: '#f5f2ed',
-      border: '1.5px solid #21291a',
-      borderRadius: 6,
-      padding: '24px 28px',
-      position: 'relative',
-      overflow: 'hidden',
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      transition: 'transform 300ms ease, opacity 300ms ease',
-      transform: showHighlight && isCenter ? 'scale(1.02)' : 'scale(1.0)',
-      opacity: showHighlight && !isCenter ? 0.85 : 1,
-    }}>
-      {/* Linen texture overlay */}
-      <div aria-hidden="true" style={{
-        position: 'absolute', inset: 0, borderRadius: 6,
-        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")`,
-        backgroundSize: '160px 160px', opacity: 0.04, pointerEvents: 'none', zIndex: 0,
-      }} />
-      {/* Decorative quote mark */}
-      <span key={slideKey} style={{
-        position: 'absolute', top: 12, right: 18, fontSize: 72, lineHeight: 1,
-        color: '#21291a', fontFamily: "'Playfair Display', serif",
-        opacity: 0.1, pointerEvents: 'none', userSelect: 'none', zIndex: 1,
-        animation: 'quoteEntrance 350ms ease-out 200ms both',
-      }}>"</span>
-      {/* Content above texture */}
-      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', flex: 1 }}>
-        {/* Stars */}
-        <div style={{ display: 'flex', gap: 3, marginBottom: 16 }}>
-          {Array.from({ length: t.stars }).map((_, i) => (
-            <span key={i} style={{ fontSize: 14, color: '#a18661', lineHeight: 1 }}>★</span>
-          ))}
-        </div>
-        {/* Quote */}
-        <p style={{
-          fontFamily: "'Lora', serif", fontStyle: 'italic',
-          fontSize: 15, lineHeight: 1.6, color: '#2c2c2c',
-          margin: '0 0 20px', flex: 1,
-        }}>"{t.text}"</p>
-        {/* Divider */}
-        <div style={{ width: 36, height: 1, background: '#a18661', marginBottom: 18, flexShrink: 0 }} />
-        {/* Client info */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{
-            width: 38, height: 38, borderRadius: '50%',
-            background: '#a18661', color: '#21291a',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: 12, flexShrink: 0,
-          }}>{t.initials}</div>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-              <p style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 500, fontSize: 13, color: '#21291a', margin: 0 }}>{t.name}</p>
-              <span style={{
-                display: 'inline-flex', alignItems: 'center', gap: 3,
-                fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: '0.1em',
-                textTransform: 'uppercase', color: '#a18661',
-                background: 'rgba(161,134,97,0.1)', border: '1px solid rgba(161,134,97,0.35)',
-                borderRadius: 3, padding: '2px 5px', lineHeight: 1,
-              }}>
-                <svg width="7" height="7" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}>
-                  <circle cx="6" cy="6" r="5.25" stroke="#a18661" strokeWidth="1.2"/>
-                  <path d="M3.8 6.1L5.4 7.8L8.4 4.2" stroke="#a18661" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                Verified Client
-              </span>
-            </div>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6d5a41', margin: '3px 0 0' }}>{t.location}</p>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(109,90,65,0.6)', margin: '2px 0 0' }}>{t.project}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 function TestimonialsCarousel() {
   const [current, setCurrent] = useState(0)
   const [slideKey, setSlideKey] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
-  const viewportRef = useRef<HTMLDivElement>(null)
-  const [containerWidth, setContainerWidth] = useState(0)
   const autoScrollRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const maxIndexRef = useRef(0)
-
-  useEffect(() => {
-    const measure = () => {
-      if (viewportRef.current) setContainerWidth(viewportRef.current.offsetWidth)
-    }
-    measure()
-    const ro = new ResizeObserver(measure)
-    if (viewportRef.current) ro.observe(viewportRef.current)
-    return () => ro.disconnect()
-  }, [])
-
-  const GAP = 20
-  const visibleCount = containerWidth > 0 && containerWidth < 640 ? 1 : 3
-  const cardWidth = containerWidth > 0 ? (containerWidth - GAP * (visibleCount - 1)) / visibleCount : 0
   const count = testimonials.length
-  const maxIndex = Math.max(0, count - visibleCount)
-  maxIndexRef.current = maxIndex
 
   const advance = () => {
-    setCurrent(c => (c >= maxIndexRef.current ? 0 : c + 1))
+    setCurrent(c => (c + 1) % count)
     setSlideKey(k => k + 1)
   }
 
   const retreat = () => {
-    setCurrent(c => (c <= 0 ? maxIndexRef.current : c - 1))
+    setCurrent(c => (c - 1 + count) % count)
     setSlideKey(k => k + 1)
   }
 
   const startAutoScroll = () => {
     if (autoScrollRef.current) clearInterval(autoScrollRef.current)
-    autoScrollRef.current = setInterval(advance, 4000)
+    autoScrollRef.current = setInterval(advance, 4500)
   }
 
   useEffect(() => {
     startAutoScroll()
-    return () => {
-      if (autoScrollRef.current) clearInterval(autoScrollRef.current)
-    }
+    return () => { if (autoScrollRef.current) clearInterval(autoScrollRef.current) }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const prev = () => {
-    retreat()
-    startAutoScroll()
-  }
+  const prev = () => { retreat(); startAutoScroll() }
+  const next = () => { advance(); startAutoScroll() }
 
-  const next = () => {
-    advance()
-    startAutoScroll()
-  }
-
-  const handleMouseEnter = () => {
-    setIsPaused(true)
-    if (autoScrollRef.current) clearInterval(autoScrollRef.current)
-  }
-
-  const handleMouseLeave = () => {
-    setIsPaused(false)
-    startAutoScroll()
-  }
+  const t = testimonials[current]
 
   return (
     <motion.section
@@ -1596,172 +1481,158 @@ function TestimonialsCarousel() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className="htc-section"
-      style={{ background: '#283b22', padding: '80px 0' }}
+      style={{ background: '#f5f2ed', padding: '80px 0' }}
     >
       <style>{`
-        @media (max-width: 768px) {
-          .htc-section { padding: 48px 0 !important; }
-          .htc-heading-wrap { margin-bottom: 32px !important; }
+        @keyframes tCardIn {
+          from { opacity: 0; transform: translateY(14px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
-        .htc-read-more {
-          position: relative;
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          font-family: 'Montserrat', sans-serif;
-          font-weight: 400;
-          font-size: 13px;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: #f5f2ed;
-          text-decoration: none;
-          transition: color 0.25s ease;
-        }
-        .htc-read-more::after {
-          content: '';
-          position: absolute;
-          bottom: -2px;
-          left: 0;
-          width: 0;
-          height: 1px;
-          background: #f5f2ed;
-          transition: width 0.3s ease;
-        }
-        .htc-read-more:hover::after { width: 100%; }
-        .htc-arrow {
-          display: inline-flex;
-          align-items: center;
-          transition: transform 0.25s ease;
-        }
-        .htc-read-more:hover .htc-arrow { transform: translateX(4px); }
-        .htc-nav {
+        .t-nav-btn {
           flex-shrink: 0;
-          width: 44px;
-          height: 44px;
+          width: 42px; height: 42px;
           border-radius: 50%;
-          border: 1.5px solid rgba(161,134,97,0.35);
+          border: 1.5px solid rgba(95,116,94,0.4);
           background: transparent;
           cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          display: flex; align-items: center; justify-content: center;
           color: #a18661;
-          transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+          transition: border-color 0.22s ease, background 0.22s ease;
         }
-        .htc-nav:hover {
-          border-color: #a18661;
-          background: rgba(161,134,97,0.1);
-          color: #c8a96e;
+        .t-nav-btn:hover {
+          border-color: #5f745e;
+          background: rgba(95,116,94,0.08);
         }
-        @keyframes cardEntrance {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes quoteEntrance {
-          from { opacity: 0; transform: translateY(-8px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes progressFill {
-          from { width: 0%; }
-          to { width: 100%; }
+        @media (max-width: 700px) {
+          .t-card-inner { flex-direction: column !important; }
+          .t-card-left  { border-right: none !important; border-bottom: 1px solid rgba(95,116,94,0.25) !important; padding-bottom: 24px !important; margin-bottom: 0 !important; }
+          .t-card-right { padding-left: 0 !important; padding-top: 24px !important; }
         }
       `}</style>
 
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px' }}>
 
-        {/* Heading */}
-        <FadeIn className="text-center htc-heading-wrap" style={{ marginBottom: 56 }}>
+        {/* Section label */}
+        <FadeIn>
           <p style={{
-            fontFamily: "'Montserrat', sans-serif",
-            fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase',
-            color: '#a18661', marginBottom: 14,
-          }}>Client Stories</p>
-          <h2 style={{
-            fontFamily: "'Playfair Display', serif", fontWeight: 400,
-            fontSize: 'clamp(2rem, 5vw, 3.2rem)', color: '#f5f2ed', margin: '0 0 16px',
-          }}>What Clients Say</h2>
-          <p style={{
-            fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 15,
-            color: 'rgba(245,242,237,0.75)', maxWidth: 520, margin: '0 auto', lineHeight: 1.75,
-          }}>
-            Every project is a relationship. These are the words of people who trusted us with their spaces.
-          </p>
+            fontFamily: "'Montserrat', sans-serif", fontWeight: 400,
+            fontSize: 10, letterSpacing: '0.42em', textTransform: 'uppercase',
+            color: '#a18661', marginBottom: 40, textAlign: 'center',
+          }}>The Word on the Street</p>
         </FadeIn>
 
-        {/* Carousel: arrow + viewport + arrow */}
+        {/* Arrow + Card + Arrow */}
         <div
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          style={{ display: 'flex', alignItems: 'stretch', gap: 16 }}
+          style={{ display: 'flex', alignItems: 'center', gap: 20 }}
+          onMouseEnter={() => { setIsPaused(true); if (autoScrollRef.current) clearInterval(autoScrollRef.current) }}
+          onMouseLeave={() => { setIsPaused(false); startAutoScroll() }}
         >
 
-          <button className="htc-nav" onClick={prev} aria-label="Previous testimonial" style={{ alignSelf: 'center' }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+          {/* Left arrow */}
+          <button className="t-nav-btn" onClick={prev} aria-label="Previous testimonial">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M11 6l-6 6 6 6" />
             </svg>
           </button>
 
-          <div ref={viewportRef} style={{ flex: 1, overflow: 'hidden' }}>
-            <div style={{
-              display: 'flex',
-              gap: GAP,
-              transform: `translateX(${cardWidth > 0 ? -(current * (cardWidth + GAP)) : 0}px)`,
-              transition: 'transform 500ms ease-in-out',
-              willChange: 'transform',
-              alignItems: 'stretch',
-            }}>
-              {testimonials.map((t, i) => {
-                const posInView = i - current
-                const isCenter = visibleCount === 3 && posInView === 1
-                const isVisible = posInView >= 0 && posInView < visibleCount
-                const animDelay = isVisible ? posInView * 100 : 0
-                return (
-                  <div
-                    key={`${slideKey}-${i}`}
-                    style={{
-                      width: cardWidth > 0 ? cardWidth : undefined,
-                      minWidth: cardWidth > 0 ? cardWidth : undefined,
-                      flexShrink: 0,
-                      animation: isVisible ? `cardEntrance 400ms ease-out ${animDelay}ms both` : undefined,
-                    }}
-                  >
-                    <CarouselCard t={t} isCenter={isCenter} slideKey={slideKey} visibleCount={visibleCount} />
-                  </div>
-                )
-              })}
+          {/* Card */}
+          <div
+            key={slideKey}
+            style={{
+              flex: 1,
+              position: 'relative',
+              background: '#ffffff',
+              border: '1.5px solid #5f745e',
+              borderRadius: 8,
+              padding: '44px 48px',
+              animation: 'tCardIn 380ms ease-out both',
+              overflow: 'hidden',
+            }}
+          >
+            {/* Decorative closing quote — top right */}
+            <span aria-hidden="true" style={{
+              position: 'absolute', top: 12, right: 28,
+              fontFamily: "'Playfair Display', serif",
+              fontSize: 100, lineHeight: 1,
+              color: '#a18661', opacity: 0.18,
+              pointerEvents: 'none', userSelect: 'none',
+            }}>"</span>
+
+            {/* Two-column inner layout */}
+            <div className="t-card-inner" style={{ display: 'flex', gap: 48, alignItems: 'flex-start' }}>
+
+              {/* LEFT — heading block */}
+              <div className="t-card-left" style={{
+                flex: '0 0 300px',
+                borderRight: '1px solid rgba(95,116,94,0.25)',
+                paddingRight: 48,
+              }}>
+                <p style={{
+                  fontFamily: "'Montserrat', sans-serif", fontWeight: 400,
+                  fontSize: 9, letterSpacing: '0.38em', textTransform: 'uppercase',
+                  color: '#a18661', marginBottom: 20, margin: '0 0 20px',
+                }}>The Word on the Street</p>
+
+                <h2 style={{
+                  fontFamily: "'Playfair Display', serif", fontWeight: 400,
+                  fontSize: 'clamp(1.6rem, 2.8vw, 2.4rem)',
+                  color: '#21291a', lineHeight: 1.2,
+                  margin: '0 0 24px', letterSpacing: '-0.01em',
+                }}>Hear what our clients have said about us!</h2>
+
+                {/* Gold divider */}
+                <div style={{ width: 48, height: 1.5, background: '#a18661' }} />
+              </div>
+
+              {/* RIGHT — quote + name */}
+              <div className="t-card-right" style={{ flex: 1, paddingTop: 4 }}>
+                <p style={{
+                  fontFamily: "'Lora', serif", fontStyle: 'italic',
+                  fontSize: 16, lineHeight: 1.75,
+                  color: '#2c2c2c', margin: '0 0 28px',
+                }}>"{t.text}"</p>
+
+                <p style={{
+                  fontFamily: "'Montserrat', sans-serif", fontWeight: 500,
+                  fontSize: 12, letterSpacing: '0.14em',
+                  textTransform: 'uppercase', color: '#21291a',
+                  margin: '0 0 4px',
+                }}>{t.name}</p>
+                <p style={{
+                  fontFamily: "'Montserrat', sans-serif", fontWeight: 300,
+                  fontSize: 10, letterSpacing: '0.1em',
+                  textTransform: 'uppercase', color: '#a18661', margin: 0,
+                }}>{t.location}</p>
+              </div>
+
             </div>
           </div>
 
-          <button className="htc-nav" onClick={next} aria-label="Next testimonial" style={{ alignSelf: 'center' }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+          {/* Right arrow */}
+          <button className="t-nav-btn" onClick={next} aria-label="Next testimonial">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
           </button>
 
         </div>
 
-        {/* Progress bar */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 28 }}>
-          <div style={{ width: 200, height: 2, background: 'rgba(245,242,237,0.15)', borderRadius: 2, overflow: 'hidden' }}>
-            <div
-              key={slideKey}
+        {/* Dot indicators */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 28 }}>
+          {testimonials.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => { setCurrent(i); setSlideKey(k => k + 1); startAutoScroll() }}
+              aria-label={`Go to testimonial ${i + 1}`}
               style={{
-                height: '100%',
-                background: '#a18661',
-                borderRadius: 2,
-                animation: `progressFill 4000ms linear forwards`,
-                animationPlayState: isPaused ? 'paused' : 'running',
+                width: i === current ? 22 : 7,
+                height: 7, borderRadius: 4,
+                background: i === current ? '#5f745e' : 'rgba(95,116,94,0.28)',
+                border: 'none', cursor: 'pointer', padding: 0,
+                transition: 'width 0.3s ease, background 0.3s ease',
               }}
             />
-          </div>
-        </div>
-
-        {/* Read all link */}
-        <div style={{ textAlign: 'center', marginTop: 32 }}>
-          <Link to="/testimonials" className="htc-read-more">
-            Read All Client Stories <span className="htc-arrow"><ArrowRight size={12} /></span>
-          </Link>
+          ))}
         </div>
 
       </div>
