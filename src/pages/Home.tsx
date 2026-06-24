@@ -74,6 +74,8 @@ const transformations = [
   {
     id: 1,
     title: 'Living Room Refresh',
+    beforeLabel: 'INITIAL SPACE',
+    afterLabel: 'NIVORA DESIGN',
     beforeImg: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80',
     afterImg: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',
     beforeDesc: 'Dark layout with limited functionality, heavy drapery and dated finishes that reduced natural light.',
@@ -82,6 +84,8 @@ const transformations = [
   {
     id: 2,
     title: 'Master Bedroom Redesign',
+    beforeLabel: 'RAW SPACE',
+    afterLabel: 'BESPOKE RETREAT',
     beforeImg: 'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&q=80',
     afterImg: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=800&q=80',
     beforeDesc: 'Generic finishes, sparse furniture and poor spatial planning that felt impersonal and flat.',
@@ -90,6 +94,8 @@ const transformations = [
   {
     id: 3,
     title: 'Kitchen Transformation',
+    beforeLabel: 'ORIGINAL KITCHEN',
+    afterLabel: 'REFINED HUB',
     beforeImg: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80',
     afterImg: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80',
     beforeDesc: 'Outdated cabinetry, inefficient workflow and ageing surfaces that lacked storage and style.',
@@ -98,6 +104,8 @@ const transformations = [
   {
     id: 4,
     title: 'Home Office Elevation',
+    beforeLabel: 'BARE WORKSPACE',
+    afterLabel: 'CORPORATE HUB',
     beforeImg: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&q=80',
     afterImg: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=800&q=80',
     beforeDesc: 'A cluttered, uninspiring workspace with no acoustic treatment, poor ergonomics and no sense of identity.',
@@ -106,6 +114,8 @@ const transformations = [
   {
     id: 5,
     title: 'Dining Room Revival',
+    beforeLabel: 'EMPTY DINING',
+    afterLabel: 'CURATED SETTING',
     beforeImg: 'https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=800&q=80',
     afterImg: 'https://images.unsplash.com/photo-1616137422495-1e9e46e2aa77?w=800&q=80',
     beforeDesc: 'A dated dining arrangement with mismatched furniture, poor lighting and no focal point.',
@@ -463,81 +473,122 @@ function StatsSection() {
   )
 }
 
-function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afterImg: string; title: string }) {
+function CompareSlider({
+  beforeImg, afterImg, title,
+  beforeLabel = 'Before', afterLabel = 'After',
+  staggerIndex = 0,
+}: {
+  beforeImg: string; afterImg: string; title: string;
+  beforeLabel?: string; afterLabel?: string;
+  staggerIndex?: number;
+}) {
   const [pos, setPos] = useState(50)
+  const [transitionMs, setTransitionMs] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
   const draggingRef = useRef(false)
-  const wigglePlayedRef = useRef(false)
-  const wiggleCancelledRef = useRef(false)
-  const wiggleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const [wiggleX, setWiggleX] = useState(0)
+  const hasScrollPlayedRef = useRef(false)
+  const isAnimatingRef = useRef(false)
+  const mountedRef = useRef(true)
+  const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([])
   const [handleScale, setHandleScale] = useState(1)
   const [beforeHover, setBeforeHover] = useState(false)
   const [afterHover, setAfterHover] = useState(false)
 
-  const cancelWiggle = () => {
-    wigglePlayedRef.current = true
-    wiggleCancelledRef.current = true
-    if (wiggleTimerRef.current) clearTimeout(wiggleTimerRef.current)
-    setWiggleX(0)
-  }
-
   useEffect(() => {
-    wiggleCancelledRef.current = false
-    wiggleTimerRef.current = setTimeout(async () => {
-      if (draggingRef.current || wigglePlayedRef.current) return
-      wigglePlayedRef.current = true
-      const frames = [15, -15, 13, -13, 8, -8, 3, -3, 0]
-      for (const x of frames) {
-        if (wiggleCancelledRef.current) { setWiggleX(0); return }
-        setWiggleX(x)
-        await new Promise(r => setTimeout(r, 130))
-      }
-      setWiggleX(0)
-    }, 1500)
+    mountedRef.current = true
     return () => {
-      if (wiggleTimerRef.current) clearTimeout(wiggleTimerRef.current)
-      wiggleCancelledRef.current = true
+      mountedRef.current = false
+      timeoutsRef.current.forEach(clearTimeout)
     }
   }, [])
 
+  const clearAllTimeouts = () => {
+    timeoutsRef.current.forEach(clearTimeout)
+    timeoutsRef.current = []
+  }
+
+  const cancelAnim = () => {
+    clearAllTimeouts()
+    isAnimatingRef.current = false
+    if (mountedRef.current) setTransitionMs(0)
+  }
+
+  const sleep = (ms: number) => new Promise<void>(resolve => {
+    const t = setTimeout(resolve, ms)
+    timeoutsRef.current.push(t)
+  })
+
+  const moveTo = (target: number, duration: number) => new Promise<void>(resolve => {
+    if (!mountedRef.current) return resolve()
+    setTransitionMs(duration)
+    setPos(target)
+    const t = setTimeout(resolve, duration)
+    timeoutsRef.current.push(t)
+  })
+
+  const playReveal = async () => {
+    if (isAnimatingRef.current || draggingRef.current) return
+    isAnimatingRef.current = true
+    await moveTo(98, 900)
+    if (draggingRef.current || !mountedRef.current) { isAnimatingRef.current = false; return }
+    await sleep(600)
+    if (draggingRef.current || !mountedRef.current) { isAnimatingRef.current = false; return }
+    await moveTo(2, 900)
+    if (draggingRef.current || !mountedRef.current) { isAnimatingRef.current = false; return }
+    await sleep(600)
+    if (draggingRef.current || !mountedRef.current) { isAnimatingRef.current = false; return }
+    await moveTo(50, 600)
+    if (mountedRef.current) setTransitionMs(0)
+    isAnimatingRef.current = false
+  }
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !hasScrollPlayedRef.current) {
+        hasScrollPlayedRef.current = true
+        observer.disconnect()
+        const t = setTimeout(() => {
+          if (!draggingRef.current) playReveal()
+        }, staggerIndex * 2500)
+        timeoutsRef.current.push(t)
+      }
+    }, { threshold: 0.5 })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [staggerIndex])
+
   const updatePos = (clientX: number) => {
     if (!containerRef.current) return
+    setTransitionMs(0)
     const rect = containerRef.current.getBoundingClientRect()
     const x = Math.max(2, Math.min(clientX - rect.left, rect.width - 2))
     setPos((x / rect.width) * 100)
   }
 
-  const onMouseDown = (e: React.MouseEvent) => {
-    cancelWiggle()
+  const startDrag = (clientX: number) => {
     draggingRef.current = true
+    cancelAnim()
     setHandleScale(1.15)
-    updatePos(e.clientX)
-    e.preventDefault()
+    updatePos(clientX)
   }
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!draggingRef.current) return
-    updatePos(e.clientX)
-  }
-  const onMouseUp = () => {
-    draggingRef.current = false
-    setHandleScale(1)
-  }
-  const onTouchStart = (e: React.TouchEvent) => {
-    cancelWiggle()
-    draggingRef.current = true
-    setHandleScale(1.15)
-    updatePos(e.touches[0].clientX)
-  }
+
+  const onMouseDown = (e: React.MouseEvent) => { startDrag(e.clientX); e.preventDefault() }
+  const onMouseMove = (e: React.MouseEvent) => { if (draggingRef.current) updatePos(e.clientX) }
+  const endDrag = () => { draggingRef.current = false; setHandleScale(1) }
+  const onTouchStart = (e: React.TouchEvent) => startDrag(e.touches[0].clientX)
   const onTouchMove = (e: React.TouchEvent) => {
     if (!draggingRef.current) return
     e.stopPropagation()
     updatePos(e.touches[0].clientX)
   }
-  const onTouchEnd = () => {
-    draggingRef.current = false
-    setHandleScale(1)
+
+  const onContainerMouseEnter = () => {
+    if (!isAnimatingRef.current && !draggingRef.current) playReveal()
   }
+
+  const dividerTransition = transitionMs > 0 ? `left ${transitionMs}ms ease-in-out` : 'none'
 
   const labelBase: React.CSSProperties = {
     position: 'absolute',
@@ -573,11 +624,12 @@ function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afte
       }}
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
-      onMouseLeave={onMouseUp}
+      onMouseUp={endDrag}
+      onMouseLeave={endDrag}
+      onMouseEnter={onContainerMouseEnter}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
+      onTouchEnd={endDrag}
     >
       {/* After image — base layer */}
       <img
@@ -588,7 +640,8 @@ function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afte
       />
 
       {/* Before image — clipped to left of divider */}
-      <div style={{ position: 'absolute', inset: 0, clipPath: `inset(0 ${100 - pos}% 0 0)`, pointerEvents: 'none' }}>
+      <div style={{ position: 'absolute', inset: 0, clipPath: `inset(0 ${100 - pos}% 0 0)`, pointerEvents: 'none',
+        transition: transitionMs > 0 ? `clip-path ${transitionMs}ms ease-in-out` : 'none' }}>
         <img
           src={beforeImg}
           alt={`Before — ${title}`}
@@ -609,13 +662,14 @@ function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afte
         pointerEvents: 'none',
         zIndex: 4,
         boxShadow: '0 0 8px rgba(0,0,0,0.25)',
+        transition: dividerTransition,
       }} />
 
-      {/* Drag handle — wiggle + scale animations via inline transform */}
+      {/* Drag handle */}
       <div style={{
         position: 'absolute',
         top: '50%', left: `${pos}%`,
-        transform: `translate(-50%, -50%) translateX(${wiggleX}px) scale(${handleScale})`,
+        transform: `translate(-50%, -50%) scale(${handleScale})`,
         width: 46, height: 46,
         borderRadius: '50%',
         background: '#fff',
@@ -624,11 +678,35 @@ function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afte
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         pointerEvents: 'none',
         zIndex: 5,
-        transition: 'transform 120ms ease',
+        transition: dividerTransition ? `left ${transitionMs}ms ease-in-out, transform 120ms ease` : 'transform 120ms ease',
       }}>
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#C8A56A" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
           <path d="M8 5l-4 7 4 7M16 5l4 7-4 7" />
         </svg>
+      </div>
+
+      {/* SLIDE TO COMPARE badge — above handle */}
+      <div style={{
+        position: 'absolute',
+        top: 'calc(50% - 38px)',
+        left: `${pos}%`,
+        transform: 'translateX(-50%)',
+        transition: dividerTransition,
+        zIndex: 6,
+        pointerEvents: 'none',
+        whiteSpace: 'nowrap',
+        fontFamily: "'Montserrat', sans-serif",
+        fontWeight: 400,
+        fontSize: 8,
+        letterSpacing: '0.22em',
+        textTransform: 'uppercase',
+        color: 'rgba(255,255,255,0.75)',
+        background: 'rgba(0,0,0,0.32)',
+        backdropFilter: 'blur(4px)',
+        padding: '3px 9px',
+        borderRadius: 100,
+      }}>
+        Slide to Compare
       </div>
 
       {/* BEFORE label — bottom left */}
@@ -636,130 +714,91 @@ function CompareSlider({ beforeImg, afterImg, title }: { beforeImg: string; afte
         style={{ ...labelBase, left: 16, opacity: beforeHover ? 1 : 0.72, filter: beforeHover ? 'brightness(1.18)' : 'brightness(1)' }}
         onMouseEnter={() => setBeforeHover(true)}
         onMouseLeave={() => setBeforeHover(false)}
-      >Before</span>
+      >{beforeLabel}</span>
 
       {/* AFTER label — bottom right */}
       <span
         style={{ ...labelBase, right: 16, opacity: afterHover ? 1 : 0.72, filter: afterHover ? 'brightness(1.18)' : 'brightness(1)' }}
         onMouseEnter={() => setAfterHover(true)}
         onMouseLeave={() => setAfterHover(false)}
-      >After</span>
+      >{afterLabel}</span>
     </div>
   )
 }
 
-function TransformationCarousel() {
-  const [current, setCurrent] = useState(0)
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const count = transformations.length
-
-  const goTo = useCallback((idx: number) => {
-    setCurrent((idx + count) % count)
-  }, [count])
-
-  useEffect(() => {
-    timerRef.current = setInterval(() => {
-      setCurrent(p => (p + 1) % count)
-    }, 7000)
-    return () => { if (timerRef.current) clearInterval(timerRef.current) }
-  }, [count])
-
-  const t = transformations[current]
-
+function TransformationGrid() {
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px' }}>
       <style>{`
-        .trf-card { border-radius: 20px; background: #fff; box-shadow: 0 8px 48px rgba(38,36,33,0.09), 0 2px 12px rgba(38,36,33,0.05); overflow: hidden; }
-        .trf-dot {
-          width: 8px; height: 8px; border-radius: 50%;
-          background: #E8DED1; border: none; cursor: pointer; padding: 0;
-          transition: background 300ms ease, transform 300ms ease;
+        .trf-card {
+          border-radius: 20px;
+          background: #fff;
+          box-shadow: 0 8px 48px rgba(38,36,33,0.09), 0 2px 12px rgba(38,36,33,0.05);
+          overflow: hidden;
         }
-        .trf-dot.active { background: #C8A56A; transform: scale(1.3); }
-        .trf-nav {
-          width: 44px; height: 44px; border-radius: 50%; border: 1px solid #E8DED1;
-          background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
-          transition: border-color 250ms ease, background 250ms ease;
+        .trf-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 24px;
         }
-        .trf-nav:hover { border-color: #C8A56A; background: #FAF8F4; }
+        .trf-grid .trf-card:last-child:nth-child(odd) {
+          grid-column: 1 / -1;
+          max-width: calc(50% - 12px);
+          margin: 0 auto;
+        }
+        @media (max-width: 640px) {
+          .trf-grid { grid-template-columns: 1fr; }
+          .trf-grid .trf-card:last-child:nth-child(odd) {
+            grid-column: unset;
+            max-width: 100%;
+          }
+        }
       `}</style>
-
-      {/* Fade-transition card */}
-      <div className="trf-card" style={{ position: 'relative' }}>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={current}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35, ease: 'easeInOut' }}
-          >
-            {/* Drag-to-reveal comparison slider */}
-            <CompareSlider beforeImg={t.beforeImg} afterImg={t.afterImg} title={t.title} />
-
-            {/* Description block */}
-            <div style={{ padding: '1.75rem 2.25rem 2rem', borderTop: '1px solid #F5F1EA' }}>
+      <div className="trf-grid">
+        {transformations.map((t, i) => (
+          <div key={t.id} className="trf-card">
+            <CompareSlider
+              beforeImg={t.beforeImg}
+              afterImg={t.afterImg}
+              title={t.title}
+              beforeLabel={t.beforeLabel}
+              afterLabel={t.afterLabel}
+              staggerIndex={i}
+            />
+            <div style={{ padding: '1.5rem 1.75rem 1.75rem', borderTop: '1px solid #F5F1EA' }}>
               <h3 style={{
                 fontFamily: "'Playfair Display', serif", fontWeight: 400,
-                fontSize: 'clamp(1.25rem, 2vw, 1.6rem)', color: '#262421',
-                margin: '0 0 1.1rem', letterSpacing: '-0.01em',
+                fontSize: 'clamp(1.1rem, 1.8vw, 1.4rem)', color: '#262421',
+                margin: '0 0 0.9rem', letterSpacing: '-0.01em',
               }}>{t.title}</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem 2rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem 1.5rem' }}>
                 <div>
                   <p style={{
                     fontFamily: "'Montserrat', sans-serif", fontWeight: 400, fontSize: 9,
                     letterSpacing: '0.25em', textTransform: 'uppercase',
-                    color: 'rgba(38,36,33,0.35)', margin: '0 0 0.5rem',
+                    color: 'rgba(38,36,33,0.35)', margin: '0 0 0.4rem',
                   }}>Before</p>
                   <p style={{
-                    fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 15.5,
-                    color: 'rgba(38,36,33,0.55)', lineHeight: 1.8, margin: 0,
+                    fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 14,
+                    color: 'rgba(38,36,33,0.55)', lineHeight: 1.75, margin: 0,
                   }}>{t.beforeDesc}</p>
                 </div>
                 <div>
                   <p style={{
                     fontFamily: "'Montserrat', sans-serif", fontWeight: 400, fontSize: 9,
                     letterSpacing: '0.25em', textTransform: 'uppercase',
-                    color: '#C8A56A', margin: '0 0 0.5rem',
+                    color: '#C8A56A', margin: '0 0 0.4rem',
                   }}>After</p>
                   <p style={{
-                    fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 15.5,
-                    color: 'rgba(38,36,33,0.72)', lineHeight: 1.8, margin: 0,
+                    fontFamily: "'Lora', serif", fontWeight: 300, fontSize: 14,
+                    color: 'rgba(38,36,33,0.72)', lineHeight: 1.75, margin: 0,
                   }}>{t.afterDesc}</p>
                 </div>
               </div>
             </div>
-          </motion.div>
-        </AnimatePresence>
+          </div>
+        ))}
       </div>
-
-      {/* Controls row */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 24, marginTop: '2.25rem' }}>
-        <button className="trf-nav" onClick={() => goTo(current - 1)} aria-label="Previous">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#262421" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 12H5M11 6l-6 6 6 6" />
-          </svg>
-        </button>
-        <div style={{ display: 'flex', gap: 8 }}>
-          {transformations.map((_, i) => (
-            <button key={i} className={`trf-dot${i === current ? ' active' : ''}`} onClick={() => goTo(i)} aria-label={`Slide ${i + 1}`} />
-          ))}
-        </div>
-        <button className="trf-nav" onClick={() => goTo(current + 1)} aria-label="Next">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#262421" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 12h14M13 6l6 6-6 6" />
-          </svg>
-        </button>
-      </div>
-
-      {/* Slide counter */}
-      <p style={{
-        textAlign: 'center', marginTop: '1rem',
-        fontFamily: "'Montserrat', sans-serif", fontWeight: 300, fontSize: 11,
-        letterSpacing: '0.2em', color: 'rgba(38,36,33,0.3)',
-      }}>
-        {String(current + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
-      </p>
     </div>
   )
 }
@@ -2028,11 +2067,11 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
       <section style={{ backgroundColor: '#FAF8F4', padding: '7rem 1.5rem' }}>
         <style>{`
           .compare-slider-container {
-            aspect-ratio: 16 / 9;
+            aspect-ratio: 4 / 3;
           }
-          @media (max-width: 768px) {
+          @media (max-width: 640px) {
             .compare-slider-container {
-              aspect-ratio: 4 / 5;
+              aspect-ratio: 3 / 2;
             }
           }
         `}</style>
@@ -2060,9 +2099,9 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
             </div>
           </FadeIn>
 
-          {/* Carousel */}
+          {/* Grid */}
           <FadeIn delay={0.18}>
-            <TransformationCarousel />
+            <TransformationGrid />
           </FadeIn>
         </div>
       </section>
