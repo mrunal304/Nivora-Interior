@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
+import nivoraLogo from '../assets/images/nivora-logo.png'
 
 const links = [
   { to: '/', label: 'Home' },
@@ -60,27 +61,18 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-20">
 
-          {/* Logo — text only, blends into olive bar */}
+          {/* Logo — image */}
           <a
             href="/"
             className="navbar-logo"
             onClick={handleHomeNav}
-            style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', cursor: 'pointer' }}
+            style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', cursor: 'pointer' }}
           >
-            <span className="logo-text" style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
-              <span
-                className="logo-name font-serif"
-                style={{ fontSize: '22px', color: GOLD, letterSpacing: '0.08em', lineHeight: 1.2 }}
-              >
-                nivora
-              </span>
-              <span
-                className="logo-sub"
-                style={{ fontSize: '8px', color: `${GOLD_LIGHT}80`, letterSpacing: '0.42em', textTransform: 'uppercase', fontWeight: 300, lineHeight: 1.4 }}
-              >
-                interiors
-              </span>
-            </span>
+            <img
+              src={nivoraLogo}
+              alt="Nivora Interiors"
+              style={{ height: '38px', width: 'auto', objectFit: 'contain' }}
+            />
           </a>
 
           {/* Desktop nav links */}
