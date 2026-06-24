@@ -588,6 +588,20 @@ function CompareSlider({
     updatePos(e.touches[0].clientX)
   }
 
+  // FIX 2: attach a non-passive native touchmove listener so preventDefault works
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const handleNativeTouch = (e: TouchEvent) => {
+      if (draggingRef.current) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    }
+    el.addEventListener('touchmove', handleNativeTouch, { passive: false })
+    return () => el.removeEventListener('touchmove', handleNativeTouch)
+  }, [])
+
   const onContainerMouseEnter = () => {
     if (!isAnimatingRef.current && !draggingRef.current) playReveal()
   }
@@ -713,16 +727,28 @@ function CompareSlider({
         Slide to Compare
       </div>
 
-      {/* BEFORE label — bottom left */}
+      {/* BEFORE label — bottom left; hide when slider is fully right */}
       <span
-        style={{ ...labelBase, left: 16, opacity: beforeHover ? 1 : 0.72, filter: beforeHover ? 'brightness(1.18)' : 'brightness(1)' }}
+        style={{
+          ...labelBase,
+          left: 16,
+          opacity: pos > 92 ? 0 : (beforeHover ? 1 : 0.72),
+          filter: beforeHover ? 'brightness(1.18)' : 'brightness(1)',
+          pointerEvents: pos > 92 ? 'none' : 'auto',
+        }}
         onMouseEnter={() => setBeforeHover(true)}
         onMouseLeave={() => setBeforeHover(false)}
       >{beforeLabel}</span>
 
-      {/* AFTER label — bottom right */}
+      {/* AFTER label — bottom right; hide when slider is fully left */}
       <span
-        style={{ ...labelBase, right: 16, opacity: afterHover ? 1 : 0.72, filter: afterHover ? 'brightness(1.18)' : 'brightness(1)' }}
+        style={{
+          ...labelBase,
+          right: 16,
+          opacity: pos < 8 ? 0 : (afterHover ? 1 : 0.72),
+          filter: afterHover ? 'brightness(1.18)' : 'brightness(1)',
+          pointerEvents: pos < 8 ? 'none' : 'auto',
+        }}
         onMouseEnter={() => setAfterHover(true)}
         onMouseLeave={() => setAfterHover(false)}
       >{afterLabel}</span>
