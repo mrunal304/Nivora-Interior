@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Instagram } from 'lucide-react'
+import { Instagram, MapPin, Mail, Phone } from 'lucide-react'
 import { motion, useInView } from 'framer-motion'
 
 function useTransparentLogo(src: string) {
@@ -338,21 +338,25 @@ export default function Footer() {
               fontWeight: 400,
             }}>Find Us</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <p style={{
-                fontFamily: "'Montserrat', sans-serif",
-                fontSize: 13,
-                fontWeight: 300,
-                color: 'rgba(245,242,237,0.5)',
-                lineHeight: 1.7,
-                margin: 0,
-              }}>
-                Ambernath,<br />Maharashtra 421505
-              </p>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 9 }}>
+                <MapPin size={16} color="#a18661" style={{ flexShrink: 0, marginTop: 2 }} />
+                <p style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 13,
+                  fontWeight: 300,
+                  color: 'rgba(245,242,237,0.5)',
+                  lineHeight: 1.7,
+                  margin: 0,
+                }}>
+                  Ambernath,<br />Maharashtra 421505
+                </p>
+              </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <a
                   href="mailto:hello@nivorainteriors.com"
                   style={{
+                    display: 'flex', alignItems: 'center', gap: 9,
                     fontFamily: "'Montserrat', sans-serif",
                     fontSize: 13,
                     fontWeight: 300,
@@ -363,11 +367,13 @@ export default function Footer() {
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = '0.75' }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = '1' }}
                 >
+                  <Mail size={16} color="#a18661" style={{ flexShrink: 0 }} />
                   hello@nivorainteriors.com
                 </a>
                 <a
                   href="tel:+917276687805"
                   style={{
+                    display: 'flex', alignItems: 'center', gap: 9,
                     fontFamily: "'Montserrat', sans-serif",
                     fontSize: 13,
                     fontWeight: 300,
@@ -378,6 +384,7 @@ export default function Footer() {
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#a18661' }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(245,242,237,0.5)' }}
                 >
+                  <Phone size={16} color="#a18661" style={{ flexShrink: 0 }} />
                   +91 72766 87805
                 </a>
               </div>
