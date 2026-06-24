@@ -244,10 +244,10 @@ const testimonials = [
 ]
 
 const statsData = [
-  { value: 12,  from: 8,   suffix: '+', label: 'Years Experience' },
-  { value: 250, from: 180, suffix: '+', label: 'Projects Completed' },
-  { value: 200, from: 150, suffix: '+', label: 'Clients Served' },
-  { value: 98,  from: 90,  suffix: '%', label: 'Client Satisfaction' },
+  { value: 2,  from: 0, suffix: '+', label: 'Years Experience',    duration: 1200 },
+  { value: 25, from: 0, suffix: '+', label: 'Projects Completed',  duration: 1800 },
+  { value: 50, from: 0, suffix: '+', label: 'Clients Served',      duration: 1600 },
+  { value: 90, from: 0, suffix: '%', label: 'Client Satisfaction', duration: 1400 },
 ]
 
 function StatsSection() {
@@ -266,31 +266,28 @@ function StatsSection() {
         if (entry.isIntersecting && !started) {
           setStarted(true)
           statsData.forEach((stat, i) => {
-            const duration = 1800
-            const steps = 60
-            let step = 0
-            const range = stat.value - stat.from
             setCounts(prev => { const n = [...prev]; n[i] = stat.from; return n })
-            const countUp = setInterval(() => {
-              step++
-              const eased = 1 - Math.pow(1 - step / steps, 3)
-              const val = Math.min(Math.round(stat.from + eased * range), stat.value)
+            const startTime = performance.now()
+            const tick = (now: number) => {
+              const progress = Math.min((now - startTime) / stat.duration, 1)
+              const eased = 1 - Math.pow(1 - progress, 4)
+              const val = Math.floor(stat.from + (stat.value - stat.from) * eased)
               setCounts(prev => { const n = [...prev]; n[i] = val; return n })
-              if (step >= steps) {
-                clearInterval(countUp)
+              if (progress < 1) {
+                requestAnimationFrame(tick)
+              } else {
+                setCounts(prev => { const n = [...prev]; n[i] = stat.value; return n })
 
                 const cycleInterval = 4200 + i * 1100
+                const dip = Math.min(2, stat.value)
 
                 const runCycle = () => {
-                  // Trigger shimmer sweep
                   setShimmer(prev => { const n = [...prev]; n[i] = true; return n })
                   const shimmerOff = setTimeout(() => {
                     setShimmer(prev => { const n = [...prev]; n[i] = false; return n })
                   }, 900)
                   cleanups.push(() => clearTimeout(shimmerOff))
 
-                  // Dip down 2 then ease back to target
-                  const dip = 2
                   const totalSteps = 28
                   let s = 0
                   const dipTimer = setInterval(() => {
@@ -298,14 +295,12 @@ function StatsSection() {
                     const p = s / totalSteps
                     let v: number
                     if (p < 0.35) {
-                      // ease down
                       const down = p / 0.35
                       v = Math.round(stat.value - dip * (1 - Math.pow(1 - down, 2)))
                     } else {
-                      // ease back up
                       const up = (p - 0.35) / 0.65
-                      const eased = 1 - Math.pow(1 - up, 3)
-                      v = Math.round((stat.value - dip) + dip * eased)
+                      const easedUp = 1 - Math.pow(1 - up, 3)
+                      v = Math.round((stat.value - dip) + dip * easedUp)
                     }
                     v = Math.min(Math.max(v, stat.value - dip), stat.value)
                     setCounts(prev => { const n = [...prev]; n[i] = v; return n })
@@ -324,8 +319,8 @@ function StatsSection() {
                 }, 3200 + i * 900)
                 cleanups.push(() => clearTimeout(startDelay))
               }
-            }, duration / steps)
-            cleanups.push(() => clearInterval(countUp))
+            }
+            requestAnimationFrame(tick)
           })
         }
       },
