@@ -782,17 +782,17 @@ function HeroSection({ splashDone }: { splashDone: boolean }) {
     visible: {
       transition: {
         delayChildren: 0,
-        staggerChildren: 0.17,
+        staggerChildren: 0.22,
       },
     },
   }
   const heroItemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0, 0, 0.2, 1] } },
+    hidden: { opacity: 0, y: 24 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.82, ease: [0, 0, 0.2, 1] } },
   }
   const heroItalicVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.95 },
-    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.65, ease: [0, 0, 0.2, 1] } },
+    hidden: { opacity: 0, y: 24, scale: 0.95 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.82, ease: [0, 0, 0.2, 1] } },
   }
 
   return (

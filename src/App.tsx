@@ -37,26 +37,42 @@ function AppInner() {
   const location = useLocation()
   const isHome = location.pathname === '/'
 
+  const alreadySplashed = () => !!sessionStorage.getItem('splashShown')
+
   const [homeKey, setHomeKey] = useState(0)
-  const [splashDone, setSplashDone] = useState(!isHome)
+  const [splashDone, setSplashDone] = useState(!isHome || alreadySplashed())
+  const [showSplash, setShowSplash] = useState(isHome && !alreadySplashed())
 
   useEffect(() => {
     if (location.pathname === '/') {
-      setSplashDone(false)
-      setHomeKey(k => k + 1)
+      if (alreadySplashed()) {
+        setShowSplash(false)
+        setSplashDone(true)
+      } else {
+        setShowSplash(true)
+        setSplashDone(false)
+        setHomeKey(k => k + 1)
+      }
     } else {
+      setShowSplash(false)
       setSplashDone(true)
     }
   }, [location.key])
 
+  const handleSplashComplete = () => {
+    sessionStorage.setItem('splashShown', '1')
+    setSplashDone(true)
+    setShowSplash(false)
+  }
+
   return (
     <>
-      {isHome && (
-        <IntroOverlay key={homeKey} onExitComplete={() => setSplashDone(true)} />
+      {showSplash && (
+        <IntroOverlay key={homeKey} onExitComplete={handleSplashComplete} />
       )}
       <ConsultationPopup />
       <motion.div
-        animate={{ x: isHome && !splashDone ? '100%' : 0 }}
+        animate={{ x: showSplash ? '100%' : 0 }}
         transition={{ duration: 0.7, ease: [0.65, 0, 0.35, 1] }}
         style={{ overflowX: 'hidden', minHeight: '100vh' }}
       >
