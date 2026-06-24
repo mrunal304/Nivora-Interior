@@ -16,6 +16,27 @@ import Quote from './pages/Quote'
 import ThankYou from './pages/ThankYou'
 import ProjectDetail from './pages/ProjectDetail'
 
+// Computed once at module load: was this a fresh page load or reload?
+// "navigate" = fresh load (URL bar / bookmark / new tab)
+// "reload"   = hard refresh (F5 / Ctrl+R)
+// Both should show the splash. Only in-app SPA navigation skips it.
+const isPageLoad = (() => {
+  try {
+    const entries = performance.getEntriesByType('navigation')
+    if (entries.length > 0) {
+      const type = (entries[0] as PerformanceNavigationTiming).type
+      return type === 'navigate' || type === 'reload'
+    }
+  } catch {}
+  return true // safe fallback for browsers that don't support the API
+})()
+
+// In-memory flag: has the splash already played in this page-load session?
+// Module-level so it survives React re-renders but resets on every true page load.
+let hasShownSplash = false
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 function ScrollToTop() {
   const { pathname } = useLocation()
   useEffect(() => { window.scrollTo(0, 0) }, [pathname])
@@ -37,21 +58,22 @@ function AppInner() {
   const location = useLocation()
   const isHome = location.pathname === '/'
 
-  const alreadySplashed = () => !!sessionStorage.getItem('splashShown')
+  // Should the splash show right now on home?
+  const splashEligible = () => isPageLoad && !hasShownSplash
 
   const [homeKey, setHomeKey] = useState(0)
-  const [splashDone, setSplashDone] = useState(!isHome || alreadySplashed())
-  const [showSplash, setShowSplash] = useState(isHome && !alreadySplashed())
+  const [splashDone, setSplashDone] = useState(!isHome || !splashEligible())
+  const [showSplash, setShowSplash] = useState(isHome && splashEligible())
 
   useEffect(() => {
     if (location.pathname === '/') {
-      if (alreadySplashed()) {
-        setShowSplash(false)
-        setSplashDone(true)
-      } else {
+      if (splashEligible()) {
         setShowSplash(true)
         setSplashDone(false)
         setHomeKey(k => k + 1)
+      } else {
+        setShowSplash(false)
+        setSplashDone(true)
       }
     } else {
       setShowSplash(false)
@@ -60,7 +82,7 @@ function AppInner() {
   }, [location.key])
 
   const handleSplashComplete = () => {
-    sessionStorage.setItem('splashShown', '1')
+    hasShownSplash = true   // mark as shown in this page-load session
     setSplashDone(true)
     setShowSplash(false)
   }
