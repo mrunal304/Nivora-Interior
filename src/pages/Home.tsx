@@ -1490,18 +1490,26 @@ function TestimonialsCarousel() {
     >
       <style>{`
         @keyframes tCardInRight {
-          from { opacity: 0; transform: translateX(48px); }
+          from { opacity: 0; transform: translateX(60px); }
           to   { opacity: 1; transform: translateX(0); }
         }
         @keyframes tCardInLeft {
-          from { opacity: 0; transform: translateX(-48px); }
+          from { opacity: 0; transform: translateX(-60px); }
           to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes tPanelTextIn {
+          from { opacity: 0; transform: translateY(15px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes tDividerGrow {
+          from { width: 0; }
+          to   { width: 48px; }
         }
         @keyframes tQuoteFade {
           from { opacity: 0; transform: translateY(10px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        @keyframes tNameFade {
+        @keyframes tNameSlide {
           from { opacity: 0; transform: translateY(8px); }
           to   { opacity: 1; transform: translateY(0); }
         }
@@ -1511,19 +1519,21 @@ function TestimonialsCarousel() {
         }
         .t-nav-btn {
           flex-shrink: 0;
-          width: 42px; height: 42px;
+          width: 44px; height: 44px;
           border-radius: 50%;
-          border: 1.5px solid rgba(95,116,94,0.4);
+          border: 1.5px solid rgba(33,41,26,0.25);
           background: transparent;
           cursor: pointer;
           display: flex; align-items: center; justify-content: center;
-          color: #a18661;
-          transition: border-color 0.22s ease, background 0.22s ease, transform 0.18s ease;
+          color: #21291a;
+          transition: border-color 0.2s ease, background 0.2s ease,
+                      color 0.2s ease, transform 0.2s ease;
         }
         .t-nav-btn:hover {
-          border-color: #5f745e;
-          background: rgba(95,116,94,0.08);
-          transform: scale(1.1);
+          background: #21291a;
+          border-color: #21291a;
+          color: #f5f2ed;
+          transform: scale(1.05);
         }
         .t-read-more {
           position: relative;
@@ -1533,38 +1543,38 @@ function TestimonialsCarousel() {
           font-family: 'Montserrat', sans-serif;
           font-weight: 400;
           font-size: 10px;
-          letter-spacing: 0.32em;
+          letter-spacing: 0.28em;
           text-transform: uppercase;
           color: #a18661;
           text-decoration: none;
-          transition: opacity 0.22s ease;
+          transition: color 0.2s ease;
         }
         .t-read-more::after {
           content: '';
           position: absolute;
           bottom: -2px; left: 0;
           width: 0; height: 1px;
-          background: #a18661;
+          background: currentColor;
           transition: width 0.3s ease;
         }
+        .t-read-more:hover { color: #21291a; }
         .t-read-more:hover::after { width: 100%; }
-        .t-read-more:hover { opacity: 0.78; }
         @media (max-width: 700px) {
-          .t-card-inner { flex-direction: column !important; }
-          .t-card-left  { border-right: none !important; border-bottom: 1px solid rgba(95,116,94,0.25) !important; padding-bottom: 24px !important; padding-right: 0 !important; }
-          .t-card-right { padding-top: 24px !important; }
+          .t-card-split { flex-direction: column !important; min-height: unset !important; }
+          .t-panel-left { border-radius: 10px 10px 0 0 !important; min-height: unset !important; }
+          .t-panel-right { border-radius: 0 0 10px 10px !important; }
         }
       `}</style>
 
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px' }}>
 
-        {/* Section heading block */}
+        {/* Section heading */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          style={{ textAlign: 'center', marginBottom: 52 }}
+          style={{ textAlign: 'center', marginBottom: 56 }}
         >
           <p style={{
             fontFamily: "'Montserrat', sans-serif", fontWeight: 400,
@@ -1573,7 +1583,7 @@ function TestimonialsCarousel() {
           }}>Client Stories</p>
           <h2 style={{
             fontFamily: "'Playfair Display', serif", fontWeight: 400,
-            fontSize: 'clamp(2rem, 4.5vw, 3.2rem)',
+            fontSize: 'clamp(2.2rem, 5vw, 3.6rem)',
             color: '#21291a', lineHeight: 1.15,
             margin: '0 0 18px', letterSpacing: '-0.01em',
           }}>What Clients Say</h2>
@@ -1599,84 +1609,129 @@ function TestimonialsCarousel() {
             </svg>
           </button>
 
-          {/* Card */}
+          {/* Two-tone split card */}
           <div
             key={slideKey}
             style={{
               flex: 1,
-              position: 'relative',
-              background: '#ffffff',
-              border: '1.5px solid #5f745e',
-              borderRadius: 8,
-              padding: '44px 48px',
-              animation: `${cardAnim} 420ms cubic-bezier(0.22,1,0.36,1) both`,
+              display: 'flex',
+              border: '1px solid #5f745e',
+              borderRadius: 12,
               overflow: 'hidden',
+              animation: `${cardAnim} 500ms cubic-bezier(0.22,1,0.36,1) both`,
+              minHeight: 280,
             }}
+            className="t-card-split"
           >
-            {/* Decorative closing quote — top right */}
-            <span aria-hidden="true" style={{
-              position: 'absolute', top: 12, right: 28,
-              fontFamily: "'Playfair Display', serif",
-              fontSize: 100, lineHeight: 1,
-              color: '#a18661', opacity: 0.18,
-              pointerEvents: 'none', userSelect: 'none',
-            }}>"</span>
+            {/* LEFT PANEL — dark green */}
+            <div
+              className="t-panel-left"
+              style={{
+                flex: '0 0 320px',
+                background: '#21291a',
+                padding: '44px 40px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                position: 'relative',
+              }}
+            >
+              {/* Subtle texture overlay */}
+              <div aria-hidden="true" style={{
+                position: 'absolute', inset: 0,
+                background: 'repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.012) 40px, rgba(255,255,255,0.012) 80px)',
+                pointerEvents: 'none',
+              }} />
 
-            {/* Two-column inner layout */}
-            <div className="t-card-inner" style={{ display: 'flex', gap: 48, alignItems: 'flex-start' }}>
-
-              {/* LEFT — static heading block */}
-              <div className="t-card-left" style={{
-                flex: '0 0 300px',
-                borderRight: '1px solid rgba(95,116,94,0.25)',
-                paddingRight: 48,
-              }}>
-                <p style={{
+              <p
+                key={`label-${slideKey}`}
+                style={{
                   fontFamily: "'Montserrat', sans-serif", fontWeight: 400,
                   fontSize: 9, letterSpacing: '0.38em', textTransform: 'uppercase',
                   color: '#a18661', margin: '0 0 20px',
-                }}>The Word on the Street</p>
-                <h3 style={{
+                  position: 'relative', zIndex: 1,
+                  animation: 'tPanelTextIn 500ms ease-out 200ms both',
+                }}
+              >The Word on the Street</p>
+
+              <h3
+                key={`heading-${slideKey}`}
+                style={{
                   fontFamily: "'Playfair Display', serif", fontWeight: 400,
-                  fontSize: 'clamp(1.5rem, 2.6vw, 2.2rem)',
-                  color: '#21291a', lineHeight: 1.2,
-                  margin: '0 0 24px', letterSpacing: '-0.01em',
-                }}>Hear what our clients have said about us!</h3>
-                <div style={{ width: 48, height: 1.5, background: '#a18661' }} />
-              </div>
+                  fontSize: 'clamp(1.4rem, 2.4vw, 2rem)',
+                  color: '#f5f2ed', lineHeight: 1.25,
+                  margin: '0 0 28px', letterSpacing: '-0.01em',
+                  position: 'relative', zIndex: 1,
+                  animation: 'tPanelTextIn 500ms ease-out 280ms both',
+                }}
+              >Hear what our clients have said about us!</h3>
 
-              {/* RIGHT — animated quote + name */}
-              <div className="t-card-right" style={{ flex: 1, paddingTop: 4 }}>
-                <p
-                  key={`quote-${slideKey}`}
-                  style={{
-                    fontFamily: "'Lora', serif", fontStyle: 'italic',
-                    fontSize: 16, lineHeight: 1.75,
-                    color: '#2c2c2c', margin: '0 0 28px',
-                    animation: 'tQuoteFade 480ms ease-out 120ms both',
-                  }}
-                >"{t.text}"</p>
-                <p
-                  key={`name-${slideKey}`}
-                  style={{
-                    fontFamily: "'Montserrat', sans-serif", fontWeight: 500,
-                    fontSize: 12, letterSpacing: '0.14em',
-                    textTransform: 'uppercase', color: '#21291a',
-                    margin: '0 0 4px',
-                    animation: 'tNameFade 400ms ease-out 260ms both',
-                  }}
-                >{t.name}</p>
-                <p
-                  key={`loc-${slideKey}`}
-                  style={{
-                    fontFamily: "'Montserrat', sans-serif", fontWeight: 300,
-                    fontSize: 10, letterSpacing: '0.1em',
-                    textTransform: 'uppercase', color: '#a18661', margin: 0,
-                    animation: 'tNameFade 400ms ease-out 340ms both',
-                  }}
-                >{t.location}</p>
-              </div>
+              {/* Animated gold divider */}
+              <div
+                key={`divider-${slideKey}`}
+                style={{
+                  height: 1.5, background: '#a18661',
+                  position: 'relative', zIndex: 1,
+                  animation: 'tDividerGrow 600ms ease-out 360ms both',
+                }}
+              />
+            </div>
 
+            {/* RIGHT PANEL — light cream */}
+            <div
+              className="t-panel-right"
+              style={{
+                flex: 1,
+                background: '#ffffff',
+                padding: '44px 44px 40px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                position: 'relative',
+                overflow: 'hidden',
+              }}
+            >
+              {/* Decorative closing quote — top right of right panel */}
+              <span aria-hidden="true" style={{
+                position: 'absolute', top: 8, right: 24,
+                fontFamily: "'Playfair Display', serif",
+                fontSize: 110, lineHeight: 1,
+                color: '#a18661', opacity: 0.25,
+                pointerEvents: 'none', userSelect: 'none',
+              }}>"</span>
+
+              <p
+                key={`quote-${slideKey}`}
+                style={{
+                  fontFamily: "'Lora', serif", fontStyle: 'italic',
+                  fontSize: 16, lineHeight: 1.8,
+                  color: '#2c2c2c', margin: '0 0 28px',
+                  position: 'relative', zIndex: 1,
+                  animation: 'tQuoteFade 500ms ease-out 320ms both',
+                }}
+              >"{t.text}"</p>
+
+              {/* Thin gold divider before name */}
+              <div style={{ width: 36, height: 1, background: '#a18661', marginBottom: 16, flexShrink: 0 }} />
+
+              <p
+                key={`name-${slideKey}`}
+                style={{
+                  fontFamily: "'Montserrat', sans-serif", fontWeight: 500,
+                  fontSize: 12, letterSpacing: '0.14em',
+                  textTransform: 'uppercase', color: '#21291a', margin: '0 0 5px',
+                  animation: 'tNameSlide 400ms ease-out 440ms both',
+                }}
+              >{t.name}</p>
+              <p
+                key={`loc-${slideKey}`}
+                style={{
+                  fontFamily: "'Montserrat', sans-serif", fontWeight: 300,
+                  fontSize: 10, letterSpacing: '0.1em',
+                  textTransform: 'uppercase', color: '#a18661', margin: 0,
+                  animation: 'tNameSlide 400ms ease-out 520ms both',
+                }}
+              >{t.location}</p>
             </div>
           </div>
 
@@ -1688,19 +1743,19 @@ function TestimonialsCarousel() {
           </button>
         </div>
 
-        {/* Progress bar */}
+        {/* Progress bar — 3px, gold fill */}
         <div style={{ marginTop: 24, display: 'flex', justifyContent: 'center' }}>
           <div style={{
-            width: '100%', maxWidth: 680,
-            height: 2, background: 'rgba(95,116,94,0.18)',
-            borderRadius: 2, overflow: 'hidden',
+            width: '100%',
+            height: 3, background: '#e0d9cf',
+            borderRadius: 3, overflow: 'hidden',
           }}>
             <div
               key={`bar-${slideKey}`}
               style={{
                 height: '100%',
                 background: '#a18661',
-                borderRadius: 2,
+                borderRadius: 3,
                 animation: `tProgressFill ${INTERVAL_MS}ms ease-in-out forwards`,
                 animationPlayState: isPaused ? 'paused' : 'running',
               }}
