@@ -2134,7 +2134,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
           @media (max-width: 480px) {
             .ig-grid { grid-template-columns: repeat(2, 1fr); }
           }
-          .ig-thumb { display: block; position: relative; overflow: hidden; aspect-ratio: 1 / 1; }
+          .ig-thumb { display: block; position: relative; overflow: hidden; aspect-ratio: 1 / 1; cursor: pointer; }
           .ig-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.22,1,0.36,1); display: block; }
           .ig-thumb:hover img { transform: scale(1.07); }
           .ig-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(201,169,110,0.18); opacity: 0; transition: opacity 0.3s ease; }
@@ -2202,7 +2202,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
             {igPosts.map((src, i) => (
               <a
                 key={i}
-                href="https://instagram.com/NivoraInteriors"
+                href="https://www.instagram.com/nivora.interiors/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="ig-thumb"
@@ -2220,10 +2220,11 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
           {/* CTA */}
           <div style={{ textAlign: 'center', marginTop: 32 }}>
             <a
-              href="https://instagram.com/NivoraInteriors"
+              href="https://www.instagram.com/nivora.interiors/"
               target="_blank"
               rel="noopener noreferrer"
               className="ig-cta"
+              style={{ cursor: 'pointer' }}
             >
               See More On Instagram <span className="ig-cta-arrow"><ArrowRight size={12} /></span>
             </a>
