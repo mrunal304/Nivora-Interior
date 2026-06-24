@@ -1445,23 +1445,27 @@ function HeroSection({ splashDone }: { splashDone: boolean }) {
 function TestimonialsCarousel() {
   const [current, setCurrent] = useState(0)
   const [slideKey, setSlideKey] = useState(0)
+  const [direction, setDirection] = useState<'next' | 'prev'>('next')
   const [isPaused, setIsPaused] = useState(false)
   const autoScrollRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const count = testimonials.length
+  const INTERVAL_MS = 5000
 
   const advance = () => {
+    setDirection('next')
     setCurrent(c => (c + 1) % count)
     setSlideKey(k => k + 1)
   }
 
   const retreat = () => {
+    setDirection('prev')
     setCurrent(c => (c - 1 + count) % count)
     setSlideKey(k => k + 1)
   }
 
   const startAutoScroll = () => {
     if (autoScrollRef.current) clearInterval(autoScrollRef.current)
-    autoScrollRef.current = setInterval(advance, 4500)
+    autoScrollRef.current = setInterval(advance, INTERVAL_MS)
   }
 
   useEffect(() => {
@@ -1474,6 +1478,7 @@ function TestimonialsCarousel() {
   const next = () => { advance(); startAutoScroll() }
 
   const t = testimonials[current]
+  const cardAnim = direction === 'next' ? 'tCardInRight' : 'tCardInLeft'
 
   return (
     <motion.section
@@ -1484,9 +1489,25 @@ function TestimonialsCarousel() {
       style={{ background: '#f5f2ed', padding: '80px 0' }}
     >
       <style>{`
-        @keyframes tCardIn {
-          from { opacity: 0; transform: translateY(14px); }
+        @keyframes tCardInRight {
+          from { opacity: 0; transform: translateX(48px); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes tCardInLeft {
+          from { opacity: 0; transform: translateX(-48px); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes tQuoteFade {
+          from { opacity: 0; transform: translateY(10px); }
           to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes tNameFade {
+          from { opacity: 0; transform: translateY(8px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes tProgressFill {
+          from { width: 0%; }
+          to   { width: 100%; }
         }
         .t-nav-btn {
           flex-shrink: 0;
@@ -1497,29 +1518,73 @@ function TestimonialsCarousel() {
           cursor: pointer;
           display: flex; align-items: center; justify-content: center;
           color: #a18661;
-          transition: border-color 0.22s ease, background 0.22s ease;
+          transition: border-color 0.22s ease, background 0.22s ease, transform 0.18s ease;
         }
         .t-nav-btn:hover {
           border-color: #5f745e;
           background: rgba(95,116,94,0.08);
+          transform: scale(1.1);
         }
+        .t-read-more {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-family: 'Montserrat', sans-serif;
+          font-weight: 400;
+          font-size: 10px;
+          letter-spacing: 0.32em;
+          text-transform: uppercase;
+          color: #a18661;
+          text-decoration: none;
+          transition: opacity 0.22s ease;
+        }
+        .t-read-more::after {
+          content: '';
+          position: absolute;
+          bottom: -2px; left: 0;
+          width: 0; height: 1px;
+          background: #a18661;
+          transition: width 0.3s ease;
+        }
+        .t-read-more:hover::after { width: 100%; }
+        .t-read-more:hover { opacity: 0.78; }
         @media (max-width: 700px) {
           .t-card-inner { flex-direction: column !important; }
-          .t-card-left  { border-right: none !important; border-bottom: 1px solid rgba(95,116,94,0.25) !important; padding-bottom: 24px !important; margin-bottom: 0 !important; }
-          .t-card-right { padding-left: 0 !important; padding-top: 24px !important; }
+          .t-card-left  { border-right: none !important; border-bottom: 1px solid rgba(95,116,94,0.25) !important; padding-bottom: 24px !important; padding-right: 0 !important; }
+          .t-card-right { padding-top: 24px !important; }
         }
       `}</style>
 
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px' }}>
 
-        {/* Section label */}
-        <FadeIn>
+        {/* Section heading block */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          style={{ textAlign: 'center', marginBottom: 52 }}
+        >
           <p style={{
             fontFamily: "'Montserrat', sans-serif", fontWeight: 400,
             fontSize: 10, letterSpacing: '0.42em', textTransform: 'uppercase',
-            color: '#a18661', marginBottom: 40, textAlign: 'center',
-          }}>The Word on the Street</p>
-        </FadeIn>
+            color: '#a18661', margin: '0 0 16px',
+          }}>Client Stories</p>
+          <h2 style={{
+            fontFamily: "'Playfair Display', serif", fontWeight: 400,
+            fontSize: 'clamp(2rem, 4.5vw, 3.2rem)',
+            color: '#21291a', lineHeight: 1.15,
+            margin: '0 0 18px', letterSpacing: '-0.01em',
+          }}>What Clients Say</h2>
+          <p style={{
+            fontFamily: "'Lora', serif", fontWeight: 300, fontStyle: 'italic',
+            fontSize: 15, lineHeight: 1.75,
+            color: 'rgba(33,41,26,0.55)', maxWidth: 500, margin: '0 auto',
+          }}>
+            Every project is a relationship. These are the words of people who trusted us with their spaces.
+          </p>
+        </motion.div>
 
         {/* Arrow + Card + Arrow */}
         <div
@@ -1527,7 +1592,6 @@ function TestimonialsCarousel() {
           onMouseEnter={() => { setIsPaused(true); if (autoScrollRef.current) clearInterval(autoScrollRef.current) }}
           onMouseLeave={() => { setIsPaused(false); startAutoScroll() }}
         >
-
           {/* Left arrow */}
           <button className="t-nav-btn" onClick={prev} aria-label="Previous testimonial">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
@@ -1545,7 +1609,7 @@ function TestimonialsCarousel() {
               border: '1.5px solid #5f745e',
               borderRadius: 8,
               padding: '44px 48px',
-              animation: 'tCardIn 380ms ease-out both',
+              animation: `${cardAnim} 420ms cubic-bezier(0.22,1,0.36,1) both`,
               overflow: 'hidden',
             }}
           >
@@ -1561,7 +1625,7 @@ function TestimonialsCarousel() {
             {/* Two-column inner layout */}
             <div className="t-card-inner" style={{ display: 'flex', gap: 48, alignItems: 'flex-start' }}>
 
-              {/* LEFT — heading block */}
+              {/* LEFT — static heading block */}
               <div className="t-card-left" style={{
                 flex: '0 0 300px',
                 borderRight: '1px solid rgba(95,116,94,0.25)',
@@ -1570,39 +1634,47 @@ function TestimonialsCarousel() {
                 <p style={{
                   fontFamily: "'Montserrat', sans-serif", fontWeight: 400,
                   fontSize: 9, letterSpacing: '0.38em', textTransform: 'uppercase',
-                  color: '#a18661', marginBottom: 20, margin: '0 0 20px',
+                  color: '#a18661', margin: '0 0 20px',
                 }}>The Word on the Street</p>
-
-                <h2 style={{
+                <h3 style={{
                   fontFamily: "'Playfair Display', serif", fontWeight: 400,
-                  fontSize: 'clamp(1.6rem, 2.8vw, 2.4rem)',
+                  fontSize: 'clamp(1.5rem, 2.6vw, 2.2rem)',
                   color: '#21291a', lineHeight: 1.2,
                   margin: '0 0 24px', letterSpacing: '-0.01em',
-                }}>Hear what our clients have said about us!</h2>
-
-                {/* Gold divider */}
+                }}>Hear what our clients have said about us!</h3>
                 <div style={{ width: 48, height: 1.5, background: '#a18661' }} />
               </div>
 
-              {/* RIGHT — quote + name */}
+              {/* RIGHT — animated quote + name */}
               <div className="t-card-right" style={{ flex: 1, paddingTop: 4 }}>
-                <p style={{
-                  fontFamily: "'Lora', serif", fontStyle: 'italic',
-                  fontSize: 16, lineHeight: 1.75,
-                  color: '#2c2c2c', margin: '0 0 28px',
-                }}>"{t.text}"</p>
-
-                <p style={{
-                  fontFamily: "'Montserrat', sans-serif", fontWeight: 500,
-                  fontSize: 12, letterSpacing: '0.14em',
-                  textTransform: 'uppercase', color: '#21291a',
-                  margin: '0 0 4px',
-                }}>{t.name}</p>
-                <p style={{
-                  fontFamily: "'Montserrat', sans-serif", fontWeight: 300,
-                  fontSize: 10, letterSpacing: '0.1em',
-                  textTransform: 'uppercase', color: '#a18661', margin: 0,
-                }}>{t.location}</p>
+                <p
+                  key={`quote-${slideKey}`}
+                  style={{
+                    fontFamily: "'Lora', serif", fontStyle: 'italic',
+                    fontSize: 16, lineHeight: 1.75,
+                    color: '#2c2c2c', margin: '0 0 28px',
+                    animation: 'tQuoteFade 480ms ease-out 120ms both',
+                  }}
+                >"{t.text}"</p>
+                <p
+                  key={`name-${slideKey}`}
+                  style={{
+                    fontFamily: "'Montserrat', sans-serif", fontWeight: 500,
+                    fontSize: 12, letterSpacing: '0.14em',
+                    textTransform: 'uppercase', color: '#21291a',
+                    margin: '0 0 4px',
+                    animation: 'tNameFade 400ms ease-out 260ms both',
+                  }}
+                >{t.name}</p>
+                <p
+                  key={`loc-${slideKey}`}
+                  style={{
+                    fontFamily: "'Montserrat', sans-serif", fontWeight: 300,
+                    fontSize: 10, letterSpacing: '0.1em',
+                    textTransform: 'uppercase', color: '#a18661', margin: 0,
+                    animation: 'tNameFade 400ms ease-out 340ms both',
+                  }}
+                >{t.location}</p>
               </div>
 
             </div>
@@ -1614,25 +1686,33 @@ function TestimonialsCarousel() {
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
           </button>
-
         </div>
 
-        {/* Dot indicators */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 28 }}>
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => { setCurrent(i); setSlideKey(k => k + 1); startAutoScroll() }}
-              aria-label={`Go to testimonial ${i + 1}`}
+        {/* Progress bar */}
+        <div style={{ marginTop: 24, display: 'flex', justifyContent: 'center' }}>
+          <div style={{
+            width: '100%', maxWidth: 680,
+            height: 2, background: 'rgba(95,116,94,0.18)',
+            borderRadius: 2, overflow: 'hidden',
+          }}>
+            <div
+              key={`bar-${slideKey}`}
               style={{
-                width: i === current ? 22 : 7,
-                height: 7, borderRadius: 4,
-                background: i === current ? '#5f745e' : 'rgba(95,116,94,0.28)',
-                border: 'none', cursor: 'pointer', padding: 0,
-                transition: 'width 0.3s ease, background 0.3s ease',
+                height: '100%',
+                background: '#a18661',
+                borderRadius: 2,
+                animation: `tProgressFill ${INTERVAL_MS}ms ease-in-out forwards`,
+                animationPlayState: isPaused ? 'paused' : 'running',
               }}
             />
-          ))}
+          </div>
+        </div>
+
+        {/* Read all link */}
+        <div style={{ textAlign: 'center', marginTop: 28 }}>
+          <Link to="/testimonials" className="t-read-more">
+            Read All Client Stories →
+          </Link>
         </div>
 
       </div>
