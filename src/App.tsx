@@ -33,24 +33,36 @@ function Layout({ children }: { children: React.ReactNode }) {
   )
 }
 
-export default function App() {
-  const [introDone, setIntroDone] = useState(() => {
-    return !!(sessionStorage.getItem('nivoraVisited') || window.location.pathname !== '/')
-  })
+function AppInner() {
+  const location = useLocation()
+  const isHome = location.pathname === '/'
+
+  const [homeKey, setHomeKey] = useState(0)
+  const [splashDone, setSplashDone] = useState(!isHome)
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setSplashDone(false)
+      setHomeKey(k => k + 1)
+    } else {
+      setSplashDone(true)
+    }
+  }, [location.key])
 
   return (
-    <BrowserRouter>
-      <IntroOverlay onExitComplete={() => setIntroDone(true)} />
+    <>
+      {isHome && (
+        <IntroOverlay key={homeKey} onExitComplete={() => setSplashDone(true)} />
+      )}
       <ConsultationPopup />
       <motion.div
-        initial={false}
-        animate={{ x: introDone ? 0 : '100%' }}
+        animate={{ x: isHome && !splashDone ? '100%' : 0 }}
         transition={{ duration: 0.7, ease: [0.65, 0, 0.35, 1] }}
         style={{ overflowX: 'hidden', minHeight: '100vh' }}
       >
         <ScrollToTop />
         <Routes>
-          <Route path="/" element={<Layout><Home /></Layout>} />
+          <Route path="/" element={<Layout><Home splashDone={splashDone} /></Layout>} />
           <Route path="/portfolio" element={<Layout><Portfolio /></Layout>} />
           <Route path="/portfolio/:id" element={<Layout><ProjectDetail /></Layout>} />
           <Route path="/services" element={<Layout><Services /></Layout>} />
@@ -61,6 +73,14 @@ export default function App() {
           <Route path="/thank-you" element={<Layout><ThankYou /></Layout>} />
         </Routes>
       </motion.div>
+    </>
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppInner />
     </BrowserRouter>
   )
 }

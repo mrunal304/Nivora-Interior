@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import nivoraLogo from '../assets/images/nivora-logo.png'
 
 function useTransparentLogo(src: string) {
   const [logoSrc, setLogoSrc] = useState<string | null>(null)
@@ -35,9 +36,8 @@ function useTransparentLogo(src: string) {
 }
 
 export default function IntroOverlay({ onExitComplete }: { onExitComplete?: () => void }) {
-  const isHome = window.location.pathname === '/'
-  const [visible, setVisible] = useState(isHome)
-  const logoSrc = useTransparentLogo('/nivora-logo.png')
+  const [visible, setVisible] = useState(true)
+  const logoSrc = useTransparentLogo(nivoraLogo)
 
   return (
     <>
@@ -55,7 +55,7 @@ export default function IntroOverlay({ onExitComplete }: { onExitComplete?: () =
             initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.15, ease: 'easeOut' }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
             style={{
               position: 'fixed',
               inset: 0,
@@ -74,7 +74,7 @@ export default function IntroOverlay({ onExitComplete }: { onExitComplete?: () =
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
                   onAnimationComplete={() => {
-                    setTimeout(() => setVisible(false), 1000)
+                    setTimeout(() => setVisible(false), 900)
                   }}
                   style={{
                     position: 'relative',
@@ -83,7 +83,6 @@ export default function IntroOverlay({ onExitComplete }: { onExitComplete?: () =
                     justifyContent: 'center',
                   }}
                 >
-                  {/* Breathing golden glow — pulses softly behind the logo */}
                   <div
                     style={{
                       position: 'absolute',
@@ -95,8 +94,6 @@ export default function IntroOverlay({ onExitComplete }: { onExitComplete?: () =
                       animation: 'glowBreathe 2.2s ease-in-out infinite',
                     }}
                   />
-
-                  {/* Logo image */}
                   <img
                     src={logoSrc}
                     alt="Nivora Interiors"

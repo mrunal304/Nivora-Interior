@@ -770,21 +770,18 @@ function TransformationCarousel() {
 }
 
 
-function HeroSection() {
+function HeroSection({ splashDone }: { splashDone: boolean }) {
   const sectionRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
   const rawY = useTransform(scrollYProgress, [0, 1], ['0%', '22%'])
   const parallaxY = useSpring(rawY, { stiffness: 60, damping: 20 })
   const [activeCity, setActiveCity] = useState<'Mumbai' | 'Pune'>('Mumbai')
 
-  const isFirstVisit = !sessionStorage.getItem('nivoraVisited')
-  useEffect(() => { sessionStorage.setItem('nivoraVisited', '1') }, [])
-
   const heroContainerVariants = {
     hidden: {},
     visible: {
       transition: {
-        delayChildren: isFirstVisit ? 1.98 : 0,
+        delayChildren: 0,
         staggerChildren: 0.17,
       },
     },
@@ -831,8 +828,8 @@ function HeroSection() {
       {/* Vertical studio label — left */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.1, delay: isFirstVisit ? 1.1 : 0 }}
+        animate={{ opacity: splashDone ? 1 : 0 }}
+        transition={{ duration: 0.9, delay: 0 }}
         style={{
           position: 'absolute', left: 36, top: '50%', zIndex: 10,
           transform: 'translateY(-50%) rotate(-90deg)',
@@ -852,8 +849,8 @@ function HeroSection() {
       {/* Vertical year label — right */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.1, delay: isFirstVisit ? 1.1 : 0 }}
+        animate={{ opacity: splashDone ? 1 : 0 }}
+        transition={{ duration: 0.9, delay: 0 }}
         style={{
           position: 'absolute', right: 36, top: '50%', zIndex: 10,
           transform: 'translateY(-50%) rotate(90deg)',
@@ -874,7 +871,7 @@ function HeroSection() {
       <motion.div
         variants={heroContainerVariants}
         initial="hidden"
-        animate="visible"
+        animate={splashDone ? 'visible' : 'hidden'}
         style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '0 24px', maxWidth: 860, margin: '0 auto', width: '100%' }}
       >
 
@@ -950,7 +947,7 @@ function HeroSection() {
             marginBottom: 28,
           }}
         >
-          <em className="hero-italic-reveal" style={{ color: '#b8966a', fontStyle: 'italic' }}>That Feel Effortless</em>
+          <em style={{ color: '#b8966a', fontStyle: 'italic' }}>That Feel Effortless</em>
         </motion.h1>
 
         {/* 5. Supporting copy */}
@@ -1049,7 +1046,7 @@ function HeroSection() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: isFirstVisit ? 0.9 : 0 }}
+        transition={{ duration: 0.9, delay: 0 }}
         style={{
           position: 'absolute',
           bottom: 64,
@@ -1103,7 +1100,7 @@ function HeroSection() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: isFirstVisit ? 1.4 : 0, duration: 0.72 }}
+        transition={{ delay: 0, duration: 0.72 }}
         className="scroll-indicator-bounce"
         style={{
           position: 'absolute',
@@ -1139,15 +1136,6 @@ function HeroSection() {
       <style>{`
         @media (max-width: 640px) {
           .hero-stats { display: none !important; }
-        }
-        @keyframes heroItalicReveal {
-          from { opacity: 0; transform: translateY(12px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .hero-italic-reveal {
-          display: inline-block;
-          opacity: 0;
-          animation: heroItalicReveal 0.54s ease-out ${isFirstVisit ? '0.27s' : '0s'} forwards;
         }
         @keyframes scrollBounce {
           0%, 100% { transform: translateX(-50%) translateY(0); }
@@ -1488,7 +1476,7 @@ function TestimonialsCarousel() {
   )
 }
 
-export default function Home() {
+export default function Home({ splashDone }: { splashDone: boolean }) {
   const featured = projects.slice(0, 6)
   const location = useLocation()
   const [animKey, setAnimKey] = useState(0)
@@ -1503,7 +1491,7 @@ export default function Home() {
   return (
     <div style={{ backgroundColor: '#2D3E29' }}>
       {/* Hero */}
-      <HeroSection key={animKey} />
+      <HeroSection key={animKey} splashDone={splashDone} />
 
       {/* Philosophy */}
       <section className="philosophy-section" style={{ backgroundColor: '#f7f4ef', padding: '80px 1.5rem 110px' }}>
