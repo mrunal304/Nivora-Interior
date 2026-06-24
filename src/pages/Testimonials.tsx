@@ -96,9 +96,9 @@ function ProjectBadge({ project }: { project: string }) {
       padding: '3px 8px',
       borderRadius: 3,
       lineHeight: 1.6,
-      background: isResidential ? 'rgba(161,134,97,0.15)' : 'rgba(95,116,94,0.25)',
-      color: isResidential ? '#c9a96e' : '#8db88b',
-      border: `1px solid ${isResidential ? 'rgba(161,134,97,0.4)' : 'rgba(141,184,139,0.35)'}`,
+      background: isResidential ? 'rgba(161,134,97,0.12)' : 'rgba(95,116,94,0.12)',
+      color: isResidential ? '#a18661' : '#5f745e',
+      border: `1px solid ${isResidential ? 'rgba(161,134,97,0.35)' : 'rgba(95,116,94,0.35)'}`,
     }}>
       {project}
     </span>
@@ -118,8 +118,8 @@ function TestimonialCard({ t, index }: { t: typeof testimonials[0]; index: numbe
       <div
         className="testimonial-card"
         style={{
-          background: 'rgba(255,255,255,0.04)',
-          border: '1px solid rgba(161,134,97,0.45)',
+          background: '#ffffff',
+          border: '1px solid rgba(95,116,94,0.35)',
           borderRadius: 8,
           padding: 32,
           height: '100%',
@@ -130,18 +130,18 @@ function TestimonialCard({ t, index }: { t: typeof testimonials[0]; index: numbe
         }}
         onMouseEnter={e => {
           const el = e.currentTarget as HTMLDivElement
-          el.style.borderColor = '#a18661'
+          el.style.borderColor = '#5f745e'
           el.style.borderWidth = '1.5px'
           el.style.transform = 'translateY(-5px)'
-          el.style.background = 'rgba(161,134,97,0.09)'
-          el.style.boxShadow = '0 12px 36px rgba(0,0,0,0.35)'
+          el.style.background = '#faf9f6'
+          el.style.boxShadow = '0 12px 36px rgba(33,41,26,0.10)'
         }}
         onMouseLeave={e => {
           const el = e.currentTarget as HTMLDivElement
-          el.style.borderColor = 'rgba(161,134,97,0.45)'
+          el.style.borderColor = 'rgba(95,116,94,0.35)'
           el.style.borderWidth = '1px'
           el.style.transform = 'translateY(0)'
-          el.style.background = 'rgba(255,255,255,0.04)'
+          el.style.background = '#ffffff'
           el.style.boxShadow = 'none'
         }}
       >
@@ -154,7 +154,7 @@ function TestimonialCard({ t, index }: { t: typeof testimonials[0]; index: numbe
           lineHeight: 1,
           color: '#a18661',
           fontFamily: "'Playfair Display', serif",
-          opacity: 0.3,
+          opacity: 0.22,
           pointerEvents: 'none',
           userSelect: 'none',
         }}>"</span>
@@ -170,7 +170,7 @@ function TestimonialCard({ t, index }: { t: typeof testimonials[0]; index: numbe
           fontStyle: 'italic',
           fontSize: 16,
           lineHeight: 1.8,
-          color: '#f5f2ed',
+          color: '#2c2c2c',
           flex: 1,
           marginBottom: 0,
         }}>
@@ -193,7 +193,7 @@ function TestimonialCard({ t, index }: { t: typeof testimonials[0]; index: numbe
             height: 40,
             borderRadius: '50%',
             background: '#a18661',
-            color: '#21291a',
+            color: '#ffffff',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -210,7 +210,7 @@ function TestimonialCard({ t, index }: { t: typeof testimonials[0]; index: numbe
               fontFamily: "'Montserrat', sans-serif",
               fontWeight: 500,
               fontSize: 14,
-              color: '#f5f2ed',
+              color: '#21291a',
               margin: 0,
             }}>{t.name}</p>
             <p style={{
@@ -233,7 +233,7 @@ function TestimonialCard({ t, index }: { t: typeof testimonials[0]; index: numbe
 
 export default function Testimonials() {
   return (
-    <div style={{ background: '#3b4a35', minHeight: '100vh' }}>
+    <div style={{ background: '#f5f2ed', minHeight: '100vh' }}>
 
       {/* Page Hero */}
       <section style={{ paddingTop: 140, paddingBottom: 60, textAlign: 'center', paddingLeft: 24, paddingRight: 24 }}>
@@ -261,7 +261,7 @@ export default function Testimonials() {
             fontFamily: "'Playfair Display', serif",
             fontWeight: 400,
             fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-            color: '#f5f2ed',
+            color: '#21291a',
             margin: '0 0 20px',
             lineHeight: 1.1,
           }}
@@ -276,7 +276,7 @@ export default function Testimonials() {
             fontFamily: "'Lora', serif",
             fontWeight: 300,
             fontSize: 15,
-            color: 'rgba(245,242,237,0.6)',
+            color: 'rgba(33,41,26,0.55)',
             maxWidth: 560,
             margin: '0 auto',
             lineHeight: 1.75,
@@ -311,7 +311,7 @@ export default function Testimonials() {
       </section>
 
       {/* Stats Bar */}
-      <section style={{ background: '#233223', padding: '64px 24px' }}>
+      <section style={{ background: '#ffffff', borderTop: '1px solid rgba(95,116,94,0.18)', borderBottom: '1px solid rgba(95,116,94,0.18)', padding: '64px 24px' }}>
         <div
           style={{
             maxWidth: 900,
@@ -326,13 +326,13 @@ export default function Testimonials() {
         >
           <style>{`
             .stats-bar-item + .stats-bar-item {
-              border-left: 1px solid rgba(245,242,237,0.2);
+              border-left: 1px solid rgba(95,116,94,0.22);
             }
             @media (max-width: 640px) {
               .stats-bar { flex-direction: column !important; }
               .stats-bar-item + .stats-bar-item {
                 border-left: none !important;
-                border-top: 1px solid rgba(245,242,237,0.2);
+                border-top: 1px solid rgba(95,116,94,0.22);
               }
             }
           `}</style>
@@ -350,7 +350,7 @@ export default function Testimonials() {
                 fontFamily: "'Playfair Display', serif",
                 fontWeight: 400,
                 fontSize: 'clamp(2rem, 4vw, 3rem)',
-                color: '#f5f2ed',
+                color: '#21291a',
                 margin: '0 0 8px',
                 lineHeight: 1,
               }}>{s.value}</p>
@@ -360,7 +360,7 @@ export default function Testimonials() {
                 fontSize: 11,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: 'rgba(245,242,237,0.7)',
+                color: 'rgba(33,41,26,0.5)',
                 margin: 0,
               }}>{s.label}</p>
             </motion.div>
@@ -369,7 +369,7 @@ export default function Testimonials() {
       </section>
 
       {/* CTA Section */}
-      <section style={{ background: '#3b4a35', padding: '80px 24px', textAlign: 'center' }}>
+      <section style={{ background: '#f5f2ed', padding: '80px 24px', textAlign: 'center' }}>
         <motion.div
           variants={fadeUp(0)}
           initial="hidden"
@@ -380,14 +380,14 @@ export default function Testimonials() {
             fontFamily: "'Playfair Display', serif",
             fontWeight: 400,
             fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
-            color: '#f5f2ed',
+            color: '#21291a',
             margin: '0 0 16px',
           }}>Ready to transform your space?</h2>
           <p style={{
             fontFamily: "'Lora', serif",
             fontWeight: 300,
             fontSize: 15,
-            color: 'rgba(245,242,237,0.6)',
+            color: 'rgba(33,41,26,0.55)',
             maxWidth: 480,
             margin: '0 auto 40px',
             lineHeight: 1.75,
@@ -398,7 +398,7 @@ export default function Testimonials() {
             to="/quote"
             style={{
               display: 'inline-block',
-              background: '#a18661',
+              background: '#21291a',
               color: '#f5f2ed',
               fontFamily: "'Montserrat', sans-serif",
               fontWeight: 500,
@@ -412,12 +412,12 @@ export default function Testimonials() {
             }}
             onMouseEnter={e => {
               const el = e.currentTarget as HTMLAnchorElement
-              el.style.background = '#b8986f'
+              el.style.background = '#5f745e'
               el.style.transform = 'translateY(-2px)'
             }}
             onMouseLeave={e => {
               const el = e.currentTarget as HTMLAnchorElement
-              el.style.background = '#a18661'
+              el.style.background = '#21291a'
               el.style.transform = 'translateY(0)'
             }}
           >
