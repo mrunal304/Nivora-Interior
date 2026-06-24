@@ -912,11 +912,11 @@ function HeroSection() {
           style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
-            fontSize: 'clamp(46px, 7vw, 88px)',
+            fontSize: 'clamp(36px, 5vw, 68px)',
             lineHeight: 1.05,
             color: '#f5f0e8',
             letterSpacing: '-0.01em',
-            marginBottom: 8,
+            marginBottom: 6,
           }}
         >
           Thoughtfully Designed
@@ -928,11 +928,11 @@ function HeroSection() {
           style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
-            fontSize: 'clamp(46px, 7vw, 88px)',
+            fontSize: 'clamp(36px, 5vw, 68px)',
             lineHeight: 1.05,
             color: '#f5f0e8',
             letterSpacing: '-0.01em',
-            marginBottom: 12,
+            marginBottom: 10,
           }}
         >
           Interiors —
@@ -944,10 +944,10 @@ function HeroSection() {
           style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
-            fontSize: 'clamp(46px, 7vw, 88px)',
+            fontSize: 'clamp(36px, 5vw, 68px)',
             lineHeight: 1.05,
             letterSpacing: '-0.01em',
-            marginBottom: 32,
+            marginBottom: 28,
           }}
         >
           <em className="hero-italic-reveal" style={{ color: '#b8966a', fontStyle: 'italic' }}>That Feel Effortless</em>
@@ -1974,7 +1974,7 @@ export default function Home() {
       </section>
 
       {/* Editorial Portfolio — Featured Spaces */}
-      <section style={{ backgroundColor: '#FAF8F4', padding: '120px 0' }}>
+      <section style={{ backgroundColor: '#FAF8F4', padding: '96px 0' }}>
         <style>{`
           .ep-block {
             display: flex;
@@ -2018,7 +2018,7 @@ export default function Home() {
           .ep-title {
             font-family: 'Playfair Display', serif;
             font-weight: 400;
-            font-size: clamp(1.75rem, 2.8vw, 2.6rem);
+            font-size: clamp(1.4rem, 2.2vw, 2.1rem);
             color: #1a1612;
             line-height: 1.12;
             margin: 0 0 16px;
@@ -2070,15 +2070,15 @@ export default function Home() {
 
           {/* Section header */}
           <FadeIn>
-            <div style={{ textAlign: 'center', marginBottom: '80px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '60px' }}>
               <p style={{
                 fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 10,
                 letterSpacing: '0.48em', textTransform: 'uppercase',
-                color: '#9B7D4E', marginBottom: '20px',
+                color: '#9B7D4E', marginBottom: '16px',
               }}>Our Portfolio</p>
               <h2 style={{
                 fontFamily: "'Playfair Display', serif", fontWeight: 400,
-                fontSize: 'clamp(2.4rem, 5vw, 4rem)',
+                fontSize: 'clamp(1.9rem, 3.5vw, 3.2rem)',
                 color: '#1a1612', lineHeight: 1.08,
                 margin: '0 0 24px', letterSpacing: '-0.015em',
               }}>Designed to Inspire<br />Modern Living</h2>
@@ -2098,7 +2098,7 @@ export default function Home() {
           </FadeIn>
 
           {/* Alternating editorial blocks */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(64px, 10vw, 120px)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(48px, 7vw, 88px)' }}>
             {portfolioProjects.map((p, i) => (
               <FadeIn key={p.id} delay={0.05}>
                 <div className={`ep-block${i % 2 === 1 ? ' ep-reverse' : ''}`}>

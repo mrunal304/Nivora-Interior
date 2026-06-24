@@ -184,7 +184,7 @@ export default function Contact() {
               Reach Out
             </motion.p>
             <motion.h1 variants={fadeUp} custom={0.1}
-              style={{ fontFamily: "'Playfair Display', serif", fontWeight: 400, fontSize: 'clamp(2.4rem, 6vw, 4rem)', color: '#f5f0e8', margin: '0 0 20px', lineHeight: 1.1 }}>
+              style={{ fontFamily: "'Playfair Display', serif", fontWeight: 400, fontSize: 'clamp(1.9rem, 4vw, 3.2rem)', color: '#f5f0e8', margin: '0 0 16px', lineHeight: 1.1 }}>
               Let's Talk
             </motion.h1>
             <motion.p variants={fadeUp} custom={0.2}

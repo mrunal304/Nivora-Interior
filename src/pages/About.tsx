@@ -31,14 +31,14 @@ export default function About() {
   return (
     <div className="bg-[#3b4a35] pt-20">
       {/* Header */}
-      <section className="relative py-36 px-6 overflow-hidden">
+      <section className="relative py-24 px-6 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="w-full h-full" style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, #b8966a 0%, transparent 60%)' }} />
         </div>
         <div className="max-w-4xl mx-auto text-center relative">
           <FadeIn>
             <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-6">Our Story</p>
-            <h1 className="font-serif text-5xl md:text-7xl text-[#f5f0e8] font-light leading-tight mb-8">
+            <h1 className="font-serif text-4xl md:text-5xl text-[#f5f0e8] font-light leading-tight mb-6">
               Design With<br />
               <em className="text-[#b8966a]">Purpose & Craft</em>
             </h1>
@@ -174,9 +174,9 @@ export default function About() {
       </section>
 
       {/* CTA */}
-      <section className="py-32 px-6 text-center">
+      <section className="py-20 px-6 text-center">
         <FadeIn>
-          <h2 className="font-serif text-4xl md:text-5xl text-[#f5f0e8] font-light mb-6">
+          <h2 className="font-serif text-3xl md:text-4xl text-[#f5f0e8] font-light mb-5">
             Let's design something<br />
             <em className="text-[#b8966a]">meaningful together.</em>
           </h2>

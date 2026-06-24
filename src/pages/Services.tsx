@@ -277,12 +277,12 @@ export default function Services() {
 
       {/* Page header */}
       <section style={{
-        paddingTop: 120,
-        paddingBottom: 60,
+        paddingTop: 96,
+        paddingBottom: 48,
         paddingLeft: '1.5rem',
         paddingRight: '1.5rem',
         textAlign: 'center',
-        maxWidth: 680,
+        maxWidth: 620,
         margin: '0 auto',
       }}>
         <FadeIn>
@@ -298,10 +298,10 @@ export default function Services() {
           <h1 style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
-            fontSize: 'clamp(2.8rem, 6vw, 4.75rem)',
+            fontSize: 'clamp(2rem, 3.5vw, 3.25rem)',
             color: '#1C2818',
-            lineHeight: 1.04,
-            marginBottom: '1.25rem',
+            lineHeight: 1.06,
+            marginBottom: '1rem',
             letterSpacing: '-0.01em',
           }}>Our Services</h1>
           <p style={{
@@ -329,9 +329,9 @@ export default function Services() {
 
       {/* Cards */}
       <section style={{
-        maxWidth: 1400,
+        maxWidth: 1180,
         margin: '0 auto',
-        padding: '0 2rem 96px',
+        padding: '0 2rem 80px',
       }}>
         <div className="svc-grid-pm">
           {serviceCards.map((card, i) => (
