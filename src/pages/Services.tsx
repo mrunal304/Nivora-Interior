@@ -212,15 +212,15 @@ export default function Services() {
     <div style={{ backgroundColor: '#F7F4EF', minHeight: '100vh' }}>
       <style>{`
         :root {
-          --card-h: 600px;
-          --svc-col-gap: 32px;
-          --svc-row-gap: 48px;
+          --card-h: 460px;
+          --svc-col-gap: 24px;
+          --svc-row-gap: 28px;
         }
         @media (max-width: 1024px) {
-          :root { --card-h: 500px; --svc-col-gap: 24px; --svc-row-gap: 36px; }
+          :root { --card-h: 380px; --svc-col-gap: 20px; --svc-row-gap: 24px; }
         }
         @media (max-width: 640px) {
-          :root { --card-h: 420px; --svc-col-gap: 0px; --svc-row-gap: 24px; }
+          :root { --card-h: 300px; --svc-col-gap: 0px; --svc-row-gap: 20px; }
         }
 
         @keyframes skeletonPulse {
