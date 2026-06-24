@@ -1973,226 +1973,193 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Portfolio — Our Masterpieces */}
-      <section style={{ backgroundColor: '#F5F1EA', padding: '7rem 1.5rem' }}>
+      {/* Featured Spaces */}
+      <section style={{ backgroundColor: '#F5F1EA', padding: '7rem 0' }}>
         <style>{`
-          /* ── Masterpiece card ── */
-          .mp-card {
-            position: relative;
-            border-radius: 18px;
-            overflow: hidden;
-            height: 440px;
+          .fs-card {
             display: block;
             text-decoration: none;
-            background: #E8DED1;
-            box-shadow: 0 4px 24px rgba(38,36,33,0.07), 0 1px 4px rgba(38,36,33,0.04);
-            transition: box-shadow 450ms cubic-bezier(0.22,1,0.36,1),
-                        transform 450ms cubic-bezier(0.22,1,0.36,1);
+            border-radius: 24px;
+            overflow: hidden;
+            background: #e2dbd2;
+            box-shadow: 0 4px 20px rgba(30,24,16,0.07);
+            transition: box-shadow 0.55s cubic-bezier(0.16,1,0.3,1),
+                        transform 0.55s cubic-bezier(0.16,1,0.3,1);
+            cursor: pointer;
           }
-          .mp-card:hover {
-            box-shadow: 0 20px 56px rgba(38,36,33,0.15), 0 4px 16px rgba(38,36,33,0.08);
-            transform: translateY(-4px);
+          .fs-card:hover {
+            box-shadow: 0 22px 60px rgba(30,24,16,0.16), 0 4px 16px rgba(30,24,16,0.08);
+            transform: translateY(-8px);
           }
-          /* image subtle zoom */
-          .mp-img {
-            width: 100%; height: 100%; object-fit: cover; display: block;
-            transition: transform 700ms cubic-bezier(0.22,1,0.36,1);
+          .fs-img-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
           }
-          .mp-card:hover .mp-img { transform: scale(1.06); }
-
-          /* Always-on gradient overlay */
-          .mp-baseline {
-            position: absolute; inset: 0; pointer-events: none;
-            background: linear-gradient(
-              to bottom,
-              transparent 30%,
-              rgba(12,10,8,0.50) 65%,
-              rgba(8,7,5,0.88) 100%
-            );
-            transition: background 450ms ease;
+          .fs-img {
+            width: 100%; height: 100%;
+            object-fit: cover; display: block;
+            transition: transform 0.65s cubic-bezier(0.16,1,0.3,1);
           }
-          .mp-card:hover .mp-baseline {
-            background: linear-gradient(
-              to bottom,
-              rgba(12,10,8,0.10) 0%,
-              rgba(12,10,8,0.62) 42%,
-              rgba(8,7,5,0.96) 100%
-            );
-          }
-
-          /* ── DEFAULT LAYER: location + name — always visible, fixed position ──
-             Sits at bottom: 160px. Detail layer max-height is ~155px (badge 24px +
-             desc 3×22px + cta 50px) anchored at bottom: 1.5rem (24px).
-             Gap between layers = 160 − (24+155) = ~−19 → safe because detail is
-             opacity-0 by default and overlapping area is ~19px; on hover name lifts
-             18px further up, giving comfortable clearance. */
-          .mp-default-layer {
-            position: absolute;
-            left: 1.6rem; right: 1.6rem; bottom: 160px;
-            z-index: 3;
-            transition: transform 450ms cubic-bezier(0.22,1,0.36,1);
-          }
-          .mp-card:hover .mp-default-layer { transform: translateY(-18px); }
-
-          /* ── HOVER LAYER: badge + description + CTA — hidden at rest ──
-             Anchored at bottom: 1.5rem, grows upward. Never shares position
-             with .mp-default-layer because they are at different bottom values. */
-          .mp-hover-layer {
-            position: absolute;
-            left: 1.6rem; right: 1.6rem; bottom: 1.5rem;
-            z-index: 4;
-            opacity: 0;
-            transform: translateY(18px);
+          .fs-card:hover .fs-img { transform: scale(1.04); }
+          .fs-img-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to bottom, transparent 50%, rgba(10,14,10,0.45) 100%);
             pointer-events: none;
-            transition: opacity 400ms cubic-bezier(0.22,1,0.36,1) 55ms,
-                        transform 400ms cubic-bezier(0.22,1,0.36,1) 55ms;
           }
-          .mp-card:hover .mp-hover-layer {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
+          .fs-num {
+            position: absolute; top: 16px; left: 18px;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400; font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            color: rgba(201,169,110,0.78);
+            line-height: 1;
           }
-
-          /* Category badge */
-          .mp-badge {
-            display: inline-block;
-            font-family: 'Inter', sans-serif; font-weight: 400; font-size: 9px;
-            letter-spacing: 0.25em; text-transform: uppercase;
-            color: #C8A56A;
-            background: rgba(200,165,106,0.12);
-            border: 1px solid rgba(200,165,106,0.45);
-            padding: 4px 10px; border-radius: 100px;
-            margin-bottom: 0.65rem;
+          .fs-body {
+            padding: 20px 22px 22px;
+            background: #FAF7F2;
           }
-
-          /* Description — capped at 3 lines */
-          .mp-desc {
-            font-family: 'Inter', sans-serif; font-weight: 300; font-size: 12.5px;
-            color: rgba(245,240,232,0.82); line-height: 1.72; margin: 0;
+          .fs-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+            color: #1C2818;
+            line-height: 1.15;
+            margin: 0 0 7px;
+            letter-spacing: 0.005em;
+            transition: color 0.3s ease;
+          }
+          .fs-card:hover .fs-title { color: #3a5e3c; }
+          .fs-meta {
+            display: flex; align-items: center;
+            justify-content: space-between;
+          }
+          .fs-desc {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300; font-size: 12px;
+            color: rgba(28,40,24,0.5);
+            line-height: 1.65; margin: 0;
+            flex: 1;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
           }
-
-          /* CTA */
-          .mp-cta {
-            display: inline-flex; align-items: center; gap: 7px;
-            font-family: 'Inter', sans-serif; font-weight: 400; font-size: 10px;
-            letter-spacing: 0.2em; text-transform: uppercase;
-            color: #262421; background: #C8A56A;
-            border: none; border-radius: 100px;
-            padding: 9px 20px; margin-top: 0.85rem;
-            text-decoration: none;
-            transition: background 250ms ease;
+          .fs-arrow {
+            flex-shrink: 0;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            border: 1px solid rgba(201,169,110,0.4);
+            display: flex; align-items: center; justify-content: center;
+            margin-left: 14px;
+            transition: background 0.3s ease, border-color 0.3s ease;
           }
-          .mp-cta:hover { background: #D4B478; }
+          .fs-card:hover .fs-arrow {
+            background: #C9A96E;
+            border-color: #C9A96E;
+          }
+          .fs-card:hover .fs-arrow svg { color: #fff; }
 
-          /* Grid */
-          .mp-grid {
+          .fs-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 24px;
           }
           @media (max-width: 1024px) {
-            .mp-grid { grid-template-columns: repeat(2, 1fr) !important; }
-            .mp-card { height: 400px !important; }
-            .mp-default-layer { bottom: 148px !important; }
+            .fs-grid { grid-template-columns: repeat(2, 1fr) !important; }
           }
-          @media (max-width: 600px) {
-            .mp-grid { grid-template-columns: 1fr !important; }
-            .mp-card { height: 360px !important; }
-            .mp-default-layer { bottom: 140px !important; }
+          @media (max-width: 640px) {
+            .fs-grid {
+              grid-template-columns: 1fr !important;
+              overflow-x: auto;
+            }
           }
         `}</style>
 
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <div style={{ maxWidth: 1240, margin: '0 auto', padding: '0 2rem' }}>
+
           {/* Header */}
           <FadeIn>
-            <div style={{ textAlign: 'center', marginBottom: '4.5rem' }}>
+            <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
               <p style={{
                 fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 10,
                 letterSpacing: '0.45em', textTransform: 'uppercase',
-                color: '#C8A56A', marginBottom: '1rem',
-              }}>Our Masterpieces</p>
+                color: '#9B7D4E', marginBottom: '1rem',
+              }}>Featured Spaces</p>
               <h2 style={{
                 fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
-                fontSize: 'clamp(2rem, 4vw, 3.25rem)',
-                color: '#262421', lineHeight: 1.1,
+                fontSize: 'clamp(2.2rem, 4.5vw, 3.5rem)',
+                color: '#1C2818', lineHeight: 1.06,
                 marginBottom: '1.1rem', letterSpacing: '-0.01em',
               }}>Spaces That Tell Your Story</h2>
+              <div style={{
+                width: 44, height: 1,
+                background: 'linear-gradient(90deg, transparent, #C9A96E, transparent)',
+                margin: '0 auto 18px',
+              }} />
               <p style={{
                 fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 14,
-                color: 'rgba(38,36,33,0.5)', lineHeight: 1.85,
+                color: 'rgba(28,40,24,0.44)', lineHeight: 1.85,
                 maxWidth: 560, margin: '0 auto',
               }}>
-                Every project reflects a unique vision, thoughtfully transformed into spaces that inspire, function beautifully and stand the test of time.
+                Thoughtfully designed interiors crafted for modern living.
               </p>
             </div>
           </FadeIn>
 
-          {/* 3-column grid */}
-          <div className="mp-grid">
+          {/* 3-column card grid */}
+          <div className="fs-grid">
             {portfolioProjects.map((p, i) => (
-              <FadeIn key={p.id} delay={i * 0.09}>
-                <Link to={p.serviceHref} className="mp-card">
+              <FadeIn key={p.id} delay={i * 0.08}>
+                <Link to="/portfolio" className="fs-card">
                   {/* Image */}
-                  <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', borderRadius: 18 }}>
-                    <img src={p.img} alt={p.name} className="mp-img" loading="lazy" draggable={false} />
+                  <div className="fs-img-wrap">
+                    <img src={p.img} alt={p.name} className="fs-img" loading="lazy" draggable={false} />
+                    <div className="fs-img-overlay" />
+                    <span className="fs-num">{String(i + 1).padStart(2, '0')}</span>
                   </div>
 
-                  {/* Always-on gradient */}
-                  <div className="mp-baseline" />
-
-                  {/* DEFAULT LAYER — location + name, always visible at fixed position */}
-                  <div className="mp-default-layer">
-                    <p style={{
-                      fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 9,
-                      letterSpacing: '0.28em', textTransform: 'uppercase',
-                      color: 'rgba(200,165,106,0.8)', margin: '0 0 0.45rem',
-                    }}>{p.location}</p>
-                    <h3 style={{
-                      fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
-                      fontSize: 'clamp(1.3rem, 1.8vw, 1.65rem)',
-                      color: '#f5f0e8', lineHeight: 1.15,
-                      margin: 0, letterSpacing: '-0.005em',
-                    }}>{p.name}</h3>
-                  </div>
-
-                  {/* HOVER LAYER — badge + description + CTA, fades in at different position */}
-                  <div className="mp-hover-layer">
-                    <span className="mp-badge">{p.category}</span>
-                    <p className="mp-desc">{p.desc}</p>
-                    <span className="mp-cta">
-                      View Project <ArrowRight size={10} strokeWidth={1.8} />
-                    </span>
+                  {/* Text body */}
+                  <div className="fs-body">
+                    <h3 className="fs-title">{p.name}</h3>
+                    <div className="fs-meta">
+                      <p className="fs-desc">{p.desc}</p>
+                      <div className="fs-arrow">
+                        <ArrowRight size={13} strokeWidth={1.5} color="#C9A96E" />
+                      </div>
+                    </div>
                   </div>
                 </Link>
               </FadeIn>
             ))}
           </div>
 
-          {/* CTA */}
-          <FadeIn delay={0.3}>
+          {/* View all link */}
+          <FadeIn delay={0.25}>
             <div style={{ textAlign: 'center', marginTop: '3.5rem' }}>
               <Link
                 to="/portfolio"
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 10,
-                  fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 11,
-                  letterSpacing: '0.3em', textTransform: 'uppercase',
-                  color: '#262421', textDecoration: 'none',
-                  border: '1px solid #C8A56A',
-                  padding: '14px 36px', borderRadius: 100,
-                  transition: 'background 300ms ease, color 300ms ease',
+                  fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 10,
+                  letterSpacing: '0.28em', textTransform: 'uppercase',
+                  color: '#1C2818', textDecoration: 'none',
+                  border: '1px solid rgba(28,40,24,0.28)',
+                  padding: '15px 40px', borderRadius: 2,
+                  transition: 'background 0.35s ease, color 0.35s ease, border-color 0.35s ease',
                 }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.background = '#C8A56A'
-                  e.currentTarget.style.color = '#fff'
+                  const el = e.currentTarget as HTMLElement
+                  el.style.background = '#2A3926'
+                  el.style.color = '#f5f0e8'
+                  el.style.borderColor = '#2A3926'
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.background = 'transparent'
-                  e.currentTarget.style.color = '#262421'
+                  const el = e.currentTarget as HTMLElement
+                  el.style.background = 'transparent'
+                  el.style.color = '#1C2818'
+                  el.style.borderColor = 'rgba(28,40,24,0.28)'
                 }}
               >
                 View All Projects <ArrowRight size={12} strokeWidth={1.5} />
