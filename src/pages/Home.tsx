@@ -1606,7 +1606,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
                 }
                 .philosophy-quote-card:hover {
                   transform: translateY(-5px) !important;
-                  box-shadow: 0 18px 50px rgba(0,0,0,0.30) !important;
+                  box-shadow: 0 20px 52px rgba(0,0,0,0.38) !important;
                 }
               `}</style>
               <div
@@ -1616,10 +1616,11 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
                   bottom: -32,
                   left: -28,
                   zIndex: 6,
-                  width: 172,
-                  padding: '22px 20px 20px',
-                  backgroundColor: '#C9A227',
-                  boxShadow: '0 10px 40px rgba(0,0,0,0.22)',
+                  width: 212,
+                  padding: '24px 24px 22px',
+                  backgroundColor: '#21291a',
+                  borderRadius: 11,
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
                   transition: 'transform 0.35s ease, box-shadow 0.35s ease',
                   cursor: 'default',
                 }}
@@ -1629,18 +1630,18 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
                   fontFamily: "'Cormorant Garamond', serif",
                   fontSize: 52,
                   lineHeight: 0.75,
-                  color: 'rgba(255,255,255,0.38)',
+                  color: '#a18661',
                   marginBottom: 10,
                   fontWeight: 300,
                   userSelect: 'none',
                 }}>"</div>
                 <p style={{
                   fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: 13.5,
+                  fontSize: 16.5,
                   fontWeight: 300,
                   fontStyle: 'italic',
-                  color: '#ffffff',
-                  lineHeight: 1.6,
+                  color: '#f5f2ed',
+                  lineHeight: 1.75,
                   margin: 0,
                 }}>
                   We don't just design spaces, we create legacies.
