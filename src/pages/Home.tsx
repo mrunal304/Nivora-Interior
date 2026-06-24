@@ -8,7 +8,6 @@ import imgUrban from '@assets/3_(2)_1781792428831.jpg'
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion'
 import { ArrowRight, Home as HomeIcon, Building2, Coffee, Layers, Monitor, Gem, Wrench } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
-import ProcessSection from '../components/ProcessSection'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { projects } from '../data/projects'
 
@@ -1929,7 +1928,7 @@ export default function Home() {
       </section>
 
       {/* Process — Light Editorial Rebuild */}
-      <ProcessSection />
+
 
       {/* Before / After — Transformation Carousel */}
       <section style={{ backgroundColor: '#FAF8F4', padding: '7rem 1.5rem' }}>

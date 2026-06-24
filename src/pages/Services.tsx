@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
+import ProcessSection from '../components/ProcessSection'
 
 const serviceCards = [
   {
@@ -338,6 +339,9 @@ export default function Services() {
           ))}
         </div>
       </section>
+
+      {/* Process */}
+      <ProcessSection />
 
       {/* CTA */}
       <section
