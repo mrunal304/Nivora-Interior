@@ -351,6 +351,7 @@ function StatsSection() {
       padding: '0 1.5rem 56px',
       display: 'flex',
       justifyContent: 'center',
+      backgroundColor: '#F7F4EF',
     }}>
       <style>{`
         .stat-float-card {
@@ -1058,7 +1059,7 @@ function HeroSection({ splashDone }: { splashDone: boolean }) {
   return (
     <section
       ref={sectionRef}
-      style={{ position: 'relative', height: '100vh', minHeight: 700, overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+      style={{ position: 'relative', height: '100vh', minHeight: 700, overflow: 'hidden', clipPath: 'inset(0)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
     >
       {/* Parallax background */}
       <motion.div
