@@ -2297,7 +2297,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
 
 
       {/* Before / After — Transformation Carousel */}
-      <section style={{ backgroundColor: '#FAF8F4', padding: '7rem 1.5rem' }}>
+      <section style={{ backgroundColor: '#FAF8F4', padding: '8px 1.5rem' }}>
         <style>{`
           .compare-slider-container {
             aspect-ratio: 16 / 10;
@@ -2313,22 +2313,27 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
           <FadeIn>
             <style>{`
               .trf-header-row {
+                position: relative;
                 display: flex;
                 align-items: flex-start;
-                justify-content: space-between;
-                gap: 2rem;
+                justify-content: center;
                 margin-bottom: 4rem;
               }
-              .trf-header-left { flex: 1; }
+              .trf-header-left {
+                text-align: center;
+              }
               .trf-header-right {
-                flex: 0 1 320px;
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 320px;
                 padding-top: 0.35rem;
                 text-align: right;
               }
               @media (max-width: 700px) {
                 .trf-header-row { flex-direction: column; align-items: center; }
                 .trf-header-left { text-align: center; }
-                .trf-header-right { flex: none; text-align: center; padding-top: 0; }
+                .trf-header-right { position: static; width: auto; text-align: center; padding-top: 0; }
               }
             `}</style>
             <div className="trf-header-row">
