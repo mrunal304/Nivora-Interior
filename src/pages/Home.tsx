@@ -2408,156 +2408,161 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
       </section>
 
       {/* Editorial Portfolio — Featured Spaces */}
-      <section style={{ backgroundColor: '#FAF8F4', padding: '80px 0' }}>
+      <section style={{ backgroundColor: '#FAF8F4', padding: '52px 0 60px' }}>
         <style>{`
-          .ep2-block {
+          .ep3-block {
             display: flex;
             align-items: center;
-            gap: clamp(36px, 5vw, 72px);
+            gap: clamp(28px, 4vw, 56px);
+            max-width: 1200px;
+            margin: 0 auto;
           }
-          .ep2-block.ep2-reverse { flex-direction: row-reverse; }
+          .ep3-block.ep3-reverse { flex-direction: row-reverse; }
 
-          .ep2-img-col {
-            flex: 0 0 55%;
+          .ep3-img-col {
+            flex: 0 0 50%;
             min-width: 0;
           }
-          .ep2-img-wrap {
+          .ep3-img-wrap {
             position: relative;
-            border-radius: 26px;
+            border-radius: 20px;
             overflow: hidden;
-            height: clamp(300px, 38vw, 460px);
-            box-shadow: 0 6px 32px rgba(20,18,14,0.08);
+            height: 350px;
+            box-shadow: 0 4px 24px rgba(20,18,14,0.07);
             transition: box-shadow 0.5s ease;
           }
-          .ep2-block:hover .ep2-img-wrap {
-            box-shadow: 0 14px 48px rgba(20,18,14,0.14);
+          .ep3-block:hover .ep3-img-wrap {
+            box-shadow: 0 10px 36px rgba(20,18,14,0.12);
           }
-          .ep2-img {
+          .ep3-img {
             width: 100%; height: 100%;
             object-fit: cover; display: block;
             transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
           }
-          .ep2-block:hover .ep2-img { transform: scale(1.03); }
+          .ep3-block:hover .ep3-img { transform: scale(1.03); }
 
-          .ep2-content-col {
-            flex: 0 0 45%;
+          .ep3-content-col {
+            flex: 0 0 50%;
             min-width: 0;
+            padding: 0 8px;
           }
 
-          .ep2-num {
+          .ep3-num {
             font-family: 'Inter', sans-serif;
-            font-weight: 300; font-size: 10px;
-            letter-spacing: 0.38em; text-transform: uppercase;
-            color: rgba(155,125,78,0.55);
-            margin: 0 0 14px; display: block;
+            font-weight: 300; font-size: 9px;
+            letter-spacing: 0.36em; text-transform: uppercase;
+            color: rgba(155,125,78,0.50);
+            margin: 0 0 10px; display: block;
           }
-          .ep2-title {
+          .ep3-title {
             font-family: 'Playfair Display', serif;
             font-weight: 400;
-            font-size: clamp(1.25rem, 2vw, 1.85rem);
+            font-size: clamp(1.1rem, 1.7vw, 1.55rem);
             color: #1a1612;
-            line-height: 1.14;
-            margin: 0 0 14px;
+            line-height: 1.15;
+            margin: 0 0 10px;
             letter-spacing: -0.01em;
           }
-          .ep2-divider {
-            width: 32px; height: 1px;
+          .ep3-divider {
+            width: 28px; height: 1px;
             background: #C9A96E;
-            margin: 0 0 14px;
+            margin: 0 0 12px;
             display: block;
           }
-          .ep2-desc {
+          .ep3-desc {
             font-family: 'Inter', sans-serif;
-            font-weight: 300; font-size: 13.5px;
-            color: rgba(26,22,18,0.50);
-            line-height: 1.8; margin: 0 0 24px;
-            max-width: 340px;
+            font-weight: 300; font-size: 13px;
+            color: rgba(26,22,18,0.48);
+            line-height: 1.78; margin: 0 0 20px;
+            max-width: 400px;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
           }
-          .ep2-arrow-btn {
+          .ep3-arrow-btn {
             display: inline-flex; align-items: center; justify-content: center;
-            width: 44px; height: 44px; border-radius: 50%;
-            border: 1px solid rgba(201,169,110,0.50);
+            width: 36px; height: 36px; border-radius: 50%;
+            border: 1px solid rgba(201,169,110,0.48);
             text-decoration: none;
-            transition: background 0.4s ease, border-color 0.4s ease, transform 0.3s ease;
+            transition: background 0.35s ease, border-color 0.35s ease, transform 0.28s ease;
           }
-          .ep2-arrow-btn svg {
-            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), color 0.3s ease;
+          .ep3-arrow-btn svg {
+            transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), color 0.28s ease;
             color: #C9A96E;
           }
-          .ep2-arrow-btn:hover {
+          .ep3-arrow-btn:hover {
             background: rgba(201,169,110,0.10);
             border-color: #C9A96E;
             transform: translateY(-2px);
           }
-          .ep2-arrow-btn:hover svg { transform: rotate(20deg); }
+          .ep3-arrow-btn:hover svg { transform: rotate(20deg); }
 
           @media (max-width: 900px) {
-            .ep2-block, .ep2-block.ep2-reverse {
+            .ep3-block, .ep3-block.ep3-reverse {
               flex-direction: column !important;
-              gap: 24px;
+              gap: 18px;
+              max-width: 100%;
             }
-            .ep2-img-col, .ep2-content-col { flex: 0 0 100% !important; }
-            .ep2-img-wrap { height: clamp(220px, 56vw, 340px); }
-            .ep2-desc { max-width: 100%; }
+            .ep3-img-col, .ep3-content-col { flex: 0 0 100% !important; }
+            .ep3-img-wrap { height: clamp(220px, 54vw, 260px); }
+            .ep3-content-col { padding: 0; }
+            .ep3-desc { max-width: 100%; }
           }
         `}</style>
 
-        <div style={{ maxWidth: 1360, margin: '0 auto', padding: '0 2rem' }}>
+        <div style={{ padding: '0 2rem' }}>
 
           {/* Section header */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            style={{ textAlign: 'center', marginBottom: '52px' }}
+            style={{ textAlign: 'center', marginBottom: '40px', maxWidth: 1200, margin: '0 auto 40px' }}
           >
             <p style={{
-              fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 10,
-              letterSpacing: '0.48em', textTransform: 'uppercase',
-              color: '#9B7D4E', marginBottom: '14px',
+              fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 9,
+              letterSpacing: '0.46em', textTransform: 'uppercase',
+              color: '#9B7D4E', marginBottom: '12px',
             }}>Our Portfolio</p>
             <h2 style={{
               fontFamily: "'Playfair Display', serif", fontWeight: 400,
-              fontSize: 'clamp(1.75rem, 3.2vw, 2.9rem)',
-              color: '#1a1612', lineHeight: 1.08,
-              margin: '0 0 20px', letterSpacing: '-0.015em',
+              fontSize: 'clamp(1.5rem, 2.7vw, 2.45rem)',
+              color: '#1a1612', lineHeight: 1.1,
+              margin: '0 0 16px', letterSpacing: '-0.015em',
             }}>Designed to Inspire<br />Modern Living</h2>
             <div style={{
-              width: 48, height: 1,
+              width: 40, height: 1,
               background: 'linear-gradient(90deg, transparent, #C9A96E 40%, transparent)',
-              margin: '0 auto 18px',
+              margin: '0 auto 14px',
             }} />
             <p style={{
-              fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 14,
-              color: 'rgba(26,22,18,0.44)', lineHeight: 1.75,
-              maxWidth: 440, margin: '0 auto',
+              fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 13,
+              color: 'rgba(26,22,18,0.42)', lineHeight: 1.7,
+              maxWidth: 380, margin: '0 auto',
             }}>
-              Thoughtfully crafted interiors that blend elegance,<br />comfort, and timeless design.
+              Thoughtfully crafted interiors that blend elegance, comfort, and timeless design.
             </p>
           </motion.div>
 
           {/* Alternating editorial blocks */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(40px, 5.5vw, 68px)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '52px' }}>
             {portfolioProjects.map((p, i) => {
               const isReverse = i % 2 === 1
               const imgVariants = {
-                hidden: { opacity: 0, scale: 0.95 },
-                visible: { opacity: 1, scale: 1, transition: { duration: 1, ease: 'easeOut' } },
+                hidden: { opacity: 0, scale: 0.96 },
+                visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: 'easeOut' } },
               }
               const contentVariants = {
-                hidden: { opacity: 0, x: isReverse ? 40 : -40 },
-                visible: { opacity: 1, x: 0, transition: { duration: 0.9, ease: 'easeOut' } },
+                hidden: { opacity: 0, x: isReverse ? 32 : -32 },
+                visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: 'easeOut' } },
               }
               const childVariants = {
-                hidden: { opacity: 0, y: 16 },
+                hidden: { opacity: 0, y: 12 },
                 visible: (d: number) => ({
                   opacity: 1, y: 0,
-                  transition: { duration: 0.7, ease: 'easeOut', delay: d },
+                  transition: { duration: 0.6, ease: 'easeOut', delay: d },
                 }),
               }
               return (
@@ -2565,31 +2570,29 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
                   key={p.id}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: true, margin: '-80px' }}
-                  className={`ep2-block${isReverse ? ' ep2-reverse' : ''}`}
+                  viewport={{ once: true, margin: '-60px' }}
+                  className={`ep3-block${isReverse ? ' ep3-reverse' : ''}`}
                 >
-                  {/* Image */}
-                  <motion.div className="ep2-img-col" variants={imgVariants}>
-                    <div className="ep2-img-wrap">
-                      <img src={p.img} alt={p.name} className="ep2-img" loading="lazy" draggable={false} />
+                  <motion.div className="ep3-img-col" variants={imgVariants}>
+                    <div className="ep3-img-wrap">
+                      <img src={p.img} alt={p.name} className="ep3-img" loading="lazy" draggable={false} />
                     </div>
                   </motion.div>
 
-                  {/* Content */}
-                  <motion.div className="ep2-content-col" variants={contentVariants}>
-                    <motion.span className="ep2-num" custom={0.1} variants={childVariants}>
+                  <motion.div className="ep3-content-col" variants={contentVariants}>
+                    <motion.span className="ep3-num" custom={0.08} variants={childVariants}>
                       {String(i + 1).padStart(2, '0')}
                     </motion.span>
-                    <motion.h3 className="ep2-title" custom={0.22} variants={childVariants}>
+                    <motion.h3 className="ep3-title" custom={0.18} variants={childVariants}>
                       {p.name}
                     </motion.h3>
-                    <motion.span className="ep2-divider" custom={0.32} variants={childVariants} />
-                    <motion.p className="ep2-desc" custom={0.42} variants={childVariants}>
+                    <motion.span className="ep3-divider" custom={0.26} variants={childVariants} />
+                    <motion.p className="ep3-desc" custom={0.34} variants={childVariants}>
                       {p.desc}
                     </motion.p>
-                    <motion.div custom={0.52} variants={childVariants}>
-                      <Link to="/portfolio" className="ep2-arrow-btn" aria-label={`View ${p.name}`}>
-                        <ArrowRight size={17} strokeWidth={1.4} />
+                    <motion.div custom={0.42} variants={childVariants}>
+                      <Link to="/portfolio" className="ep3-arrow-btn" aria-label={`View ${p.name}`}>
+                        <ArrowRight size={14} strokeWidth={1.4} />
                       </Link>
                     </motion.div>
                   </motion.div>
