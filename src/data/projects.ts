@@ -40,7 +40,7 @@ const UNSPLASH_ARCH = [
 export const projects: Project[] = [
   {
     id: 'serenity-villa-mumbai',
-    name: 'Serenity Villa',
+    name: 'Royal Living Redefined',
     location: 'Juhu, Mumbai',
     category: 'residential',
     concept: 'Calm monumentality with organic textures',
@@ -53,7 +53,7 @@ export const projects: Project[] = [
   },
   {
     id: 'verdant-apartment-pune',
-    name: 'Verdant Apartment',
+    name: 'Modern Elegance',
     location: 'Koregaon Park, Pune',
     category: 'residential',
     concept: 'Urban calm in a 3BHK canvas',
@@ -66,7 +66,7 @@ export const projects: Project[] = [
   },
   {
     id: 'minimal-penthouse-bandra',
-    name: 'The Minimal Penthouse',
+    name: 'Bungalow Ramakunj',
     location: 'Bandra West, Mumbai',
     category: 'residential',
     concept: 'Sky-high minimalism with warmth',
@@ -79,7 +79,7 @@ export const projects: Project[] = [
   },
   {
     id: 'tamarind-home-pune',
-    name: 'The Tamarind Home',
+    name: 'The Office Neutral Edit',
     location: 'Aundh, Pune',
     category: 'residential',
     concept: 'Heritage warmth in a contemporary frame',
@@ -92,7 +92,7 @@ export const projects: Project[] = [
   },
   {
     id: 'grove-studio-mumbai',
-    name: 'Grove Studio Apartment',
+    name: 'The Quiet Curve',
     location: 'Powai, Mumbai',
     category: 'residential',
     concept: 'Compact luxury for the modern professional',
@@ -105,7 +105,7 @@ export const projects: Project[] = [
   },
   {
     id: 'amber-bungalow-lonavala',
-    name: 'Amber Bungalow',
+    name: 'The Soft Neutral Story',
     location: 'Lonavala',
     category: 'residential',
     concept: 'Weekend sanctuary in the Sahyadris',
@@ -118,7 +118,7 @@ export const projects: Project[] = [
   },
   {
     id: 'onyx-office-mumbai',
-    name: 'Onyx Workspace',
+    name: 'The Layered Calm',
     location: 'BKC, Mumbai',
     category: 'commercial',
     concept: 'Where ambition meets calm',
@@ -131,7 +131,7 @@ export const projects: Project[] = [
   },
   {
     id: 'sage-cafe-pune',
-    name: 'Sage Café',
+    name: 'Blushwood Haven',
     location: 'FC Road, Pune',
     category: 'commercial',
     concept: 'Slow coffee, considered space',
