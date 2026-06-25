@@ -16,7 +16,7 @@ const heroImg = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=
 const portfolioProjects = [
   {
     id: 'calista-residence',
-    name: 'Calista Residence',
+    name: 'Royal Living Redefined',
     location: 'Juhu, Mumbai',
     category: 'Residential',
     serviceHref: '/services/residential',
@@ -25,7 +25,7 @@ const portfolioProjects = [
   },
   {
     id: 'neelaya-villa',
-    name: 'Neelaya Villa',
+    name: 'Modern Elegance',
     location: 'Lonavala, Pune',
     category: 'Residential',
     serviceHref: '/services/residential',
@@ -34,7 +34,7 @@ const portfolioProjects = [
   },
   {
     id: 'sparsh-living',
-    name: 'Sparsh Living',
+    name: 'Bungalow Ramakunj',
     location: 'Baner, Pune',
     category: 'Residential',
     serviceHref: '/services/residential',
@@ -43,7 +43,7 @@ const portfolioProjects = [
   },
   {
     id: 'modern-industrial-office',
-    name: 'Modern Industrial Office',
+    name: 'The Office Neutral Edit',
     location: 'Lower Parel, Mumbai',
     category: 'Commercial',
     serviceHref: '/services/commercial',
@@ -52,7 +52,7 @@ const portfolioProjects = [
   },
   {
     id: 'aurelia-penthouse',
-    name: 'Aurelia Penthouse',
+    name: 'The Quiet Curve',
     location: 'Worli, Mumbai',
     category: 'Residential',
     serviceHref: '/services/residential',
@@ -61,12 +61,30 @@ const portfolioProjects = [
   },
   {
     id: 'urban-serenity',
-    name: 'Urban Serenity',
+    name: 'The Soft Neutral Story',
     location: 'Koregaon Park, Pune',
     category: 'Residential',
     serviceHref: '/services/residential',
     desc: 'Arched niches in warm ivory, backlit fluted panels and a floating walnut console make this media wall a quiet centrepiece.',
     img: imgUrban,
+  },
+  {
+    id: 'layered-calm',
+    name: 'The Layered Calm',
+    location: 'Powai, Mumbai',
+    category: 'Residential',
+    serviceHref: '/services/residential',
+    desc: 'Warm neutrals, textured walls and curated lighting create a serene sanctuary that feels both grounded and quietly luxurious.',
+    img: imgSparsh,
+  },
+  {
+    id: 'blushwood-haven',
+    name: 'Blushwood Haven',
+    location: 'Viman Nagar, Pune',
+    category: 'Residential',
+    serviceHref: '/services/residential',
+    desc: 'Soft blush tones, natural oak joinery and layered soft furnishings come together in a home that feels effortlessly elegant.',
+    img: imgNeelaya,
   },
 ]
 
