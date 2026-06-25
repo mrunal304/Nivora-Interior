@@ -47,8 +47,8 @@ export const projects: Project[] = [
     materials: ['Lime-washed oak', 'Honed travertine', 'Natural linen', 'Brushed brass'],
     designIntent: 'To create a home that breathes — where every surface tells a quiet story of craft and restraint.',
     description: 'A 4BHK villa reimagined as a sanctuary. The interiors strip away excess to reveal what remains: light, texture, and honest materials. Pale oak panelling runs floor to ceiling in the living spaces, grounded by travertine floors that catch the afternoon sun. The palette — warm stone, soft cream, and muted olive — mirrors the lush garden just beyond the glass.',
-    coverImage: UNSPLASH_RESIDENTIAL[0],
-    images: [UNSPLASH_RESIDENTIAL[0], UNSPLASH_RESIDENTIAL[1], UNSPLASH_RESIDENTIAL[2]],
+    coverImage: '/royal-living-redefined.png',
+    images: ['/royal-living-redefined.png', UNSPLASH_RESIDENTIAL[1], UNSPLASH_RESIDENTIAL[2]],
     year: '2024',
   },
   {
