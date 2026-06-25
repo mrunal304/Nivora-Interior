@@ -60,8 +60,8 @@ export const projects: Project[] = [
     materials: ['Walnut veneer', 'Green zellige tiles', 'Cotton voile', 'Aged iron'],
     designIntent: 'Bringing the outside in — a home that feels like a garden you can live in.',
     description: 'Lush greens, warm timbers, and artisan ceramics come together in this Pune apartment that defies its urban surroundings. The client wanted nature, warmth, and something entirely their own. Every corner holds a considered object; every room flows into the next with architectural ease.',
-    coverImage: UNSPLASH_RESIDENTIAL[1],
-    images: [UNSPLASH_RESIDENTIAL[1], UNSPLASH_RESIDENTIAL[3], UNSPLASH_RESIDENTIAL[0]],
+    coverImage: '/modern-elegance.jpg',
+    images: ['/modern-elegance.jpg', UNSPLASH_RESIDENTIAL[3], UNSPLASH_RESIDENTIAL[0]],
     year: '2024',
   },
   {
