@@ -2531,7 +2531,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
               desc: 'Smart, elegant kitchens with seamless storage solutions, premium finishes, and functional layouts.',
             },
             {
-              img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80',
+              img: '/bedroom-interiors.jpg',
               title: 'Bedroom Interiors',
               desc: 'Calm and luxurious retreats crafted with warm textures, custom furniture, and ambient lighting.',
             },
