@@ -2526,7 +2526,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
               desc: 'Sophisticated and welcoming living spaces designed for comfort, conversation, and everyday luxury.',
             },
             {
-              img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80',
+              img: '/modular-kitchen.jpg',
               title: 'Modular Kitchen',
               desc: 'Smart, elegant kitchens with seamless storage solutions, premium finishes, and functional layouts.',
             },
