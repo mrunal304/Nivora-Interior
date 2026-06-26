@@ -2536,7 +2536,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
               desc: 'Calm and luxurious retreats crafted with warm textures, custom furniture, and ambient lighting.',
             },
             {
-              img: 'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=800&q=80',
+              img: '/dining-entertainment.jpg',
               title: 'Dining & Entertainment',
               desc: 'Stylish dining areas and entertainment spaces designed to bring family and guests together.',
             },
