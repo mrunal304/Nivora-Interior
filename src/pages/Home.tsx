@@ -2407,200 +2407,158 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
         </div>
       </section>
 
-      {/* Editorial Portfolio — Featured Spaces */}
-      <section style={{ backgroundColor: '#FAF8F4', padding: '52px 0 60px' }}>
+      {/* Our Expertise — 4 Category Cards */}
+      <section style={{ backgroundColor: '#F8F6F2', padding: '72px 0 80px' }}>
         <style>{`
-          .ep3-block {
-            display: flex;
-            align-items: center;
-            gap: clamp(28px, 4vw, 56px);
-            max-width: 1200px;
+          .oe-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            max-width: 1280px;
             margin: 0 auto;
+            padding: 0 2rem;
           }
-          .ep3-block.ep3-reverse { flex-direction: row-reverse; }
-
-          .ep3-img-col {
-            flex: 0 0 50%;
-            min-width: 0;
-          }
-          .ep3-img-wrap {
-            position: relative;
+          .oe-card {
+            background: #fff;
             border-radius: 20px;
             overflow: hidden;
-            height: 350px;
-            box-shadow: 0 4px 24px rgba(20,18,14,0.07);
-            transition: box-shadow 0.5s ease;
+            box-shadow: 0 2px 16px rgba(20,18,14,0.06);
+            transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), box-shadow 0.45s ease;
+            display: flex;
+            flex-direction: column;
           }
-          .ep3-block:hover .ep3-img-wrap {
-            box-shadow: 0 10px 36px rgba(20,18,14,0.12);
+          .oe-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(20,18,14,0.13);
           }
-          .ep3-img {
+          .oe-img-wrap {
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            flex-shrink: 0;
+          }
+          .oe-img {
             width: 100%; height: 100%;
             object-fit: cover; display: block;
-            transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
+            transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);
           }
-          .ep3-block:hover .ep3-img { transform: scale(1.03); }
-
-          .ep3-content-col {
-            flex: 0 0 50%;
-            min-width: 0;
-            padding: 0 8px;
+          .oe-card:hover .oe-img { transform: scale(1.06); }
+          .oe-body {
+            padding: 24px 24px 28px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
           }
-
-          .ep3-num {
-            font-family: 'Inter', sans-serif;
-            font-weight: 300; font-size: 9px;
-            letter-spacing: 0.36em; text-transform: uppercase;
-            color: rgba(155,125,78,0.50);
-            margin: 0 0 10px; display: block;
+          .oe-divider {
+            width: 28px; height: 1px;
+            background: #C9A96E;
+            margin: 0 0 14px;
+            display: block;
           }
-          .ep3-title {
+          .oe-title {
             font-family: 'Playfair Display', serif;
             font-weight: 400;
-            font-size: clamp(1.1rem, 1.7vw, 1.55rem);
+            font-size: 1.18rem;
             color: #1a1612;
-            line-height: 1.15;
+            line-height: 1.2;
             margin: 0 0 10px;
             letter-spacing: -0.01em;
           }
-          .ep3-divider {
-            width: 28px; height: 1px;
-            background: #C9A96E;
-            margin: 0 0 12px;
-            display: block;
-          }
-          .ep3-desc {
+          .oe-desc {
             font-family: 'Inter', sans-serif;
-            font-weight: 300; font-size: 13px;
-            color: rgba(26,22,18,0.48);
-            line-height: 1.78; margin: 0 0 20px;
-            max-width: 400px;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            font-weight: 300;
+            font-size: 13px;
+            color: rgba(26,22,18,0.50);
+            line-height: 1.75;
+            margin: 0;
+            flex: 1;
           }
-          .ep3-arrow-btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 36px; height: 36px; border-radius: 50%;
-            border: 1px solid rgba(201,169,110,0.48);
-            text-decoration: none;
-            transition: background 0.35s ease, border-color 0.35s ease, transform 0.28s ease;
+          @media (max-width: 1024px) {
+            .oe-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
           }
-          .ep3-arrow-btn svg {
-            transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), color 0.28s ease;
-            color: #C9A96E;
-          }
-          .ep3-arrow-btn:hover {
-            background: rgba(201,169,110,0.10);
-            border-color: #C9A96E;
-            transform: translateY(-2px);
-          }
-          .ep3-arrow-btn:hover svg { transform: rotate(20deg); }
-
-          @media (max-width: 900px) {
-            .ep3-block, .ep3-block.ep3-reverse {
-              flex-direction: column !important;
-              gap: 18px;
-              max-width: 100%;
-            }
-            .ep3-img-col, .ep3-content-col { flex: 0 0 100% !important; }
-            .ep3-img-wrap { height: clamp(220px, 54vw, 260px); }
-            .ep3-content-col { padding: 0; }
-            .ep3-desc { max-width: 100%; }
+          @media (max-width: 560px) {
+            .oe-grid { grid-template-columns: 1fr; gap: 16px; }
+            .oe-img-wrap { height: 200px; }
           }
         `}</style>
 
-        <div style={{ padding: '0 2rem' }}>
-
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 2rem' }}>
           {/* Section header */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            style={{ textAlign: 'center', marginBottom: '40px', maxWidth: 1200, margin: '0 auto 40px' }}
+            style={{ textAlign: 'center', marginBottom: '48px' }}
           >
             <p style={{
-              fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 9,
+              fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 10,
               letterSpacing: '0.46em', textTransform: 'uppercase',
-              color: '#9B7D4E', marginBottom: '12px',
-            }}>Our Portfolio</p>
+              color: '#9B7D4E', marginBottom: '14px',
+            }}>Our Expertise</p>
             <h2 style={{
               fontFamily: "'Playfair Display', serif", fontWeight: 400,
-              fontSize: 'clamp(1.5rem, 2.7vw, 2.45rem)',
+              fontSize: 'clamp(1.6rem, 2.8vw, 2.6rem)',
               color: '#1a1612', lineHeight: 1.1,
-              margin: '0 0 16px', letterSpacing: '-0.015em',
-            }}>Designed to Inspire<br />Modern Living</h2>
+              margin: '0 0 18px', letterSpacing: '-0.015em',
+            }}>Spaces Designed for<br />Every Lifestyle</h2>
             <div style={{
-              width: 40, height: 1,
+              width: 44, height: 1,
               background: 'linear-gradient(90deg, transparent, #C9A96E 40%, transparent)',
-              margin: '0 auto 14px',
+              margin: '0 auto 16px',
             }} />
             <p style={{
-              fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 13,
-              color: 'rgba(26,22,18,0.42)', lineHeight: 1.7,
-              maxWidth: 380, margin: '0 auto',
+              fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 14,
+              color: 'rgba(26,22,18,0.44)', lineHeight: 1.7,
+              maxWidth: 420, margin: '0 auto',
             }}>
-              Thoughtfully crafted interiors that blend elegance, comfort, and timeless design.
+              Thoughtfully crafted interiors that blend beauty, functionality, and timeless elegance.
             </p>
           </motion.div>
+        </div>
 
-          {/* Alternating editorial blocks */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '52px' }}>
-            {portfolioProjects.map((p, i) => {
-              const isReverse = i % 2 === 1
-              const imgVariants = {
-                hidden: { opacity: 0, scale: 0.96 },
-                visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: 'easeOut' } },
-              }
-              const contentVariants = {
-                hidden: { opacity: 0, x: isReverse ? 32 : -32 },
-                visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: 'easeOut' } },
-              }
-              const childVariants = {
-                hidden: { opacity: 0, y: 12 },
-                visible: (d: number) => ({
-                  opacity: 1, y: 0,
-                  transition: { duration: 0.6, ease: 'easeOut', delay: d },
-                }),
-              }
-              return (
-                <motion.div
-                  key={p.id}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: '-60px' }}
-                  className={`ep3-block${isReverse ? ' ep3-reverse' : ''}`}
-                >
-                  <motion.div className="ep3-img-col" variants={imgVariants}>
-                    <div className="ep3-img-wrap">
-                      <img src={p.img} alt={p.name} className="ep3-img" loading="lazy" draggable={false} />
-                    </div>
-                  </motion.div>
-
-                  <motion.div className="ep3-content-col" variants={contentVariants}>
-                    <motion.span className="ep3-num" custom={0.08} variants={childVariants}>
-                      {String(i + 1).padStart(2, '0')}
-                    </motion.span>
-                    <motion.h3 className="ep3-title" custom={0.18} variants={childVariants}>
-                      {p.name}
-                    </motion.h3>
-                    <motion.span className="ep3-divider" custom={0.26} variants={childVariants} />
-                    <motion.p className="ep3-desc" custom={0.34} variants={childVariants}>
-                      {p.desc}
-                    </motion.p>
-                    <motion.div custom={0.42} variants={childVariants}>
-                      <Link to="/portfolio" className="ep3-arrow-btn" aria-label={`View ${p.name}`}>
-                        <ArrowRight size={14} strokeWidth={1.4} />
-                      </Link>
-                    </motion.div>
-                  </motion.div>
-                </motion.div>
-              )
-            })}
-          </div>
-
+        {/* 4-card grid */}
+        <div className="oe-grid">
+          {[
+            {
+              img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80',
+              title: 'Living Room Design',
+              desc: 'Sophisticated and welcoming living spaces designed for comfort, conversation, and everyday luxury.',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80',
+              title: 'Modular Kitchen',
+              desc: 'Smart, elegant kitchens with seamless storage solutions, premium finishes, and functional layouts.',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80',
+              title: 'Bedroom Interiors',
+              desc: 'Calm and luxurious retreats crafted with warm textures, custom furniture, and ambient lighting.',
+            },
+            {
+              img: 'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=800&q=80',
+              title: 'Dining & Entertainment',
+              desc: 'Stylish dining areas and entertainment spaces designed to bring family and guests together.',
+            },
+          ].map((card, i) => (
+            <motion.div
+              key={card.title}
+              className="oe-card"
+              initial={{ opacity: 0, y: 36 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.7, ease: 'easeOut', delay: i * 0.1 }}
+            >
+              <div className="oe-img-wrap">
+                <img src={card.img} alt={card.title} className="oe-img" loading="lazy" draggable={false} />
+              </div>
+              <div className="oe-body">
+                <span className="oe-divider" />
+                <h3 className="oe-title">{card.title}</h3>
+                <p className="oe-desc">{card.desc}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
