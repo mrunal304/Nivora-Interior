@@ -2521,7 +2521,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
         <div className="oe-grid">
           {[
             {
-              img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80',
+              img: '/living-room-design.jpg',
               title: 'Living Room Design',
               desc: 'Sophisticated and welcoming living spaces designed for comfort, conversation, and everyday luxury.',
             },
