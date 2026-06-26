@@ -429,7 +429,7 @@ function StatsSection() {
           color: #ffffff;
         }
         .stat-float-label {
-          font-family: 'Inter', sans-serif;
+          font-family: 'Jost', sans-serif;
           font-weight: 300;
           font-size: 9px;
           letter-spacing: 4.5px;
@@ -1844,7 +1844,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: '2.5rem', ...philEl(0) }}>
               <div style={{ height: '0.5px', backgroundColor: '#b8966a', width: 60 }} />
               <span style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Jost', sans-serif",
                 fontWeight: 300,
                 fontSize: 10,
                 letterSpacing: '0.35em',
@@ -1871,7 +1871,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
 
             {/* Body */}
             <p style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Jost', sans-serif",
               fontWeight: 300,
               fontSize: '0.9375rem',
               lineHeight: 1.85,
@@ -1894,7 +1894,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
                 }} />
               </div>
               <p style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Jost', sans-serif",
                 fontWeight: 300,
                 fontSize: 11,
                 letterSpacing: '3px',
@@ -2116,7 +2116,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
           /* ── TOP LAYER: number badge ── */
           .hsvc-num {
             position: absolute; top: 1.5rem; left: 1.6rem; z-index: 4;
-            font-family: 'Inter', sans-serif; font-weight: 300;
+            font-family: 'Jost', sans-serif; font-weight: 300;
             font-size: 10px; letter-spacing: 0.3em;
             color: rgba(200,165,106,0.7); margin: 0;
           }
@@ -2178,7 +2178,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
 
           /* Description — capped at 3 lines to guarantee no overflow */
           .hsvc-desc {
-            font-family: 'Inter', sans-serif; font-weight: 300;
+            font-family: 'Jost', sans-serif; font-weight: 300;
             font-size: 12.5px; color: rgba(245,240,232,0.78);
             line-height: 1.72; margin: 0;
             display: -webkit-box;
@@ -2191,7 +2191,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
           .hsvc-explore {
             display: inline-flex; align-items: center; gap: 6px;
             margin-top: 0.85rem;
-            font-family: 'Inter', sans-serif; font-weight: 300;
+            font-family: 'Jost', sans-serif; font-weight: 300;
             font-size: 10px; letter-spacing: 0.22em;
             text-transform: uppercase; color: #C8A56A;
           }
@@ -2220,7 +2220,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
         <FadeIn>
           <div style={{ textAlign: 'center', marginBottom: '4.5rem', maxWidth: 640, margin: '0 auto 4.5rem' }}>
             <p style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Jost', sans-serif",
               fontWeight: 300,
               fontSize: 10,
               letterSpacing: '0.45em',
@@ -2238,7 +2238,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
               letterSpacing: '-0.01em',
             }}>Spaces Designed Across<br />Every Experience</h2>
             <p style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Jost', sans-serif",
               fontWeight: 300,
               fontSize: 14,
               color: 'rgba(38,36,33,0.5)',
@@ -2371,7 +2371,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
             <div className="trf-header-row">
               <div className="trf-header-left">
                 <p style={{
-                  fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 10,
+                  fontFamily: "'Jost', sans-serif", fontWeight: 300, fontSize: 10,
                   letterSpacing: '0.45em', textTransform: 'uppercase',
                   color: '#C8A56A', marginBottom: '1rem',
                 }}>Transformations</p>
@@ -2382,7 +2382,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
                   letterSpacing: '-0.01em',
                 }}>Before &amp; After</h2>
                 <p style={{
-                  fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 14,
+                  fontFamily: "'Jost', sans-serif", fontWeight: 300, fontSize: 14,
                   color: 'rgba(38,36,33,0.5)', lineHeight: 1.85, margin: 0,
                 }}>
                   See how thoughtful design transforms spaces into refined living experiences.
@@ -2465,7 +2465,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
             letter-spacing: -0.01em;
           }
           .oe-desc {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Jost', sans-serif;
             font-weight: 300;
             font-size: 13px;
             color: rgba(26,22,18,0.50);
@@ -2492,7 +2492,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
             style={{ textAlign: 'center', marginBottom: '48px' }}
           >
             <p style={{
-              fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 10,
+              fontFamily: "'Jost', sans-serif", fontWeight: 300, fontSize: 10,
               letterSpacing: '0.46em', textTransform: 'uppercase',
               color: '#9B7D4E', marginBottom: '14px',
             }}>Our Expertise</p>
@@ -2508,7 +2508,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
               margin: '0 auto 16px',
             }} />
             <p style={{
-              fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 14,
+              fontFamily: "'Jost', sans-serif", fontWeight: 300, fontSize: 14,
               color: 'rgba(26,22,18,0.44)', lineHeight: 1.7,
               maxWidth: 420, margin: '0 auto',
             }}>

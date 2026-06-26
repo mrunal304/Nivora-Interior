@@ -56,7 +56,7 @@ function FooterLink({ to, label }: { to: string; label: string }) {
       <Link
         to={to}
         style={{
-          fontFamily: "'Montserrat', sans-serif",
+          fontFamily: "'Jost', sans-serif",
           fontSize: 13,
           fontWeight: 300,
           color: '#f5f2ed',
@@ -231,7 +231,7 @@ export default function Footer() {
             </a>
 
             <p style={{
-              fontFamily: "'Lora', serif",
+              fontFamily: "'Cormorant Garamond', serif",
               color: 'rgba(245,242,237,0.45)',
               fontSize: 13,
               lineHeight: 1.8,
@@ -262,7 +262,7 @@ export default function Footer() {
                   color: '#fff',
                   fontSize: 12,
                   fontWeight: 300,
-                  fontFamily: "'Montserrat', sans-serif",
+                  fontFamily: "'Jost', sans-serif",
                   textDecoration: 'none',
                   transition: 'opacity 0.2s ease',
                 }}
@@ -286,7 +286,7 @@ export default function Footer() {
             style={{ borderRight: '1px solid rgba(255,255,255,0.08)' }}
           >
             <h4 style={{
-              fontFamily: "'Montserrat', sans-serif",
+              fontFamily: "'Jost', sans-serif",
               fontSize: 10,
               letterSpacing: '0.25em',
               textTransform: 'uppercase',
@@ -308,7 +308,7 @@ export default function Footer() {
             style={{ borderRight: '1px solid rgba(255,255,255,0.08)' }}
           >
             <h4 style={{
-              fontFamily: "'Montserrat', sans-serif",
+              fontFamily: "'Jost', sans-serif",
               fontSize: 10,
               letterSpacing: '0.25em',
               textTransform: 'uppercase',
@@ -329,7 +329,7 @@ export default function Footer() {
             className="footer-findus-col pl-10 pb-12 lg:pb-0"
           >
             <h4 style={{
-              fontFamily: "'Montserrat', sans-serif",
+              fontFamily: "'Jost', sans-serif",
               fontSize: 10,
               letterSpacing: '0.25em',
               textTransform: 'uppercase',
@@ -341,7 +341,7 @@ export default function Footer() {
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: 9 }}>
                 <MapPin size={16} color="#a18661" style={{ flexShrink: 0, marginTop: 2 }} />
                 <p style={{
-                  fontFamily: "'Montserrat', sans-serif",
+                  fontFamily: "'Jost', sans-serif",
                   fontSize: 13,
                   fontWeight: 300,
                   color: 'rgba(245,242,237,0.5)',
@@ -357,7 +357,7 @@ export default function Footer() {
                   href="mailto:hello@nivorainteriors.com"
                   style={{
                     display: 'flex', alignItems: 'center', gap: 9,
-                    fontFamily: "'Montserrat', sans-serif",
+                    fontFamily: "'Jost', sans-serif",
                     fontSize: 13,
                     fontWeight: 300,
                     color: '#a18661',
@@ -374,7 +374,7 @@ export default function Footer() {
                   href="tel:+917276687805"
                   style={{
                     display: 'flex', alignItems: 'center', gap: 9,
-                    fontFamily: "'Montserrat', sans-serif",
+                    fontFamily: "'Jost', sans-serif",
                     fontSize: 13,
                     fontWeight: 300,
                     color: 'rgba(245,242,237,0.5)',
@@ -451,7 +451,7 @@ export default function Footer() {
           }}
         >
           <p style={{
-            fontFamily: "'Montserrat', sans-serif",
+            fontFamily: "'Jost', sans-serif",
             fontSize: 12,
             fontWeight: 300,
             color: '#6d5a41',
@@ -460,7 +460,7 @@ export default function Footer() {
             © 2025 Nivora Interiors. All rights reserved.
           </p>
           <p style={{
-            fontFamily: "'Montserrat', sans-serif",
+            fontFamily: "'Jost', sans-serif",
             fontSize: 12,
             fontWeight: 300,
             color: '#6d5a41',

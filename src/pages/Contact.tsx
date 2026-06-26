@@ -35,19 +35,19 @@ export default function Contact() {
         .contact-form-card {
           background-color: #FFFFFF;
           border: 1px solid #E8E0D0;
-          border-radius: 4px;
+          border-radius: 16px;
           padding: 40px;
         }
         .contact-info-card {
           background-color: #FFFFFF;
           border: 1px solid #E8E0D0;
-          border-radius: 4px;
+          border-radius: 16px;
         }
 
         /* ── labels ── */
         .form-label {
           display: block;
-          font-family: 'Montserrat', sans-serif;
+          font-family: 'Jost', sans-serif;
           font-size: 11px;
           letter-spacing: 0.12em;
           color: #888880;
@@ -63,7 +63,7 @@ export default function Contact() {
           border-radius: 0;
           background: transparent;
           padding: 8px 0;
-          font-family: 'DM Sans', sans-serif;
+          font-family: 'Jost', sans-serif;
           font-size: 15px;
           color: #2C2C2A;
           width: 100%;
@@ -104,9 +104,9 @@ export default function Contact() {
         /* ── textarea ── */
         .form-textarea {
           border: 1px solid #C8C0B0;
-          border-radius: 2px;
+          border-radius: 8px;
           padding: 12px;
-          font-family: 'DM Sans', sans-serif;
+          font-family: 'Jost', sans-serif;
           font-size: 15px;
           color: #2C2C2A;
           width: 100%;
@@ -143,13 +143,13 @@ export default function Contact() {
           gap: 8px;
           border: 1.5px solid #25D366;
           color: #25D366;
-          font-family: 'Montserrat', sans-serif;
+          font-family: 'Jost', sans-serif;
           font-size: 11px;
           letter-spacing: 0.14em;
           text-transform: uppercase;
           padding: 11px 20px;
           text-decoration: none;
-          border-radius: 2px;
+          border-radius: 8px;
           position: relative;
           transition: background 0.25s ease, color 0.25s ease;
         }
@@ -161,7 +161,7 @@ export default function Contact() {
           position: absolute;
           inset: -4px;
           border: 1.5px solid #25D366;
-          border-radius: 4px;
+          border-radius: 10px;
           opacity: 0;
           animation: waPulse 2.8s ease-out infinite;
         }
@@ -180,15 +180,15 @@ export default function Contact() {
             viewport={{ once: true, amount: 0.4 }}
           >
             <motion.p variants={fadeUp} custom={0}
-              style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 11, letterSpacing: '0.4em', textTransform: 'uppercase', color: '#b8966a', marginBottom: 16 }}>
+              style={{ fontFamily: "'Jost', sans-serif", fontSize: 11, letterSpacing: '0.4em', textTransform: 'uppercase', color: '#C9A96E', marginBottom: 16 }}>
               Reach Out
             </motion.p>
             <motion.h1 variants={fadeUp} custom={0.1}
-              style={{ fontFamily: "'Playfair Display', serif", fontWeight: 400, fontSize: 'clamp(1.9rem, 4vw, 3.2rem)', color: '#f5f0e8', margin: '0 0 16px', lineHeight: 1.1 }}>
+              style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, fontSize: 'clamp(1.9rem, 4vw, 3.2rem)', color: '#f5f0e8', margin: '0 0 16px', lineHeight: 1.1 }}>
               Let's Talk
             </motion.h1>
             <motion.p variants={fadeUp} custom={0.2}
-              style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: 15, color: 'rgba(245,240,232,0.55)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto' }}>
+              style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, fontSize: 15, color: 'rgba(245,240,232,0.55)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto' }}>
               Every great project begins with a conversation. Reach out and let's explore what's possible for your space.
             </motion.p>
           </motion.div>
@@ -211,7 +211,7 @@ export default function Contact() {
             custom={0}
           >
             <div className="contact-form-card">
-              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#888880', marginBottom: 32 }}>
+              <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#888880', marginBottom: 32 }}>
                 Send Us a Message
               </p>
 
@@ -306,7 +306,7 @@ export default function Contact() {
                     width: '100%',
                     background: '#2D3B2D',
                     color: '#C9A96E',
-                    fontFamily: "'Montserrat', sans-serif",
+                    fontFamily: "'Jost', sans-serif",
                     fontSize: 13,
                     letterSpacing: '0.12em',
                     textTransform: 'uppercase',
@@ -318,7 +318,7 @@ export default function Contact() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: 10,
-                    borderRadius: 2,
+                    borderRadius: 8,
                   }}
                 >
                   Send Message <ArrowRight size={14} />
@@ -336,10 +336,10 @@ export default function Contact() {
             custom={0.15}
           >
             <div className="contact-info-card" style={{ padding: '36px 32px' }}>
-              <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 400, fontSize: 26, color: '#21291a', margin: '0 0 4px' }}>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, fontSize: 26, color: '#21291a', margin: '0 0 4px' }}>
                 Nivora Interiors
               </h2>
-              <p style={{ fontFamily: "'Lora', serif", fontStyle: 'italic', fontSize: 14, color: '#C9A96E', margin: '0 0 32px' }}>
+              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontSize: 14, color: '#C9A96E', margin: '0 0 32px' }}>
                 From Vision to Execution
               </p>
 
@@ -348,24 +348,24 @@ export default function Contact() {
 
                 {/* Location */}
                 <ContactRow icon={<MapPin size={13} />}>
-                  <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#888880', margin: '0 0 4px' }}>Location</p>
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: '#2C2C2A', margin: 0, lineHeight: 1.5 }}>
+                  <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#888880', margin: '0 0 4px' }}>Location</p>
+                  <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 14, color: '#2C2C2A', margin: 0, lineHeight: 1.5 }}>
                     Ambernath,<br />Maharashtra 421505
                   </p>
                 </ContactRow>
 
                 {/* Phone */}
                 <ContactRow icon={<Phone size={13} />}>
-                  <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#888880', margin: '0 0 4px' }}>Phone</p>
-                  <a href="tel:+917276687805" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: '#2C2C2A', textDecoration: 'none' }}>
+                  <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#888880', margin: '0 0 4px' }}>Phone</p>
+                  <a href="tel:+917276687805" style={{ fontFamily: "'Jost', sans-serif", fontSize: 14, color: '#2C2C2A', textDecoration: 'none' }}>
                     +91 72766 87805
                   </a>
                 </ContactRow>
 
                 {/* Email */}
                 <ContactRow icon={<Mail size={13} />}>
-                  <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#888880', margin: '0 0 4px' }}>Email</p>
-                  <a href="mailto:hello@nivorainteriors.com" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: '#2C2C2A', textDecoration: 'none' }}>
+                  <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#888880', margin: '0 0 4px' }}>Email</p>
+                  <a href="mailto:hello@nivorainteriors.com" style={{ fontFamily: "'Jost', sans-serif", fontSize: 14, color: '#2C2C2A', textDecoration: 'none' }}>
                     hello@nivorainteriors.com
                   </a>
                 </ContactRow>
@@ -389,15 +389,15 @@ export default function Contact() {
               <div style={{ borderTop: '1px solid #E8E0D0', marginTop: 28, paddingTop: 28 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
                   <Clock size={13} style={{ color: '#C9A96E', flexShrink: 0 }} />
-                  <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#888880', margin: 0 }}>
+                  <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#888880', margin: 0 }}>
                     Studio Hours
                   </p>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#2C2C2A', margin: 0 }}>
+                  <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 13, color: '#2C2C2A', margin: 0 }}>
                     Monday – Saturday: 10:00 AM – 7:00 PM
                   </p>
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#888880', margin: 0, fontStyle: 'italic' }}>
+                  <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 13, color: '#888880', margin: 0, fontStyle: 'italic' }}>
                     Sunday: By appointment only
                   </p>
                 </div>
@@ -408,11 +408,11 @@ export default function Contact() {
                 marginTop: 24,
                 padding: '14px 18px',
                 border: '1px solid #E8E0D0',
-                borderRadius: 3,
+                borderRadius: 12,
                 background: 'rgba(245,240,232,0.5)',
               }}>
                 <p style={{
-                  fontFamily: "'Lora', serif",
+                  fontFamily: "'Cormorant Garamond', serif",
                   fontStyle: 'italic',
                   fontSize: 13,
                   color: '#888880',
@@ -438,19 +438,19 @@ export default function Contact() {
             viewport={{ once: true, amount: 0.3 }}
           >
             <motion.p variants={fadeUp} custom={0}
-              style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 11, letterSpacing: '0.4em', textTransform: 'uppercase', color: '#b8966a', marginBottom: 16 }}>
+              style={{ fontFamily: "'Jost', sans-serif", fontSize: 11, letterSpacing: '0.4em', textTransform: 'uppercase', color: '#C9A96E', marginBottom: 16 }}>
               Reach Out
             </motion.p>
             <motion.h2 variants={fadeUp} custom={0.1}
-              style={{ fontFamily: "'Playfair Display', serif", fontWeight: 400, fontSize: 'clamp(2.2rem, 5.5vw, 3.6rem)', color: '#f5f0e8', margin: '0 0 12px', lineHeight: 1.1 }}>
+              style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, fontSize: 'clamp(2.2rem, 5.5vw, 3.6rem)', color: '#f5f0e8', margin: '0 0 12px', lineHeight: 1.1 }}>
               Ready to Begin?
             </motion.h2>
             <motion.p variants={fadeUp} custom={0.2}
-              style={{ fontFamily: "'Lora', serif", fontStyle: 'italic', fontSize: 17, color: '#C9A96E', margin: '0 0 20px' }}>
+              style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontSize: 17, color: '#C9A96E', margin: '0 0 20px' }}>
               Not sure where to start?
             </motion.p>
             <motion.p variants={fadeUp} custom={0.3}
-              style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: 15, color: 'rgba(245,240,232,0.5)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto' }}>
+              style={{ fontFamily: "'Jost', sans-serif", fontWeight: 300, fontSize: 15, color: 'rgba(245,240,232,0.5)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto' }}>
               Every great project begins with a conversation. Fill in the form above and we'll get back to you within 24 hours.
             </motion.p>
           </motion.div>
@@ -475,7 +475,7 @@ function ContactRow({ icon, children }: { icon: React.ReactNode; children: React
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0,
-          borderRadius: 2,
+          borderRadius: 8,
           color: '#C9A96E',
           cursor: 'default',
         }}

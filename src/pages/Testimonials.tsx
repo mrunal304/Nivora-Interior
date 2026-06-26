@@ -89,12 +89,12 @@ function ProjectBadge({ project }: { project: string }) {
   return (
     <span style={{
       display: 'inline-block',
-      fontFamily: "'Montserrat', sans-serif",
+      fontFamily: "'Jost', sans-serif",
       fontSize: 9,
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
       padding: '3px 8px',
-      borderRadius: 3,
+      borderRadius: 6,
       lineHeight: 1.6,
       background: isResidential ? 'rgba(161,134,97,0.12)' : 'rgba(95,116,94,0.12)',
       color: isResidential ? '#a18661' : '#5f745e',
@@ -119,8 +119,8 @@ function TestimonialCard({ t, index }: { t: typeof testimonials[0]; index: numbe
         className="testimonial-card"
         style={{
           background: '#ffffff',
-          border: '1px solid rgba(95,116,94,0.35)',
-          borderRadius: 8,
+          border: '1px solid rgba(95,116,94,0.25)',
+          borderRadius: 16,
           padding: 32,
           height: '100%',
           display: 'flex',
@@ -153,7 +153,7 @@ function TestimonialCard({ t, index }: { t: typeof testimonials[0]; index: numbe
           fontSize: 64,
           lineHeight: 1,
           color: '#a18661',
-          fontFamily: "'Playfair Display', serif",
+          fontFamily: "'Cormorant Garamond', serif",
           opacity: 0.22,
           pointerEvents: 'none',
           userSelect: 'none',
@@ -166,7 +166,7 @@ function TestimonialCard({ t, index }: { t: typeof testimonials[0]; index: numbe
 
         {/* Review text */}
         <p style={{
-          fontFamily: "'Lora', serif",
+          fontFamily: "'Cormorant Garamond', serif",
           fontStyle: 'italic',
           fontSize: 16,
           lineHeight: 1.8,
@@ -197,7 +197,7 @@ function TestimonialCard({ t, index }: { t: typeof testimonials[0]; index: numbe
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontFamily: "'Montserrat', sans-serif",
+            fontFamily: "'Jost', sans-serif",
             fontWeight: 700,
             fontSize: 12,
             flexShrink: 0,
@@ -207,14 +207,14 @@ function TestimonialCard({ t, index }: { t: typeof testimonials[0]; index: numbe
           </div>
           <div>
             <p style={{
-              fontFamily: "'Montserrat', sans-serif",
+              fontFamily: "'Jost', sans-serif",
               fontWeight: 500,
               fontSize: 14,
               color: '#21291a',
               margin: 0,
             }}>{t.name}</p>
             <p style={{
-              fontFamily: "'Montserrat', sans-serif",
+              fontFamily: "'Jost', sans-serif",
               fontSize: 11,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -243,7 +243,7 @@ export default function Testimonials() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
           style={{
-            fontFamily: "'Montserrat', sans-serif",
+            fontFamily: "'Jost', sans-serif",
             fontSize: 11,
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
@@ -258,7 +258,7 @@ export default function Testimonials() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
           style={{
-            fontFamily: "'Playfair Display', serif",
+            fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 400,
             fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
             color: '#21291a',
@@ -273,7 +273,7 @@ export default function Testimonials() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
           style={{
-            fontFamily: "'Lora', serif",
+            fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
             fontSize: 15,
             color: 'rgba(33,41,26,0.55)',
@@ -347,7 +347,7 @@ export default function Testimonials() {
               style={{ flex: 1, textAlign: 'center', padding: '16px 40px', minWidth: 180 }}
             >
               <p style={{
-                fontFamily: "'Playfair Display', serif",
+                fontFamily: "'Cormorant Garamond', serif",
                 fontWeight: 400,
                 fontSize: 'clamp(2rem, 4vw, 3rem)',
                 color: '#21291a',
@@ -355,7 +355,7 @@ export default function Testimonials() {
                 lineHeight: 1,
               }}>{s.value}</p>
               <p style={{
-                fontFamily: "'Montserrat', sans-serif",
+                fontFamily: "'Jost', sans-serif",
                 fontWeight: 400,
                 fontSize: 11,
                 letterSpacing: '0.12em',
@@ -377,14 +377,14 @@ export default function Testimonials() {
           viewport={{ once: true, amount: 0.4 }}
         >
           <h2 style={{
-            fontFamily: "'Playfair Display', serif",
+            fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 400,
             fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
             color: '#21291a',
             margin: '0 0 16px',
           }}>Ready to transform your space?</h2>
           <p style={{
-            fontFamily: "'Lora', serif",
+            fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
             fontSize: 15,
             color: 'rgba(33,41,26,0.55)',
@@ -400,13 +400,13 @@ export default function Testimonials() {
               display: 'inline-block',
               background: '#21291a',
               color: '#f5f2ed',
-              fontFamily: "'Montserrat', sans-serif",
+              fontFamily: "'Jost', sans-serif",
               fontWeight: 500,
               fontSize: 12,
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
               padding: '16px 40px',
-              borderRadius: 4,
+              borderRadius: 12,
               textDecoration: 'none',
               transition: 'background 0.3s ease, transform 0.3s ease',
             }}
