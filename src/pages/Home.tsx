@@ -261,9 +261,9 @@ const statsData = [
 ]
 
 function StatsSection() {
-  const [counts, setCounts] = useState(statsData.map(s => s.value))
+  const [counts, setCounts] = useState(statsData.map(() => 0))
   const [shimmer, setShimmer] = useState(statsData.map(() => false))
-  const [started, setStarted] = useState(false)
+  const startedRef = useRef(false)   // ref, not state — prevents re-render killing in-flight RAFs
   const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -271,77 +271,82 @@ function StatsSection() {
     if (!el) return
     const cleanups: (() => void)[] = []
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !started) {
-          setStarted(true)
-          statsData.forEach((stat, i) => {
-            setCounts(prev => { const n = [...prev]; n[i] = stat.from; return n })
-            const startTime = performance.now()
-            const tick = (now: number) => {
-              const progress = Math.min((now - startTime) / stat.duration, 1)
-              const eased = 1 - Math.pow(1 - progress, 4)
-              const val = Math.floor(stat.from + (stat.value - stat.from) * eased)
-              setCounts(prev => { const n = [...prev]; n[i] = val; return n })
-              if (progress < 1) {
-                requestAnimationFrame(tick)
-              } else {
-                setCounts(prev => { const n = [...prev]; n[i] = stat.value; return n })
-
-                const cycleInterval = 4200 + i * 1100
-                const dip = Math.min(2, stat.value)
-
-                const runCycle = () => {
-                  setShimmer(prev => { const n = [...prev]; n[i] = true; return n })
-                  const shimmerOff = setTimeout(() => {
-                    setShimmer(prev => { const n = [...prev]; n[i] = false; return n })
-                  }, 900)
-                  cleanups.push(() => clearTimeout(shimmerOff))
-
-                  const totalSteps = 28
-                  let s = 0
-                  const dipTimer = setInterval(() => {
-                    s++
-                    const p = s / totalSteps
-                    let v: number
-                    if (p < 0.35) {
-                      const down = p / 0.35
-                      v = Math.round(stat.value - dip * (1 - Math.pow(1 - down, 2)))
-                    } else {
-                      const up = (p - 0.35) / 0.65
-                      const easedUp = 1 - Math.pow(1 - up, 3)
-                      v = Math.round((stat.value - dip) + dip * easedUp)
-                    }
-                    v = Math.min(Math.max(v, stat.value - dip), stat.value)
-                    setCounts(prev => { const n = [...prev]; n[i] = v; return n })
-                    if (s >= totalSteps) {
-                      clearInterval(dipTimer)
-                      setCounts(prev => { const n = [...prev]; n[i] = stat.value; return n })
-                    }
-                  }, 38)
-                  cleanups.push(() => clearInterval(dipTimer))
-                }
-
-                const startDelay = setTimeout(() => {
-                  runCycle()
-                  const loop = setInterval(runCycle, cycleInterval)
-                  cleanups.push(() => clearInterval(loop))
-                }, 3200 + i * 900)
-                cleanups.push(() => clearTimeout(startDelay))
-              }
-            }
+    const startCounting = () => {
+      if (startedRef.current) return
+      startedRef.current = true
+      statsData.forEach((stat, i) => {
+        const startTime = performance.now()
+        const tick = (now: number) => {
+          const progress = Math.min((now - startTime) / stat.duration, 1)
+          const eased = 1 - Math.pow(1 - progress, 4)
+          const val = Math.floor(stat.from + (stat.value - stat.from) * eased)
+          setCounts(prev => { const n = [...prev]; n[i] = val; return n })
+          if (progress < 1) {
             requestAnimationFrame(tick)
-          })
+          } else {
+            setCounts(prev => { const n = [...prev]; n[i] = stat.value; return n })
+
+            const cycleInterval = 4200 + i * 1100
+            const dip = Math.min(2, stat.value)
+
+            const runCycle = () => {
+              setShimmer(prev => { const n = [...prev]; n[i] = true; return n })
+              const shimmerOff = setTimeout(() => {
+                setShimmer(prev => { const n = [...prev]; n[i] = false; return n })
+              }, 900)
+              cleanups.push(() => clearTimeout(shimmerOff))
+
+              const totalSteps = 28
+              let s = 0
+              const dipTimer = setInterval(() => {
+                s++
+                const p = s / totalSteps
+                let v: number
+                if (p < 0.35) {
+                  const down = p / 0.35
+                  v = Math.round(stat.value - dip * (1 - Math.pow(1 - down, 2)))
+                } else {
+                  const up = (p - 0.35) / 0.65
+                  const easedUp = 1 - Math.pow(1 - up, 3)
+                  v = Math.round((stat.value - dip) + dip * easedUp)
+                }
+                v = Math.min(Math.max(v, stat.value - dip), stat.value)
+                setCounts(prev => { const n = [...prev]; n[i] = v; return n })
+                if (s >= totalSteps) {
+                  clearInterval(dipTimer)
+                  setCounts(prev => { const n = [...prev]; n[i] = stat.value; return n })
+                }
+              }, 38)
+              cleanups.push(() => clearInterval(dipTimer))
+            }
+
+            const startDelay = setTimeout(() => {
+              runCycle()
+              const loop = setInterval(runCycle, cycleInterval)
+              cleanups.push(() => clearInterval(loop))
+            }, 3200 + i * 900)
+            cleanups.push(() => clearTimeout(startDelay))
+          }
         }
-      },
-      { threshold: 0.4 }
+        requestAnimationFrame(tick)
+      })
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) startCounting() },
+      { threshold: 0.3 }
     )
     observer.observe(el)
+
+    // Trigger immediately if already in viewport on mount
+    const rect = el.getBoundingClientRect()
+    if (rect.top < window.innerHeight && rect.bottom > 0) startCounting()
+
     return () => {
       observer.disconnect()
       cleanups.forEach(fn => fn())
     }
-  }, [started])
+  }, [])   // run once — startedRef prevents double-start
 
   return (
     <div style={{
