@@ -94,29 +94,36 @@
   /* ── PHILOSOPHY SECTION ─────────────────────────────────── */
 
   .philosophy-section {
-    padding-top: 100px;
-    padding-bottom: 100px;
+    padding-top: 120px;
+    padding-bottom: 120px;
   }
 
-  .philosophy-quote {
-    font-size: clamp(28px, 3vw, 42px);
-    max-width: 720px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+  /* Text block: generous internal spacing on desktop */
+  .philosophy-text-block {
+    padding-right: 2rem;
   }
 
-  .philosophy-body {
-    font-size: 16px;
-    max-width: 580px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-    line-height: 1.8;
+  /* Label row */
+  .philosophy-text-block > div:first-child {
+    margin-bottom: 2rem;
   }
 
-  .philosophy-values {
-    margin-top: 40px;
+  /* Main quote heading */
+  .philosophy-text-block > p:nth-child(2) {
+    margin-bottom: 2rem;
+    line-height: 1.2;
+  }
+
+  /* Body text — richer contrast, comfortable leading */
+  .philosophy-text-block > p:nth-child(3) {
+    color: #4a3520;
+    line-height: 1.9;
+    margin-bottom: 2.75rem;
+  }
+
+  /* CTA wrapper */
+  .philosophy-text-block > div:last-child {
+    margin-top: 2rem;
   }
 
 

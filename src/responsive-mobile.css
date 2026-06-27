@@ -122,14 +122,15 @@
 
   /* ── PHILOSOPHY SECTION ─────────────────────────────────── */
 
+  /* Section background — no horizontal padding; text block handles its own margins */
   .philosophy-section {
-    padding-top: 48px !important;
-    padding-bottom: 64px !important;
+    padding-top: 0 !important;
+    padding-bottom: 80px !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
 
-  /* Stack image FIRST, then text block below */
+  /* Stack: image first, text block below */
   .philosophy-flex {
     flex-direction: column !important;
     gap: 0 !important;
@@ -137,100 +138,133 @@
     width: 100% !important;
     max-width: 100% !important;
     padding: 0 !important;
+    margin: 0 !important;
   }
 
-  /* Image column — full width, comes first via order
-     margin-bottom creates room for the quote card that
-     pokes out below the image (≈ 68 px clearance) */
+  /* ── Image column ─────────────────────────── */
   .philosophy-image-col {
     order: -1;
     width: 100% !important;
     min-width: 0 !important;
     flex: none !important;
-    margin-bottom: 80px !important;
+    /* No extra bottom margin — card lives inside the image area */
+    margin-bottom: 0 !important;
     opacity: 1 !important;
     transform: none !important;
   }
 
-  /* Remove the gold frame on mobile — causes right-side overflow */
+  /* Gold frame hidden on mobile — clips viewport */
   .philosophy-frame {
     display: none !important;
   }
 
-  /* Wrapper must be relative so the quote card anchors to it */
+  /* Wrapper: relative so quote card can anchor inside */
   .philosophy-image-wrap {
     position: relative !important;
     display: block !important;
     width: 100% !important;
-    overflow: visible !important;
+    overflow: hidden !important;
   }
 
-  /* Inner div — fixed height, clips image only */
+  /* Inner container: fixed height, clips photo edges */
   .philosophy-photo-inner {
     position: relative !important;
     overflow: hidden !important;
-    height: 280px !important;
+    height: 300px !important;
   }
 
-  /* Image — covers the fixed-height inner container */
+  /* Photo: fills container, shows upper-centre of scene */
   .philosophy-photo {
     width: 100% !important;
     height: 100% !important;
     aspect-ratio: unset !important;
     object-fit: cover !important;
-    object-position: center center !important;
+    object-position: center 25% !important;
     display: block !important;
     max-width: 100% !important;
   }
 
-  /* Quote card — anchored to bottom of image-wrap.
-     Positioned so it pokes out below the image by ~60 px,
-     meaning only ~56 px (20 %) of the 280 px image is covered. */
+  /* ── Quote card ───────────────────────────────────────────
+     Sits in the bottom-left corner of the image.
+     Card ≈ 95 px tall → overlaps ~32 % of 300 px image,
+     reading as a subtle editorial accent, not a cover.       */
   .philosophy-quote-card {
     position: absolute !important;
-    bottom: -60px !important;
-    left: 16px !important;
+    bottom: 0 !important;
+    left: 0 !important;
     right: auto !important;
-    width: 200px !important;
-    padding: 18px 20px 16px !important;
+    /* 68 % viewport width, max 220 px — scales 320→414 px */
+    width: clamp(168px, 56vw, 220px) !important;
+    padding: 14px 16px 13px !important;
+    border-radius: 0 11px 0 0 !important;
     z-index: 6 !important;
     opacity: 1 !important;
     transform: scale(1) !important;
     transition: none !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.22) !important;
   }
 
-  /* Text block — 92 % of viewport, centred, generous top gap */
+  /* Decorative quote mark inside card — compact on mobile */
+  .philosophy-quote-card > div:first-child {
+    font-size: 36px !important;
+    margin-bottom: 6px !important;
+    line-height: 0.7 !important;
+  }
+
+  /* Card body text */
+  .philosophy-quote-card > p:first-of-type {
+    font-size: 13px !important;
+    line-height: 1.65 !important;
+  }
+
+  /* Founder attribution */
+  .philosophy-quote-card > p:last-of-type {
+    font-size: 11px !important;
+    margin-top: 8px !important;
+  }
+
+  /* ── Text block ───────────────────────────────────────────
+     90 % wide, centred, generous top breathing room          */
   .philosophy-text-block {
     flex: none !important;
-    width: 92% !important;
-    max-width: 100% !important;
+    width: 90% !important;
+    max-width: 440px !important;
     min-width: 0 !important;
     margin: 0 auto !important;
-    padding: 0 !important;
+    padding: 3rem 0 0 !important;
   }
 
-  /* Section label row — tighter bottom gap on mobile */
+  /* Section label row */
   .philosophy-text-block > div:first-child {
-    margin-bottom: 1.5rem !important;
+    margin-bottom: 1.75rem !important;
   }
 
-  /* Heading — readable scale across 320-768 px */
+  /* Main quote — primary focal point
+     clamp ensures it never wraps awkwardly at 320 px         */
   .philosophy-text-block > p:nth-child(2) {
-    font-size: clamp(1.55rem, 5.5vw, 2.1rem) !important;
-    line-height: 1.3 !important;
-    margin-bottom: 1.25rem !important;
+    font-size: clamp(1.7rem, 6.5vw, 2.25rem) !important;
+    line-height: 1.22 !important;
+    margin-bottom: 1.75rem !important;
+    letter-spacing: -0.01em !important;
   }
 
-  /* Body paragraph — wider measure, relaxed leading */
+  /* Body — warm dark colour, generous leading for readability */
   .philosophy-text-block > p:nth-child(3) {
-    font-size: 0.9375rem !important;
-    line-height: 1.8 !important;
-    margin-bottom: 2rem !important;
+    font-size: 1rem !important;
+    line-height: 1.9 !important;
+    color: #4a3520 !important;
+    margin-bottom: 0 !important;
   }
 
-  /* CTA link wrapper — extra breathing room above button */
-  .philosophy-text-block > div:last-child {
+  /* Values divider block — breathing room above and below */
+  .philosophy-text-block > div:nth-child(4) {
     margin-top: 2rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* CTA link wrapper — natural section conclusion */
+  .philosophy-text-block > div:last-child {
+    margin-top: 2.5rem !important;
   }
 
 
