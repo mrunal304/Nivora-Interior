@@ -349,7 +349,7 @@ function StatsSection() {
   }, [])   // run once — startedRef prevents double-start
 
   return (
-    <div style={{
+    <div className="stats-wrapper" style={{
       position: 'relative',
       zIndex: 10,
       marginTop: 48,
@@ -2146,7 +2146,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
       <StatsSection />
 
       {/* Services */}
-      <section style={{ backgroundColor: '#F7F4EF', padding: '7rem 1.5rem' }}>
+      <section className="services-section-home" style={{ backgroundColor: '#F7F4EF', padding: '7rem 1.5rem' }}>
         <style>{`
           /* ── Service card shell ── */
           .hsvc-card {

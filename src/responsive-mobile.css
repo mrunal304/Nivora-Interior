@@ -278,7 +278,55 @@
   }
 
 
-  /* ── SERVICES SECTION ───────────────────────────────────── */
+  /* ── STATS SECTION ──────────────────────────────────────── */
+
+  /* Wrapper — collapse the large inline marginTop + padding gaps */
+  .stats-wrapper {
+    margin-top: 8px !important;
+    padding-top: 0 !important;
+    padding-bottom: 28px !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Card — full width within side margins above */
+  .stat-float-card {
+    border-radius: 20px !important;
+    width: 100% !important;
+  }
+
+  /* Each stat cell — tighter vertical rhythm */
+  .stat-float-item {
+    padding: 28px 10px 24px !important;
+  }
+
+  /* Stat number — larger, more prominent on mobile */
+  .stat-float-num {
+    font-size: clamp(2.6rem, 10.5vw, 3.5rem) !important;
+    font-weight: 400 !important;
+    margin-bottom: 10px !important;
+    letter-spacing: -0.03em !important;
+  }
+
+  /* Stat label — legible but compact */
+  .stat-float-label {
+    font-size: 8.5px !important;
+    letter-spacing: 3px !important;
+  }
+
+
+  /* ── SERVICES SECTION (HOME) ─────────────────────────────── */
+
+  /* Collapse the inline 7rem padding to something proportional */
+  .services-section-home {
+    padding-top: 3rem !important;
+    padding-bottom: 3.5rem !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+  }
+
+
+  /* ── SERVICES GRID (EXISTING) ────────────────────────────── */
 
   .services-grid {
     grid-template-columns: 1fr;
