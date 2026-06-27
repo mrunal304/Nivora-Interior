@@ -87,8 +87,8 @@ const mvBoxVariants = {
 
 /* ─── STATS COUNTER — clean count-up, no dip ────────────── */
 function AboutStatsSection() {
-  const [counts, setCounts]   = useState(statsData.map(() => 0))
-  const [started, setStarted] = useState(false)
+  const [counts, setCounts] = useState(statsData.map(() => 0))
+  const startedRef = useRef(false)   // ref, not state — never triggers re-render/cleanup
   const sectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -96,34 +96,41 @@ function AboutStatsSection() {
     if (!el) return
     const rafIds: number[] = []
 
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !started) {
-        setStarted(true)
-        statsData.forEach((stat, i) => {
-          const startTime = performance.now()
-          const tick = (now: number) => {
-            const progress = Math.min((now - startTime) / stat.duration, 1)
-            // ease-out quartic: strictly 0 → 1
-            const eased = 1 - Math.pow(1 - progress, 4)
-            const val = Math.round(stat.value * eased)
-            setCounts(prev => { const n = [...prev]; n[i] = val; return n })
-            if (progress < 1) {
-              rafIds[i] = requestAnimationFrame(tick)
-            } else {
-              setCounts(prev => { const n = [...prev]; n[i] = stat.value; return n })
-            }
+    const startCounting = () => {
+      if (startedRef.current) return
+      startedRef.current = true
+      statsData.forEach((stat, i) => {
+        const startTime = performance.now()
+        const tick = (now: number) => {
+          const progress = Math.min((now - startTime) / stat.duration, 1)
+          const eased = 1 - Math.pow(1 - progress, 4)          // ease-out quartic
+          const val = Math.round(stat.value * eased)
+          setCounts(prev => { const n = [...prev]; n[i] = val; return n })
+          if (progress < 1) {
+            rafIds[i] = requestAnimationFrame(tick)
+          } else {
+            setCounts(prev => { const n = [...prev]; n[i] = stat.value; return n })
           }
-          rafIds[i] = requestAnimationFrame(tick)
-        })
-      }
-    }, { threshold: 0.35 })
+        }
+        rafIds[i] = requestAnimationFrame(tick)
+      })
+    }
 
+    // IntersectionObserver for scroll-triggered start
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) startCounting()
+    }, { threshold: 0.2 })
     observer.observe(el)
+
+    // If section is already in viewport on mount, start immediately
+    const rect = el.getBoundingClientRect()
+    if (rect.top < window.innerHeight && rect.bottom > 0) startCounting()
+
     return () => {
       observer.disconnect()
       rafIds.forEach(id => cancelAnimationFrame(id))
     }
-  }, [started])
+  }, [])   // run once — startedRef prevents double-start
 
   return (
     <section
