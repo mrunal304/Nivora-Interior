@@ -122,12 +122,17 @@
 
   /* ── PHILOSOPHY SECTION ─────────────────────────────────── */
 
-  /* Cream gap above separates from the hero; bottom gives CTA room */
+  /* Cream gap above separates from the hero; tight bottom flows into carousel */
   .philosophy-section {
     padding-top: 40px !important;
-    padding-bottom: 88px !important;
+    padding-bottom: 32px !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
+  }
+
+  /* Hide the animated full-width rule — acts as an unwanted divider on mobile */
+  .philosophy-text-block > div:nth-child(4) > div:first-child {
+    display: none !important;
   }
 
   /* Single column — image first (order: -1), text block below */
@@ -285,11 +290,11 @@
     display: none !important;
   }
 
-  /* Show the mobile carousel and give it wrapper spacing */
+  /* Show the mobile carousel — consistent 1.5rem gutters, tighter spacing */
   .mobile-stats-carousel {
     display: block !important;
     background: #F7F4EF;
-    padding: 0 1rem 56px !important;
+    padding: 20px 1.5rem 40px !important;
   }
 
   /* Card — full-width inside the 1rem side gutters */
@@ -322,10 +327,9 @@
 
   /* ── SERVICES SECTION (HOME) ─────────────────────────────── */
 
-  /* 48 px top (pairs with stats 56 px bottom = ~104 px visual
-     gap — clean, premium); 4 rem bottom for section close     */
+  /* 2rem top flows naturally from carousel bottom (40px → 32px = 72px total) */
   .services-section-home {
-    padding-top: 3rem !important;
+    padding-top: 2rem !important;
     padding-bottom: 4rem !important;
     padding-left: 1.25rem !important;
     padding-right: 1.25rem !important;

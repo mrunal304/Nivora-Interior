@@ -565,10 +565,10 @@ function MobileStatsCarousel() {
           className={dir === 'right' ? 'ms-card-right' : 'ms-card-left'}
           style={{
             background: 'linear-gradient(135deg, #384F2E 0%, #49613B 50%, #384F2E 100%)',
-            borderRadius: 20,
-            padding: '48px 24px 44px',
+            borderRadius: 16,
+            padding: '44px 24px 40px',
             textAlign: 'center',
-            boxShadow: '0 24px 64px rgba(0,0,0,0.28), 0 4px 16px rgba(0,0,0,0.12)',
+            boxShadow: '0 4px 24px rgba(0,0,0,0.08), 0 1px 6px rgba(0,0,0,0.04)',
           }}
         >
           <div style={{
