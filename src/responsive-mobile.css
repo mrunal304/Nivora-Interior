@@ -280,49 +280,72 @@
 
   /* ── STATS SECTION ──────────────────────────────────────── */
 
-  /* Wrapper — collapse the large inline marginTop + padding gaps */
+  /* Wrapper: 24 px above the card (philosophy section already
+     reduced below), 56 px below before Services begins       */
   .stats-wrapper {
-    margin-top: 8px !important;
+    margin-top: 0 !important;
     padding-top: 0 !important;
-    padding-bottom: 28px !important;
+    padding-bottom: 56px !important;
     padding-left: 1rem !important;
     padding-right: 1rem !important;
   }
 
-  /* Card — full width within side margins above */
+  /* Card — full-width inside the 1rem side gutters */
   .stat-float-card {
     border-radius: 20px !important;
     width: 100% !important;
   }
 
-  /* Each stat cell — tighter vertical rhythm */
+  /* Each stat cell — balanced vertical padding */
   .stat-float-item {
-    padding: 28px 10px 24px !important;
+    padding: 32px 12px 28px !important;
   }
 
-  /* Stat number — larger, more prominent on mobile */
+  /* Stat number — bolder, larger, commanding presence */
   .stat-float-num {
-    font-size: clamp(2.6rem, 10.5vw, 3.5rem) !important;
-    font-weight: 400 !important;
-    margin-bottom: 10px !important;
+    font-size: clamp(3rem, 13vw, 4.25rem) !important;
+    font-weight: 500 !important;
+    margin-bottom: 12px !important;
     letter-spacing: -0.03em !important;
+    color: #f5f0e8 !important;
   }
 
-  /* Stat label — legible but compact */
+  /* Stat label — lifted contrast, legible tracking */
   .stat-float-label {
-    font-size: 8.5px !important;
-    letter-spacing: 3px !important;
+    font-size: 9px !important;
+    letter-spacing: 2.5px !important;
+    color: rgba(201, 169, 110, 0.80) !important;
   }
 
 
   /* ── SERVICES SECTION (HOME) ─────────────────────────────── */
 
-  /* Collapse the inline 7rem padding to something proportional */
+  /* 48 px top (pairs with stats 56 px bottom = ~104 px visual
+     gap — clean, premium); 4 rem bottom for section close     */
   .services-section-home {
     padding-top: 3rem !important;
-    padding-bottom: 3.5rem !important;
+    padding-bottom: 4rem !important;
     padding-left: 1.25rem !important;
     padding-right: 1.25rem !important;
+  }
+
+  /* Heading — more commanding on mobile */
+  .services-section-home h2 {
+    font-size: clamp(2.1rem, 7.5vw, 3rem) !important;
+    line-height: 1.15 !important;
+    margin-bottom: 1.1rem !important;
+  }
+
+  /* Description — larger text, richer contrast */
+  .svc-header-desc {
+    font-size: 15px !important;
+    line-height: 1.9 !important;
+    color: rgba(38, 36, 33, 0.70) !important;
+  }
+
+  /* Header block bottom margin — less gap before card grid */
+  .services-section-home > div > div {
+    margin-bottom: 2.5rem !important;
   }
 
 

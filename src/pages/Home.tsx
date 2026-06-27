@@ -2317,7 +2317,7 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
               marginBottom: '1.1rem',
               letterSpacing: '-0.01em',
             }}>Spaces Designed Across<br />Every Experience</h2>
-            <p style={{
+            <p className="svc-header-desc" style={{
               fontFamily: "'Jost', sans-serif",
               fontWeight: 300,
               fontSize: 14,
