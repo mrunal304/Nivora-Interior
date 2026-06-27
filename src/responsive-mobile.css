@@ -122,8 +122,7 @@
 
   /* ── PHILOSOPHY SECTION ─────────────────────────────────── */
 
-  /* 40 px cream gap separates this from the hero above;
-     bottom padding gives the CTA room to breathe            */
+  /* Cream gap above separates from the hero; bottom gives CTA room */
   .philosophy-section {
     padding-top: 40px !important;
     padding-bottom: 88px !important;
@@ -131,7 +130,7 @@
     padding-right: 0 !important;
   }
 
-  /* Single column — image first, text block below */
+  /* Single column — image first (order: -1), text block below */
   .philosophy-flex {
     flex-direction: column !important;
     gap: 0 !important;
@@ -142,40 +141,39 @@
     margin: 0 !important;
   }
 
-  /* ── Image column ─────────────────────────────────────────
-     margin-bottom = card-height(≈150px) − overlap(28px) + gap(24px) ≈ 146px */
+  /* Image column — full width; bottom gap separates it from text block */
   .philosophy-image-col {
     order: -1;
     width: 100% !important;
     min-width: 0 !important;
     flex: none !important;
-    margin-bottom: 150px !important;
+    margin-bottom: 36px !important;
     opacity: 1 !important;
     transform: none !important;
   }
 
-  /* Gold offset frame removed — causes viewport overflow */
+  /* Gold frame hidden — causes horizontal overflow on mobile */
   .philosophy-frame {
     display: none !important;
   }
 
-  /* Wrapper is the positioning context for the quote card.
-     overflow: visible lets the card hang below the photo.   */
+  /* Wrapper: block layout, photo stacks above card in the flow */
   .philosophy-image-wrap {
-    position: relative !important;
+    position: static !important;
     display: block !important;
     width: 100% !important;
     overflow: visible !important;
   }
 
-  /* Photo inner clips the image at exactly 300 px */
+  /* Photo container clips the image at a clean 4:3 proportion */
   .philosophy-photo-inner {
     position: relative !important;
     overflow: hidden !important;
-    height: 300px !important;
+    /* aspect-ratio height for each screen: 320→240px, 375→281px, 414→311px */
+    height: clamp(240px, 75vw, 320px) !important;
   }
 
-  /* Photo — generous height, shows the upper interior scene */
+  /* Photo: fills the container, focuses on the upper interior */
   .philosophy-photo {
     width: 100% !important;
     height: 100% !important;
@@ -186,58 +184,65 @@
     max-width: 100% !important;
   }
 
-  /* ── Quote card ───────────────────────────────────────────
-     top: 272px anchors the card so only its top 28 px dip
-     into the image bottom — a refined editorial overlap.
-     The remaining ~140 px hang below in open cream space.   */
+  /* ── Quote card — flows naturally below the image ─────────
+     position: relative pulls it OUT of the absolute stack.
+     margin-top: -16px gives the single subtle overlap pixel
+     the design calls for; the rest of the card sits below
+     the image in open cream space, centred horizontally.    */
   .philosophy-quote-card {
-    position: absolute !important;
-    top: 272px !important;
-    left: 20px !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
     right: auto !important;
     bottom: auto !important;
-    /* Scales naturally from 320 px to 414 px screens */
-    width: clamp(210px, 72vw, 290px) !important;
-    padding: 20px 22px 18px !important;
-    border-radius: 12px !important;
+    /* Subtle 16 px overlap with the image bottom edge */
+    margin-top: -16px !important;
+    /* Centred, 88 % of container, max capped for readability */
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 88% !important;
+    max-width: 360px !important;
+    padding: 22px 24px 20px !important;
+    border-radius: 14px !important;
     z-index: 6 !important;
     opacity: 1 !important;
-    transform: scale(1) !important;
+    transform: none !important;
     transition: none !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.20) !important;
+    display: block !important;
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.18) !important;
   }
 
-  /* Decorative opening quotation mark */
+  /* Opening quotation mark — scaled for mobile */
   .philosophy-quote-card > div:first-child {
-    font-size: 40px !important;
+    font-size: 38px !important;
     line-height: 0.7 !important;
-    margin-bottom: 8px !important;
+    margin-bottom: 10px !important;
   }
 
-  /* Card body text — legible at small sizes */
+  /* Quote body — comfortable reading size */
   .philosophy-quote-card > p:first-of-type {
-    font-size: 14px !important;
-    line-height: 1.7 !important;
+    font-size: 14.5px !important;
+    line-height: 1.75 !important;
     margin: 0 !important;
   }
 
   /* Founder attribution */
   .philosophy-quote-card > p:last-of-type {
     font-size: 12px !important;
-    margin-top: 10px !important;
+    margin-top: 12px !important;
     margin-bottom: 0 !important;
   }
 
   /* ── Text block ───────────────────────────────────────────
-     90 % viewport width, centred; padding-top gives clear
-     visual separation from the hanging quote card above     */
+     90 % wide, centred, top padding separates from the
+     quote card above                                        */
   .philosophy-text-block {
     flex: none !important;
     width: 90% !important;
     max-width: 440px !important;
     min-width: 0 !important;
     margin: 0 auto !important;
-    padding: 2rem 0 0 !important;
+    padding: 2.5rem 0 0 !important;
   }
 
   /* Section label row */
@@ -245,7 +250,7 @@
     margin-bottom: 1.75rem !important;
   }
 
-  /* Main quote — dominant focal point */
+  /* Main quote heading — dominant focal point */
   .philosophy-text-block > p:nth-child(2) {
     font-size: clamp(1.7rem, 6.5vw, 2.25rem) !important;
     line-height: 1.22 !important;
@@ -253,7 +258,7 @@
     letter-spacing: -0.01em !important;
   }
 
-  /* Body — richer contrast, open leading */
+  /* Body paragraph — warm contrast, open leading */
   .philosophy-text-block > p:nth-child(3) {
     font-size: 1rem !important;
     line-height: 1.9 !important;
@@ -267,7 +272,7 @@
     margin-bottom: 0 !important;
   }
 
-  /* CTA — natural conclusion of section */
+  /* CTA — natural conclusion of the section */
   .philosophy-text-block > div:last-child {
     margin-top: 2.5rem !important;
   }
