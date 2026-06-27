@@ -1491,10 +1491,10 @@ function TestimonialsCarousel() {
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0.35 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
       style={{ background: '#f5f2ed', padding: '80px 0' }}
     >
       <style>{`
@@ -1587,10 +1587,10 @@ function TestimonialsCarousel() {
 
         {/* Section heading */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0.35, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           style={{ textAlign: 'center', marginBottom: 56 }}
         >
           <p style={{
@@ -1832,12 +1832,18 @@ function TestimonialsCarousel() {
           </div>
         </div>
 
-        {/* Read all link */}
-        <div style={{ textAlign: 'center', marginTop: 28 }}>
+        {/* Read all link — fades in last, after card content */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          style={{ textAlign: 'center', marginTop: 28 }}
+        >
           <Link to="/testimonials" className="t-read-more">
             Read All Client Stories →
           </Link>
-        </div>
+        </motion.div>
 
       </div>
     </motion.section>
