@@ -1442,6 +1442,15 @@ function HeroSection({ splashDone }: { splashDone: boolean }) {
   )
 }
 
+const starContainerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.09 } },
+}
+const starItemVariants = {
+  hidden: { opacity: 0, scale: 0.4 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] } },
+}
+
 function TestimonialsCarousel() {
   const [current, setCurrent] = useState(0)
   const [slideKey, setSlideKey] = useState(0)
@@ -1527,13 +1536,21 @@ function TestimonialsCarousel() {
           display: flex; align-items: center; justify-content: center;
           color: #21291a;
           transition: border-color 0.2s ease, background 0.2s ease,
-                      color 0.2s ease, transform 0.2s ease;
+                      color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
         .t-nav-btn:hover {
-          background: #21291a;
-          border-color: #21291a;
+          background: #2e3a24;
+          border-color: #2e3a24;
           color: #f5f2ed;
-          transform: scale(1.05);
+          transform: scale(1.1);
+          box-shadow: 0 4px 14px rgba(33,41,26,0.18);
+        }
+        .t-split-card {
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .t-split-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 16px 48px rgba(33,41,26,0.13);
         }
         .t-read-more {
           position: relative;
@@ -1621,7 +1638,7 @@ function TestimonialsCarousel() {
               animation: `${cardAnim} 500ms cubic-bezier(0.22,1,0.36,1) both`,
               minHeight: 280,
             }}
-            className="t-card-split"
+            className="t-card-split t-card-split"
           >
             {/* LEFT PANEL — dark green */}
             <div
@@ -1691,14 +1708,39 @@ function TestimonialsCarousel() {
                 overflow: 'hidden',
               }}
             >
-              {/* Decorative closing quote — top right of right panel */}
-              <span aria-hidden="true" style={{
-                position: 'absolute', top: 8, right: 24,
-                fontFamily: "'Playfair Display', serif",
-                fontSize: 110, lineHeight: 1,
-                color: '#a18661', opacity: 0.25,
-                pointerEvents: 'none', userSelect: 'none',
-              }}>"</span>
+              {/* Decorative closing quote — animated on slide change */}
+              <motion.span
+                key={`quoteicon-${slideKey}`}
+                aria-hidden="true"
+                initial={{ opacity: 0.1, scale: 0.8, rotate: -10 }}
+                animate={{ opacity: 0.25, scale: 1, rotate: 0 }}
+                transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                style={{
+                  position: 'absolute', top: 8, right: 24,
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: 110, lineHeight: 1,
+                  color: '#a18661',
+                  pointerEvents: 'none', userSelect: 'none',
+                  display: 'block',
+                }}
+              >"</motion.span>
+
+              {/* Stars — staggered fill on each slide change */}
+              <motion.div
+                key={`stars-${slideKey}`}
+                variants={starContainerVariants}
+                initial="hidden"
+                animate="visible"
+                style={{ display: 'flex', gap: 4, marginBottom: 18, position: 'relative', zIndex: 1 }}
+              >
+                {Array.from({ length: t.stars }).map((_, i) => (
+                  <motion.span
+                    key={i}
+                    variants={starItemVariants}
+                    style={{ fontSize: 16, color: '#a18661', lineHeight: 1, display: 'block' }}
+                  >★</motion.span>
+                ))}
+              </motion.div>
 
               <p
                 key={`quote-${slideKey}`}
@@ -1714,24 +1756,51 @@ function TestimonialsCarousel() {
               {/* Thin gold divider before name */}
               <div style={{ width: 36, height: 1, background: '#a18661', marginBottom: 16, flexShrink: 0 }} />
 
-              <p
-                key={`name-${slideKey}`}
-                style={{
-                  fontFamily: "'Montserrat', sans-serif", fontWeight: 500,
-                  fontSize: 12, letterSpacing: '0.14em',
-                  textTransform: 'uppercase', color: '#21291a', margin: '0 0 5px',
-                  animation: 'tNameSlide 400ms ease-out 440ms both',
-                }}
-              >{t.name}</p>
-              <p
-                key={`loc-${slideKey}`}
-                style={{
-                  fontFamily: "'Montserrat', sans-serif", fontWeight: 300,
-                  fontSize: 10, letterSpacing: '0.1em',
-                  textTransform: 'uppercase', color: '#a18661', margin: 0,
-                  animation: 'tNameSlide 400ms ease-out 520ms both',
-                }}
-              >{t.location}</p>
+              {/* Client info row — avatar + name/location */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                {/* Avatar circle — animates in on each slide change */}
+                <motion.div
+                  key={`avatar-${slideKey}`}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.35, delay: 0.44, ease: [0.22, 1, 0.36, 1] }}
+                  style={{
+                    width: 38, height: 38,
+                    borderRadius: '50%',
+                    background: 'rgba(161,134,97,0.15)',
+                    border: '1.5px solid rgba(161,134,97,0.5)',
+                    color: '#7a6142',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontWeight: 700, fontSize: 11,
+                    flexShrink: 0,
+                    letterSpacing: '0.04em',
+                  }}
+                >
+                  {t.initials}
+                </motion.div>
+
+                <div>
+                  <p
+                    key={`name-${slideKey}`}
+                    style={{
+                      fontFamily: "'Montserrat', sans-serif", fontWeight: 500,
+                      fontSize: 12, letterSpacing: '0.14em',
+                      textTransform: 'uppercase', color: '#21291a', margin: '0 0 5px',
+                      animation: 'tNameSlide 400ms ease-out 440ms both',
+                    }}
+                  >{t.name}</p>
+                  <p
+                    key={`loc-${slideKey}`}
+                    style={{
+                      fontFamily: "'Montserrat', sans-serif", fontWeight: 300,
+                      fontSize: 10, letterSpacing: '0.1em',
+                      textTransform: 'uppercase', color: '#a18661', margin: 0,
+                      animation: 'tNameSlide 400ms ease-out 520ms both',
+                    }}
+                  >{t.location}</p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1743,7 +1812,7 @@ function TestimonialsCarousel() {
           </button>
         </div>
 
-        {/* Progress bar — 3px, gold fill */}
+        {/* Progress bar — syncs with auto-scroll interval, resets on each slide change */}
         <div style={{ marginTop: 24, display: 'flex', justifyContent: 'center' }}>
           <div style={{
             width: '100%',
@@ -1754,9 +1823,9 @@ function TestimonialsCarousel() {
               key={`bar-${slideKey}`}
               style={{
                 height: '100%',
-                background: '#a18661',
+                background: 'linear-gradient(90deg, #a18661, #c8a97e)',
                 borderRadius: 3,
-                animation: `tProgressFill ${INTERVAL_MS}ms ease-in-out forwards`,
+                animation: `tProgressFill ${INTERVAL_MS}ms linear forwards`,
                 animationPlayState: isPaused ? 'paused' : 'running',
               }}
             />
