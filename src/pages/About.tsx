@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import FadeIn from '../components/FadeIn'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
@@ -27,11 +28,46 @@ const offerings = [
 const founderImg = 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80'
 const studioImg = 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=900&q=80'
 
+const listContainerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1 } },
+}
+const bulletVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] } },
+}
+
+const valuesContainerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.11 } },
+}
+const valueItemVariants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] } },
+}
+const dividerVariants = {
+  hidden: { width: '0%' },
+  visible: { width: '100%', transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] } },
+}
+
+const mvContainerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.17 } },
+}
+const mvBoxVariants = {
+  hidden: { opacity: 0, y: 22 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] } },
+}
+
 export default function About() {
   return (
-    <div className="bg-[#3b4a35] pt-20">
-      {/* Header */}
-      <section className="relative py-24 px-6 overflow-hidden">
+    <div style={{ background: '#f5f2ed' }} className="pt-20">
+
+      {/* ── HERO — keep dark green ── */}
+      <section
+        className="relative py-24 px-6 overflow-hidden"
+        style={{ background: '#21291a' }}
+      >
         <div className="absolute inset-0 opacity-10">
           <div className="w-full h-full" style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, #C9A96E 0%, transparent 60%)' }} />
         </div>
@@ -49,20 +85,25 @@ export default function About() {
         </div>
       </section>
 
-      {/* Who We Are */}
-      <section className="py-24 bg-[#3b4a35]">
+      {/* ── WHO WE ARE — light cream ── */}
+      <section className="py-24" style={{ background: '#f5f2ed' }}>
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
           <FadeIn direction="right">
-            <div className="overflow-hidden">
-              <img src={studioImg} alt="NIVORA Studio" className="w-full aspect-[4/3] object-cover hover:scale-105 transition-transform duration-700" loading="lazy" />
+            <div className="overflow-hidden" style={{ borderRadius: 4 }}>
+              <img
+                src={studioImg}
+                alt="NIVORA Studio"
+                className="w-full aspect-[4/3] object-cover hover:scale-105 transition-transform duration-700"
+                loading="lazy"
+              />
             </div>
           </FadeIn>
           <FadeIn delay={0.2} direction="left">
-            <p className="text-[#C9A96E] text-[10px] tracking-[0.4em] uppercase mb-6">Who We Are</p>
-            <h2 className="font-serif text-4xl text-[#f5f0e8] font-light leading-tight mb-8">
+            <p style={{ color: '#a18661', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: 24, fontFamily: "'Montserrat', sans-serif" }}>Who We Are</p>
+            <h2 className="font-serif font-light leading-tight mb-8" style={{ fontSize: 'clamp(1.9rem, 3.5vw, 2.8rem)', color: '#21291a' }}>
               A Boutique Studio Built on Listening
             </h2>
-            <div className="space-y-5 text-[#f5f0e8]/50 font-light leading-relaxed">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20, color: '#4a4a4a', fontWeight: 300, lineHeight: 1.75, fontSize: 15 }}>
               <p>
                 Over the last two years, we've completed 25+ residential and commercial interior projects across Mumbai and Pune — designing homes and workspaces that feel personal, practical, and built to last.
               </p>
@@ -77,77 +118,144 @@ export default function About() {
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-24 border-y border-[#C9A96E]/10">
+      {/* ── STATS — light cream ── */}
+      <section
+        className="py-24"
+        style={{
+          background: '#f5f2ed',
+          borderTop: '1px solid rgba(161,134,97,0.2)',
+          borderBottom: '1px solid rgba(161,134,97,0.2)',
+        }}
+      >
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12">
           {stats.map((s, i) => (
             <FadeIn key={i} delay={i * 0.1} className="text-center">
-              <p className="font-serif text-5xl text-[#C9A96E] font-light mb-3">{s.value}</p>
-              <p className="text-[#f5f0e8]/40 text-xs tracking-[0.2em] uppercase">{s.label}</p>
+              <p className="font-serif font-light mb-3" style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', color: '#a18661' }}>{s.value}</p>
+              <p style={{ color: 'rgba(33,41,26,0.5)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: "'Montserrat', sans-serif", fontWeight: 400 }}>{s.label}</p>
             </FadeIn>
           ))}
         </div>
       </section>
 
-      {/* What We Design */}
-      <section className="py-24 bg-[#3b4a35]">
+      {/* ── WHAT WE DESIGN + OUR VALUES — light cream ── */}
+      <section className="py-24" style={{ background: '#f5f2ed' }}>
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-start">
-          <FadeIn>
-            <p className="text-[#C9A96E] text-[10px] tracking-[0.4em] uppercase mb-6">What We Design</p>
-            <h2 className="font-serif text-4xl text-[#f5f0e8] font-light mb-8">Spaces That Work for Real Life</h2>
-            <ul className="space-y-4">
-              {offerings.map(o => (
-                <li key={o} className="flex items-start gap-4 text-[#f5f0e8]/50 font-light">
-                  <span className="w-1.5 h-1.5 bg-[#C9A96E] rounded-full mt-2 shrink-0" />
+
+          {/* What We Design — bullets slide in from left */}
+          <div>
+            <FadeIn>
+              <p style={{ color: '#a18661', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: 24, fontFamily: "'Montserrat', sans-serif" }}>What We Design</p>
+              <h2 className="font-serif font-light mb-8" style={{ fontSize: 'clamp(1.9rem, 3.5vw, 2.8rem)', color: '#21291a' }}>
+                Spaces That Work for Real Life
+              </h2>
+            </FadeIn>
+            <motion.ul
+              variants={listContainerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-60px' }}
+              style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 16 }}
+            >
+              {offerings.map((o, i) => (
+                <motion.li
+                  key={i}
+                  variants={bulletVariants}
+                  style={{ display: 'flex', alignItems: 'flex-start', gap: 16, color: '#4a4a4a', fontWeight: 300, lineHeight: 1.7, fontSize: 15 }}
+                >
+                  <span style={{ width: 6, height: 6, background: '#a18661', borderRadius: '50%', marginTop: 9, flexShrink: 0 }} />
                   {o}
-                </li>
+                </motion.li>
               ))}
-            </ul>
-          </FadeIn>
-          <FadeIn delay={0.2}>
-            <p className="text-[#C9A96E] text-[10px] tracking-[0.4em] uppercase mb-6">Our Values</p>
-            <div className="space-y-6">
+            </motion.ul>
+          </div>
+
+          {/* Our Values — staggered fade up + divider draw */}
+          <div>
+            <FadeIn delay={0.1}>
+              <p style={{ color: '#a18661', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: 24, fontFamily: "'Montserrat', sans-serif" }}>Our Values</p>
+            </FadeIn>
+            <motion.div
+              variants={valuesContainerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-60px' }}
+              style={{ display: 'flex', flexDirection: 'column', gap: 0 }}
+            >
               {values.map((v, i) => (
-                <div key={i} className="border-b border-[#C9A96E]/10 pb-6">
-                  <h4 className="font-serif text-xl text-[#f5f0e8] font-light mb-2">{v.title}</h4>
-                  <p className="text-[#f5f0e8]/40 text-sm font-light leading-relaxed">{v.desc}</p>
-                </div>
+                <motion.div key={i} variants={valueItemVariants} style={{ paddingBottom: 24, marginBottom: 0 }}>
+                  <h4 className="font-serif font-light mb-2" style={{ fontSize: '1.2rem', color: '#21291a' }}>{v.title}</h4>
+                  <p style={{ color: '#4a4a4a', fontSize: 14, fontWeight: 300, lineHeight: 1.7, marginBottom: 20 }}>{v.desc}</p>
+                  <motion.div
+                    variants={dividerVariants}
+                    style={{ height: 1, background: 'rgba(161,134,97,0.3)', borderRadius: 1 }}
+                  />
+                </motion.div>
               ))}
-            </div>
-          </FadeIn>
+            </motion.div>
+          </div>
+
         </div>
       </section>
 
-      {/* Mission & Vision */}
-      <section className="py-24">
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12">
-          <FadeIn>
-            <div className="border border-[#C9A96E]/15 p-10 h-full hover:border-[#C9A96E]/40 transition-all duration-500">
-              <p className="text-[#C9A96E] text-[10px] tracking-[0.4em] uppercase mb-6">Mission</p>
-              <p className="font-serif text-2xl text-[#f5f0e8] font-light leading-relaxed">
+      {/* ── MISSION & VISION — light cream ── */}
+      <section className="py-24" style={{ background: '#f5f2ed', borderTop: '1px solid rgba(161,134,97,0.15)' }}>
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            variants={mvContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-60px' }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}
+          >
+            {/* Mission */}
+            <motion.div
+              variants={mvBoxVariants}
+              whileHover={{ borderColor: '#a18661' }}
+              style={{
+                border: '1px solid rgba(161,134,97,0.25)',
+                padding: '40px',
+                transition: 'border-color 0.4s ease, box-shadow 0.4s ease',
+                borderRadius: 4,
+                cursor: 'default',
+              }}
+            >
+              <p style={{ color: '#a18661', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: 24, fontFamily: "'Montserrat', sans-serif" }}>Mission</p>
+              <p className="font-serif font-light leading-relaxed" style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.6rem)', color: '#21291a' }}>
                 Create interiors that feel effortlessly luxurious and deeply personal.
               </p>
-            </div>
-          </FadeIn>
-          <FadeIn delay={0.15}>
-            <div className="border border-[#C9A96E]/15 p-10 h-full hover:border-[#C9A96E]/40 transition-all duration-500">
-              <p className="text-[#C9A96E] text-[10px] tracking-[0.4em] uppercase mb-6">Vision</p>
-              <p className="font-serif text-2xl text-[#f5f0e8] font-light leading-relaxed">
+            </motion.div>
+
+            {/* Vision */}
+            <motion.div
+              variants={mvBoxVariants}
+              whileHover={{ borderColor: '#a18661' }}
+              style={{
+                border: '1px solid rgba(161,134,97,0.25)',
+                padding: '40px',
+                transition: 'border-color 0.4s ease, box-shadow 0.4s ease',
+                borderRadius: 4,
+                cursor: 'default',
+              }}
+            >
+              <p style={{ color: '#a18661', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: 24, fontFamily: "'Montserrat', sans-serif" }}>Vision</p>
+              <p className="font-serif font-light leading-relaxed" style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.6rem)', color: '#21291a' }}>
                 Be a trusted design partner known for thoughtful luxury, timeless design, and interiors that enrich the way people live and work.
               </p>
-            </div>
-          </FadeIn>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Founder */}
-      <section className="py-24 bg-[#3b4a35]">
+      {/* ── THE FOUNDER — light cream ── */}
+      <section className="py-24" style={{ background: '#f5f2ed', borderTop: '1px solid rgba(161,134,97,0.15)' }}>
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
           <FadeIn delay={0.2}>
-            <p className="text-[#C9A96E] text-[10px] tracking-[0.4em] uppercase mb-6">The Founder</p>
-            <h2 className="font-serif text-4xl text-[#f5f0e8] font-light mb-2">Shweta Mahadik</h2>
-            <p className="text-[#f5f0e8]/35 text-xs tracking-[0.2em] uppercase mb-8">Founder & Principal Designer</p>
-            <div className="space-y-5 text-[#f5f0e8]/50 font-light leading-relaxed mb-10">
+            <p style={{ color: '#a18661', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: 24, fontFamily: "'Montserrat', sans-serif" }}>The Founder</p>
+            <h2 className="font-serif font-light mb-2" style={{ fontSize: 'clamp(1.9rem, 3.5vw, 2.8rem)', color: '#21291a' }}>Shweta Mahadik</h2>
+            <p style={{ color: 'rgba(33,41,26,0.45)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 32, fontFamily: "'Montserrat', sans-serif" }}>
+              Founder & Principal Designer
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20, color: '#4a4a4a', fontWeight: 300, lineHeight: 1.75, fontSize: 15, marginBottom: 40 }}>
               <p>
                 Shweta brings a rare combination of civil engineering precision and interior design sensibility to every project. Her background in construction gives her an instinctive understanding of how spaces are built — not just how they look — which translates into designs that are both beautiful and structurally sound.
               </p>
@@ -158,39 +266,54 @@ export default function About() {
                 For Shweta, good design is not about decoration. It is about creating environments that make everyday life calmer, more considered, and more enjoyable.
               </p>
             </div>
-            <blockquote className="border-l-2 border-[#C9A96E] pl-6">
-              <p className="font-serif text-xl text-[#f5f0e8]/80 italic font-light leading-relaxed">
+            <blockquote
+              style={{
+                borderLeft: '2px solid #a18661',
+                paddingLeft: 24,
+                background: 'rgba(161,134,97,0.06)',
+                borderRadius: '0 6px 6px 0',
+                padding: '20px 24px',
+              }}
+            >
+              <p className="font-serif font-light leading-relaxed" style={{ fontSize: '1.15rem', color: '#2c2c2c', fontStyle: 'italic', marginBottom: 12 }}>
                 "For me, design is not about decoration. It is about creating spaces that feel calm, meaningful, and effortless to live in."
               </p>
-              <cite className="text-[#C9A96E] text-xs tracking-wider not-italic mt-3 block">— Shweta Mahadik</cite>
+              <cite style={{ color: '#a18661', fontSize: 11, letterSpacing: '0.15em', fontStyle: 'normal', fontFamily: "'Montserrat', sans-serif" }}>— Shweta Mahadik</cite>
             </blockquote>
           </FadeIn>
           <FadeIn direction="left">
-            <div className="overflow-hidden">
-              <img src={founderImg} alt="Shweta Mahadik — Founder, NIVORA Interiors" className="w-full aspect-[3/4] object-cover object-top hover:scale-105 transition-transform duration-700" loading="lazy" />
+            <div className="overflow-hidden" style={{ borderRadius: 4 }}>
+              <img
+                src={founderImg}
+                alt="Shweta Mahadik — Founder, NIVORA Interiors"
+                className="w-full aspect-[3/4] object-cover object-top hover:scale-105 transition-transform duration-700"
+                loading="lazy"
+              />
             </div>
           </FadeIn>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 px-6 text-center">
+      {/* ── CTA — keep dark green ── */}
+      <section className="py-20 px-6 text-center" style={{ background: '#21291a' }}>
         <FadeIn>
-          <h2 className="font-serif text-3xl md:text-4xl text-[#f5f0e8] font-light mb-5">
+          <h2 className="font-serif font-light mb-5" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', color: '#f5f0e8' }}>
             Let's design something<br />
             <em className="text-[#C9A96E]">meaningful together.</em>
           </h2>
-          <p className="text-[#f5f0e8]/40 font-light mb-10 max-w-md mx-auto">
+          <p className="font-light mb-10 max-w-md mx-auto" style={{ color: 'rgba(245,240,232,0.45)' }}>
             Book a free consultation and let's start with a conversation.
           </p>
           <Link
             to="/quote"
-            className="inline-flex items-center gap-2 bg-[#C9A96E] text-[#3b4a35] text-xs tracking-[0.2em] uppercase px-12 py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium"
+            className="inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase px-12 py-5 hover:bg-[#d4b896] transition-all duration-300 font-medium"
+            style={{ background: '#C9A96E', color: '#21291a' }}
           >
             Book Free Consultation <ArrowRight size={13} />
           </Link>
         </FadeIn>
       </section>
+
     </div>
   )
 }
