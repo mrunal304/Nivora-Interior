@@ -479,6 +479,136 @@ function StatsSection() {
   )
 }
 
+function MobileStatsCarousel() {
+  const slides = [
+    { value: '2+',  label: 'Years Experience'    },
+    { value: '25+', label: 'Projects Completed'  },
+    { value: '50+', label: 'Clients Served'       },
+    { value: '90%', label: 'Client Satisfaction' },
+  ]
+  const n = slides.length
+
+  const [current, setCurrent]   = useState(0)
+  const [slideKey, setSlideKey] = useState(0)
+  const [dir, setDir]           = useState<'right' | 'left'>('right')
+  const [paused, setPaused]     = useState(false)
+  const touchStartX = useRef<number | null>(null)
+  const resumeRef   = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const advance = useCallback((nextIdx: number, fromDir: 'right' | 'left') => {
+    setDir(fromDir)
+    setCurrent(nextIdx)
+    setSlideKey(k => k + 1)
+  }, [])
+
+  // Auto-advance every 2.8 s; resets whenever current or paused changes
+  useEffect(() => {
+    if (paused) return
+    const t = setTimeout(() => advance((current + 1) % n, 'right'), 2800)
+    return () => clearTimeout(t)
+  }, [current, paused, advance, n])
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+    setPaused(true)
+    if (resumeRef.current) clearTimeout(resumeRef.current)
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return
+    const delta = e.changedTouches[0].clientX - touchStartX.current
+    if (Math.abs(delta) > 40) {
+      advance(
+        delta < 0 ? (current + 1) % n : (current - 1 + n) % n,
+        delta < 0 ? 'right' : 'left',
+      )
+    }
+    touchStartX.current = null
+    // Resume auto-play 2 s after interaction ends
+    resumeRef.current = setTimeout(() => setPaused(false), 2000)
+  }
+
+  return (
+    <div className="mobile-stats-carousel">
+      <style>{`
+        /* Hidden on desktop — responsive-mobile.css reveals it on mobile */
+        @media (min-width: 768px) { .mobile-stats-carousel { display: none !important; } }
+
+        @keyframes msSlideInRight {
+          from { opacity: 0; transform: translateX(36px); }
+          to   { opacity: 1; transform: translateX(0);    }
+        }
+        @keyframes msSlideInLeft {
+          from { opacity: 0; transform: translateX(-36px); }
+          to   { opacity: 1; transform: translateX(0);     }
+        }
+        .ms-card-right { animation: msSlideInRight 0.45s cubic-bezier(0.22,1,0.36,1) both; }
+        .ms-card-left  { animation: msSlideInLeft  0.45s cubic-bezier(0.22,1,0.36,1) both; }
+
+        .ms-dot {
+          width: 6px; height: 6px; border-radius: 50%;
+          background: rgba(201,169,110,0.28);
+          transition: background 0.3s ease, transform 0.3s ease;
+          cursor: pointer;
+        }
+        .ms-dot-active { background: #C9A96E !important; transform: scale(1.4) !important; }
+      `}</style>
+
+      <div
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        style={{ touchAction: 'pan-y', userSelect: 'none' }}
+      >
+        {/* Stat card — re-keyed on every slide so the animation re-fires */}
+        <div
+          key={slideKey}
+          className={dir === 'right' ? 'ms-card-right' : 'ms-card-left'}
+          style={{
+            background: 'linear-gradient(135deg, #384F2E 0%, #49613B 50%, #384F2E 100%)',
+            borderRadius: 20,
+            padding: '48px 24px 44px',
+            textAlign: 'center',
+            boxShadow: '0 24px 64px rgba(0,0,0,0.28), 0 4px 16px rgba(0,0,0,0.12)',
+          }}
+        >
+          <div style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: 'clamp(4rem, 19vw, 5.5rem)',
+            fontWeight: 300,
+            color: '#f5f0e8',
+            lineHeight: 1,
+            letterSpacing: '-0.03em',
+            marginBottom: 18,
+          }}>
+            {slides[current].value}
+          </div>
+          <div style={{
+            fontFamily: "'Jost', sans-serif",
+            fontWeight: 300,
+            fontSize: 10,
+            letterSpacing: '3.5px',
+            textTransform: 'uppercase',
+            color: 'rgba(201,169,110,0.82)',
+          }}>
+            {slides[current].label}
+          </div>
+        </div>
+
+        {/* Dot indicators — clickable */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 20 }}>
+          {slides.map((_, i) => (
+            <div
+              key={i}
+              className={`ms-dot${i === current ? ' ms-dot-active' : ''}`}
+              onClick={() => advance(i, i > current ? 'right' : 'left')}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function CompareSlider({
   beforeImg, afterImg, title,
   beforeLabel = 'Before', afterLabel = 'After',
@@ -2142,8 +2272,11 @@ export default function Home({ splashDone }: { splashDone: boolean }) {
         </div>
       </section>
 
-      {/* Stats strip */}
+      {/* Stats strip — desktop grid */}
       <StatsSection />
+
+      {/* Stats carousel — mobile only (hidden via CSS above 768px) */}
+      <MobileStatsCarousel />
 
       {/* Services */}
       <section className="services-section-home" style={{ backgroundColor: '#F7F4EF', padding: '7rem 1.5rem' }}>

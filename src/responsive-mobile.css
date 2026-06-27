@@ -280,14 +280,16 @@
 
   /* ── STATS SECTION ──────────────────────────────────────── */
 
-  /* Wrapper: 24 px above the card (philosophy section already
-     reduced below), 56 px below before Services begins       */
+  /* Hide the desktop grid card on mobile */
   .stats-wrapper {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-    padding-bottom: 56px !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+    display: none !important;
+  }
+
+  /* Show the mobile carousel and give it wrapper spacing */
+  .mobile-stats-carousel {
+    display: block !important;
+    background: #F7F4EF;
+    padding: 0 1rem 56px !important;
   }
 
   /* Card — full-width inside the 1rem side gutters */
