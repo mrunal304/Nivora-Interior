@@ -101,32 +101,63 @@ export default function ProjectDetail() {
 
       {/* Image Gallery — cream background */}
       <div style={{ background: '#F7F2EA' }}>
-        <div className="max-w-7xl mx-auto px-6 py-20">
+        <style>{`
+          .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+          }
+          .gallery-item-wide { grid-column: span 2; }
+          .gallery-item-normal { grid-column: span 1; }
+          .gallery-img-wide { aspect-ratio: 16/9; }
+          .gallery-img-normal { aspect-ratio: 4/3; }
+          @media (max-width: 767px) {
+            .gallery-grid {
+              grid-template-columns: repeat(2, 1fr);
+              gap: 7px;
+            }
+            .gallery-item-wide { grid-column: span 2; }
+            .gallery-img-wide { aspect-ratio: 16/9; }
+          }
+          @media (max-width: 480px) {
+            .gallery-item-wide { grid-column: span 1; }
+            .gallery-img-wide { aspect-ratio: 4/3; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+          }
+        `}</style>
+        <div className="max-w-7xl mx-auto px-6 py-14">
           <FadeIn>
-            <p style={{ color: '#D4B483', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: '3rem', textAlign: 'center' }}>
+            <p style={{ color: '#D4B483', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: '2rem', textAlign: 'center' }}>
               The Gallery
             </p>
           </FadeIn>
-          <div className="grid md:grid-cols-2 gap-4">
-            {project.images.slice(1).map((img, i) => (
-              <FadeIn key={i} delay={i * 0.15}>
-                <div style={{
-                  background: '#FFFFFF',
-                  borderRadius: 18,
-                  overflow: 'hidden',
-                  border: '1px solid #E9DED0',
-                  boxShadow: '0 4px 24px rgba(46,42,38,0.07)',
-                }}>
-                  <img
-                    src={img}
-                    alt={`${project.name} — view ${i + 2}`}
-                    className="w-full object-cover"
-                    style={{ aspectRatio: '4/3', display: 'block' }}
-                    loading="lazy"
-                  />
-                </div>
-              </FadeIn>
-            ))}
+          <div className="gallery-grid">
+            {project.images.slice(1).map((img, i) => {
+              const isFeatured = [0, 5, 11].includes(i)
+              return (
+                <FadeIn
+                  key={i}
+                  delay={Math.min(i * 0.07, 0.5)}
+                  className={isFeatured ? 'gallery-item-wide' : 'gallery-item-normal'}
+                >
+                  <div style={{
+                    borderRadius: 12,
+                    overflow: 'hidden',
+                    border: '1px solid #E9DED0',
+                    boxShadow: '0 2px 12px rgba(46,42,38,0.06)',
+                    height: '100%',
+                  }}>
+                    <img
+                      src={img}
+                      alt={`${project.name} — view ${i + 2}`}
+                      className={`w-full object-cover ${isFeatured ? 'gallery-img-wide' : 'gallery-img-normal'}`}
+                      style={{ display: 'block' }}
+                      loading="lazy"
+                    />
+                  </div>
+                </FadeIn>
+              )
+            })}
           </div>
         </div>
       </div>
