@@ -9,11 +9,12 @@ export default function ProjectDetail() {
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-[#3b4a35] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#FFFCF7' }}>
         <div className="text-center">
-          <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">404</p>
-          <h1 className="font-serif text-4xl text-[#f5f0e8] font-light mb-6">Project Not Found</h1>
-          <Link to="/portfolio" className="text-[#b8966a] text-xs tracking-[0.2em] uppercase hover:text-[#d4b896] transition-colors">
+          <p style={{ color: '#D4B483', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: '1rem' }}>404</p>
+          <h1 className="font-serif text-4xl font-light mb-6" style={{ color: '#2E2A26' }}>Project Not Found</h1>
+          <Link to="/portfolio" style={{ color: '#D4B483', fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase' }}
+            className="hover:opacity-70 transition-opacity">
             ← Back to Portfolio
           </Link>
         </div>
@@ -22,73 +23,144 @@ export default function ProjectDetail() {
   }
 
   return (
-    <div className="bg-[#3b4a35] pt-20">
-      {/* Hero */}
-      <div className="relative h-[70vh] overflow-hidden">
+    <div style={{ background: '#FFFCF7' }} className="pt-20">
+
+      {/* Hero — light cream overlay instead of dark green */}
+      <div className="relative overflow-hidden" style={{ height: '70vh' }}>
         <img src={project.images[0]} alt={project.name} className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-[#3b4a35]/50" />
-        <div className="absolute bottom-0 left-0 right-0 p-12 max-w-7xl mx-auto">
+        <div className="absolute inset-0" style={{ background: 'rgba(255, 252, 247, 0.45)' }} />
+        <div className="absolute bottom-0 left-0 right-0 p-12" style={{ maxWidth: '80rem', margin: '0 auto' }}>
           <FadeIn>
-            <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-3">{project.category} · {project.year}</p>
-            <h1 className="font-serif text-5xl md:text-7xl text-[#f5f0e8] font-light mb-2">{project.name}</h1>
-            <p className="text-[#f5f0e8]/50 tracking-wider">{project.location}</p>
-          </FadeIn>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 py-24">
-        <Link
-          to="/portfolio"
-          className="inline-flex items-center gap-2 text-[#b8966a] text-xs tracking-[0.2em] uppercase hover:text-[#d4b896] transition-colors mb-16"
-        >
-          <ArrowLeft size={13} /> Back to Portfolio
-        </Link>
-
-        {/* Concept & Intent */}
-        <div className="grid lg:grid-cols-2 gap-20 mb-24">
-          <FadeIn>
-            <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-6">The Concept</p>
-            <h2 className="font-serif text-3xl text-[#f5f0e8] font-light mb-6 leading-snug">{project.concept}</h2>
-            <p className="text-[#f5f0e8]/55 leading-relaxed font-light">{project.description}</p>
-          </FadeIn>
-          <FadeIn delay={0.2} direction="left">
-            <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-6">Design Intent</p>
-            <p className="font-serif text-2xl text-[#f5f0e8]/80 font-light italic leading-relaxed mb-10">
-              "{project.designIntent}"
+            <p style={{ color: '#D4B483', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+              {project.category} · {project.year}
             </p>
-            <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Materials Used</p>
-            <ul className="space-y-2">
-              {project.materials.map(m => (
-                <li key={m} className="text-[#f5f0e8]/50 text-sm font-light flex items-center gap-3">
-                  <span className="w-1 h-1 bg-[#b8966a] rounded-full shrink-0" />
-                  {m}
-                </li>
-              ))}
-            </ul>
+            <h1 className="font-serif font-light mb-2" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', color: '#2E2A26', lineHeight: 1.1 }}>
+              {project.name}
+            </h1>
+            <p style={{ color: '#2E2A26', opacity: 0.55, letterSpacing: '0.08em' }}>{project.location}</p>
           </FadeIn>
         </div>
-
-        {/* Image gallery */}
-        <div className="grid md:grid-cols-2 gap-4">
-          {project.images.slice(1).map((img, i) => (
-            <FadeIn key={i} delay={i * 0.15}>
-              <img src={img} alt={`${project.name} — view ${i + 2}`} className="w-full aspect-[4/3] object-cover" loading="lazy" />
-            </FadeIn>
-          ))}
-        </div>
-
-        {/* CTA */}
-        <FadeIn className="text-center mt-24 py-20 border-t border-[#b8966a]/10">
-          <p className="text-[#b8966a] text-[10px] tracking-[0.4em] uppercase mb-4">Start Your Project</p>
-          <h2 className="font-serif text-4xl text-[#f5f0e8] font-light mb-6">Ready to design your space?</h2>
-          <Link
-            to="/quote"
-            className="inline-flex items-center gap-2 bg-[#b8966a] text-[#3b4a35] text-xs tracking-[0.2em] uppercase px-10 py-4 hover:bg-[#d4b896] transition-all duration-300 font-medium"
-          >
-            Book a Free Consultation
-          </Link>
-        </FadeIn>
       </div>
+
+      {/* Back link */}
+      <div style={{ background: '#F7F2EA' }}>
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <Link
+            to="/portfolio"
+            className="inline-flex items-center gap-2 transition-opacity hover:opacity-70"
+            style={{ color: '#D4B483', fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase' }}
+          >
+            <ArrowLeft size={13} /> Back to Portfolio
+          </Link>
+        </div>
+      </div>
+
+      {/* Concept & Intent — white background */}
+      <div style={{ background: '#FFFCF7' }}>
+        <div className="max-w-7xl mx-auto px-6 py-20">
+          <div className="grid lg:grid-cols-2 gap-20">
+            <FadeIn>
+              <p style={{ color: '#D4B483', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
+                The Concept
+              </p>
+              <h2 className="font-serif font-light mb-6 leading-snug" style={{ fontSize: '1.875rem', color: '#2E2A26' }}>
+                {project.concept}
+              </h2>
+              <p style={{ color: '#2E2A26', opacity: 0.6, lineHeight: '1.9', fontWeight: 300 }}>{project.description}</p>
+            </FadeIn>
+            <FadeIn delay={0.2} direction="left">
+              <p style={{ color: '#D4B483', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
+                Design Intent
+              </p>
+              <p className="font-serif font-light italic mb-10" style={{ fontSize: '1.5rem', color: '#2E2A26', opacity: 0.75, lineHeight: '1.7' }}>
+                "{project.designIntent}"
+              </p>
+              <p style={{ color: '#D4B483', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+                Materials Used
+              </p>
+              <ul className="space-y-2">
+                {project.materials.map(m => (
+                  <li key={m} className="flex items-center gap-3 text-sm font-light" style={{ color: '#2E2A26', opacity: 0.6 }}>
+                    <span className="rounded-full shrink-0" style={{ width: 4, height: 4, background: '#D4B483' }} />
+                    {m}
+                  </li>
+                ))}
+              </ul>
+            </FadeIn>
+          </div>
+        </div>
+      </div>
+
+      {/* Image Gallery — cream background */}
+      <div style={{ background: '#F7F2EA' }}>
+        <div className="max-w-7xl mx-auto px-6 py-20">
+          <FadeIn>
+            <p style={{ color: '#D4B483', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: '3rem', textAlign: 'center' }}>
+              The Gallery
+            </p>
+          </FadeIn>
+          <div className="grid md:grid-cols-2 gap-4">
+            {project.images.slice(1).map((img, i) => (
+              <FadeIn key={i} delay={i * 0.15}>
+                <div style={{
+                  background: '#FFFFFF',
+                  borderRadius: 18,
+                  overflow: 'hidden',
+                  border: '1px solid #E9DED0',
+                  boxShadow: '0 4px 24px rgba(46,42,38,0.07)',
+                }}>
+                  <img
+                    src={img}
+                    alt={`${project.name} — view ${i + 2}`}
+                    className="w-full object-cover"
+                    style={{ aspectRatio: '4/3', display: 'block' }}
+                    loading="lazy"
+                  />
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* CTA — white background */}
+      <div style={{ background: '#FFFCF7' }}>
+        <div className="max-w-7xl mx-auto px-6">
+          <FadeIn className="text-center py-24" style={{ borderTop: '1px solid #E9DED0' }}>
+            <p style={{ color: '#D4B483', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+              Start Your Project
+            </p>
+            <h2 className="font-serif font-light mb-8" style={{ fontSize: '2.5rem', color: '#2E2A26' }}>
+              Ready to design your space?
+            </h2>
+            <Link
+              to="/quote"
+              className="inline-flex items-center gap-2 transition-all duration-300 font-medium text-xs tracking-[0.2em] uppercase px-10 py-4"
+              style={{
+                background: '#D4B483',
+                color: '#2E2A26',
+                borderRadius: 4,
+                textDecoration: 'none',
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLAnchorElement
+                el.style.background = '#c9a470'
+                el.style.transform = 'translateY(-2px)'
+                el.style.boxShadow = '0 8px 24px rgba(212,180,131,0.35)'
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLAnchorElement
+                el.style.background = '#D4B483'
+                el.style.transform = 'translateY(0)'
+                el.style.boxShadow = 'none'
+              }}
+            >
+              Book a Free Consultation
+            </Link>
+          </FadeIn>
+        </div>
+      </div>
+
     </div>
   )
 }
