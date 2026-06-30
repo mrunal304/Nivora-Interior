@@ -204,7 +204,15 @@ export const projects: Project[] = [
     designIntent: 'A place to arrive and exhale — completely.',
     description: 'Nestled into the hills above Lonavala, this weekend home draws its palette directly from its setting — the green of monsoon grass, the grey of wet basalt, the amber of afternoon light. Interiors are deliberately rustic: handloom textiles, exposed stone, and copper accents that age beautifully with the building.',
     coverImage: UNSPLASH_RESIDENTIAL[5],
-    images: [UNSPLASH_RESIDENTIAL[5], UNSPLASH_RESIDENTIAL[0], UNSPLASH_RESIDENTIAL[3]],
+    images: [
+      UNSPLASH_RESIDENTIAL[5],
+      'https://lh3.googleusercontent.com/d/1D3oyUl2LE6yfk_znkuSk5P4VNKsc6HtI',
+      'https://lh3.googleusercontent.com/d/11adFn7YdX-3srdA9XH6ZIkvjZjlh5kLh',
+      'https://lh3.googleusercontent.com/d/1IVxoe94cdQ6rPIGUW-EBs9t-OEUgmsAb',
+      'https://lh3.googleusercontent.com/d/1FV4G9sDFF8lE33vYrkwKhBac86m5IOek',
+      'https://lh3.googleusercontent.com/d/1pNSSMY23nKNa5DON68Svh3SYUpD4d9Wv',
+      'https://lh3.googleusercontent.com/d/1bu0lGS4kjpOx4cWLiJWYSMV_P7xpucfK',
+    ],
     year: '2024',
   },
   {
