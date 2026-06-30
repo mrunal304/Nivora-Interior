@@ -25,19 +25,27 @@ export default function ProjectDetail() {
   return (
     <div style={{ background: '#FFFCF7' }} className="pt-20">
 
-      {/* Hero — light cream overlay instead of dark green */}
+      {/* Hero — crisp image, gradient only behind text */}
       <div className="relative overflow-hidden" style={{ height: '70vh' }}>
-        <img src={project.images[0]} alt={project.name} className="w-full h-full object-cover" />
-        <div className="absolute inset-0" style={{ background: 'rgba(255, 252, 247, 0.45)' }} />
+        <img
+          src={project.images[0]}
+          alt={project.name}
+          className="w-full h-full object-cover"
+          style={{ filter: 'contrast(1.07) saturate(1.05)' }}
+        />
+        {/* Gradient only behind the bottom text area — keeps image vibrant above */}
+        <div className="absolute inset-0" style={{
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.52) 100%)',
+        }} />
         <div className="absolute bottom-0 left-0 right-0 p-12" style={{ maxWidth: '80rem', margin: '0 auto' }}>
           <FadeIn>
             <p style={{ color: '#D4B483', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
               {project.category} · {project.year}
             </p>
-            <h1 className="font-serif font-light mb-2" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', color: '#2E2A26', lineHeight: 1.1 }}>
+            <h1 className="font-serif font-light mb-2" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', color: '#f5f0e8', lineHeight: 1.1 }}>
               {project.name}
             </h1>
-            <p style={{ color: '#2E2A26', opacity: 0.55, letterSpacing: '0.08em' }}>{project.location}</p>
+            <p style={{ color: 'rgba(245,240,232,0.7)', letterSpacing: '0.08em' }}>{project.location}</p>
           </FadeIn>
         </div>
       </div>
