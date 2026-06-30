@@ -181,7 +181,17 @@ export const projects: Project[] = [
     designIntent: 'Small space, full life — every inch designed with intention.',
     description: 'Proof that thoughtful design scales to any size. This 700 sq ft studio apartment in Powai was transformed into a complete home: a serene sleeping nook behind fluted oak panels, a kitchen that doubles as a bar, and a workspace that disappears when the workday ends. Nothing wasted. Everything considered.',
     coverImage: UNSPLASH_RESIDENTIAL[4],
-    images: [UNSPLASH_RESIDENTIAL[4], UNSPLASH_RESIDENTIAL[5], UNSPLASH_RESIDENTIAL[2]],
+    images: [
+      UNSPLASH_RESIDENTIAL[4],
+      'https://lh3.googleusercontent.com/d/1scPbFaA6jdhW2waOOqjdVuu0gfsbdBRA',
+      'https://lh3.googleusercontent.com/d/11kvwYHXBQf88wQgOFRKmTpaYby5GKK2o',
+      'https://lh3.googleusercontent.com/d/1Auv_QAky0BYxFVkvhxeAy3aX6UqdVx8x',
+      'https://lh3.googleusercontent.com/d/1UsJnBRr0_eipwZ7aRvghGcqMSrvdUzu5',
+      'https://lh3.googleusercontent.com/d/1wMDnuMpSpKTKntIKQi5bi0fcWqIBi0-H',
+      'https://lh3.googleusercontent.com/d/1cP9A2fTV5qoNGif48lOozmFIwM6Aa5_W',
+      'https://lh3.googleusercontent.com/d/1JAv1xrbfP1REkzYZgMS0ENUltXUPxUc4',
+      'https://lh3.googleusercontent.com/d/1WxgO1zGg1NKF-Mzf3Sv_NMVg0exb8vQG',
+    ],
     year: '2024',
   },
   {
