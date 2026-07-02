@@ -35,7 +35,6 @@ function ProjectCard({ project, index, delay }: {
   delay: number
 }) {
   const { ref, visible } = useReveal()
-  const [imgLoaded, setImgLoaded] = useState(false)
   const num = String(index + 1).padStart(2, '0')
 
   return (
@@ -61,29 +60,17 @@ function ProjectCard({ project, index, delay }: {
           aspectRatio: '16 / 10',
         }}
       >
-        {/* Skeleton */}
-        {!imgLoaded && (
-          <div style={{
-            position: 'absolute', inset: 0,
-            background: 'linear-gradient(90deg, #e4ddd4 0%, #ede8e1 50%, #e4ddd4 100%)',
-            backgroundSize: '200% 100%',
-            animation: 'ptfSkel 1.4s ease infinite',
-            zIndex: 1,
-          }} />
-        )}
-
         {/* Image */}
         <img
           src={project.coverImage}
           alt={project.name}
           className="ptf-img"
-          onLoad={() => setImgLoaded(true)}
-          onError={() => setImgLoaded(true)}
           style={{
             position: 'absolute', inset: 0,
             width: '100%', height: '100%',
             objectFit: 'cover',
             opacity: 1,
+            display: 'block',
             transition: 'transform 0.65s cubic-bezier(0.16,1,0.3,1)',
             zIndex: 2,
           }}
@@ -179,10 +166,6 @@ export default function Portfolio() {
   return (
     <div style={{ background: '#FAF8F5', minHeight: '100vh' }}>
       <style>{`
-        @keyframes ptfSkel {
-          0%   { background-position: -200% 0; }
-          100% { background-position:  200% 0; }
-        }
         .ptf-card:hover .ptf-img {
           transform: scale(1.05) !important;
         }
