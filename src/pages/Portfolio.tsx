@@ -83,11 +83,10 @@ function ProjectCard({ project, index, delay }: {
             position: 'absolute', inset: 0,
             width: '100%', height: '100%',
             objectFit: 'cover',
-            opacity: imgLoaded ? 1 : 0,
-            transition: 'opacity 0.5s ease, transform 0.65s cubic-bezier(0.16,1,0.3,1)',
+            opacity: 1,
+            transition: 'transform 0.65s cubic-bezier(0.16,1,0.3,1)',
             zIndex: 2,
           }}
-          loading="lazy"
         />
 
         {/* Bottom gradient — always visible for title readability */}
