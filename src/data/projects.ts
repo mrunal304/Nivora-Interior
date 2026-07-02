@@ -13,28 +13,28 @@ export interface Project {
 }
 
 const UNSPLASH_RESIDENTIAL = [
-  'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
-  'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',
-  'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80',
-  'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80',
-  'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80',
-  'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&q=80',
+  '/project-cover-9.jpg',
+  '/project-cover-10.jpg',
+  '/project-cover-3.jpg',
+  '/project-cover-4.jpg',
+  '/project-cover-5.jpg',
+  '/project-cover-6.jpg',
 ]
 
 const UNSPLASH_COMMERCIAL = [
-  'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
-  'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&q=80',
-  'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80',
-  'https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=800&q=80',
-  'https://images.unsplash.com/photo-1572025442646-866d16c84a54?w=800&q=80',
-  'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80',
+  '/project-cover-7.jpg',
+  '/project-cover-8.jpg',
+  '/project-cover-11.jpg',
+  '/project-cover-12.jpg',
+  '/project-cover-9.jpg',
+  '/project-cover-10.jpg',
 ]
 
 const UNSPLASH_ARCH = [
-  'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=800&q=80',
-  'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80',
-  'https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=800&q=80',
-  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
+  '/project-cover-3.jpg',
+  '/project-cover-4.jpg',
+  '/project-cover-5.jpg',
+  '/project-cover-6.jpg',
 ]
 
 export const projects: Project[] = [
