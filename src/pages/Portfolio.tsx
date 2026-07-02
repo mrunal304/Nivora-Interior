@@ -12,11 +12,18 @@ function useReveal() {
   useEffect(() => {
     const el = ref.current
     if (!el) return
+    const show = () => setVisible(true)
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect() } },
-      { threshold: 0.1 }
+      ([e]) => { if (e.isIntersecting) { show(); obs.disconnect() } },
+      { threshold: 0.05, rootMargin: '0px 0px 60px 0px' }
     )
     obs.observe(el)
+    // Fire immediately if already in viewport on mount
+    const rect = el.getBoundingClientRect()
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      show()
+      obs.disconnect()
+    }
     return () => obs.disconnect()
   }, [])
   return { ref, visible }
@@ -71,6 +78,7 @@ function ProjectCard({ project, index, delay }: {
           alt={project.name}
           className="ptf-img"
           onLoad={() => setImgLoaded(true)}
+          onError={() => setImgLoaded(true)}
           style={{
             position: 'absolute', inset: 0,
             width: '100%', height: '100%',
