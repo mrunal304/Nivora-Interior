@@ -1,11 +1,215 @@
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
 import { getProjectById } from '../data/projects'
+
+// Complete row counts for the 3-col asymmetric grid (featured at indices 0,5,11)
+const GRID_COMPLETE_COUNTS = [2, 5, 7, 10, 12, 15, 18, 21, 24, 27, 30]
+
+function getPaddedGallery(images: string[]): string[] {
+  const valid = images.filter(img => img && img.trim() !== '')
+  if (valid.length === 0) return []
+  const target = GRID_COMPLETE_COUNTS.find(c => c >= valid.length) ?? valid.length
+  const padded = [...valid]
+  while (padded.length < target) {
+    padded.push(valid[padded.length % valid.length])
+  }
+  return padded
+}
+
+interface LightboxProps {
+  images: string[]
+  startIndex: number
+  projectName: string
+  onClose: () => void
+}
+
+function Lightbox({ images, startIndex, projectName, onClose }: LightboxProps) {
+  const [index, setIndex] = useState(startIndex)
+  const [loaded, setLoaded] = useState(false)
+  const [zoomed, setZoomed] = useState(false)
+  const touchStartX = useRef(0)
+
+  const prev = useCallback(() => {
+    setIndex(i => (i - 1 + images.length) % images.length)
+    setLoaded(false)
+    setZoomed(false)
+  }, [images.length])
+
+  const next = useCallback(() => {
+    setIndex(i => (i + 1) % images.length)
+    setLoaded(false)
+    setZoomed(false)
+  }, [images.length])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') prev()
+      else if (e.key === 'ArrowRight') next()
+      else if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [prev, next, onClose])
+
+  return (
+    <div
+      style={{
+        position: 'fixed', inset: 0, zIndex: 9999,
+        background: 'rgba(0,0,0,0.93)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}
+      onClick={e => { if (e.target === e.currentTarget) onClose() }}
+      onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
+      onTouchEnd={e => {
+        const dx = e.changedTouches[0].clientX - touchStartX.current
+        if (Math.abs(dx) > 50) { dx < 0 ? next() : prev() }
+      }}
+    >
+      <style>{`
+        @keyframes lb-spin { to { transform: rotate(360deg) } }
+        .lb-btn {
+          background: rgba(255,255,255,0.08);
+          border: 1px solid rgba(255,255,255,0.12);
+          border-radius: 50%;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff;
+          transition: background 0.2s;
+        }
+        .lb-btn:hover { background: rgba(255,255,255,0.18); }
+      `}</style>
+
+      {/* Top bar */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '16px 20px',
+        background: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%)',
+      }}>
+        <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase' }}>
+          {projectName}
+        </span>
+        <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, letterSpacing: '0.15em', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+          {index + 1} / {images.length}
+        </span>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button className="lb-btn" style={{ width: 40, height: 40 }}
+            onClick={() => setZoomed(z => !z)}
+            title={zoomed ? 'Zoom out' : 'Zoom in'}
+          >
+            {zoomed ? <ZoomOut size={17} /> : <ZoomIn size={17} />}
+          </button>
+          <button className="lb-btn" style={{ width: 40, height: 40 }}
+            onClick={onClose}
+            title="Close (Esc)"
+          >
+            <X size={18} />
+          </button>
+        </div>
+      </div>
+
+      {/* Prev arrow */}
+      <button
+        className="lb-btn"
+        onClick={e => { e.stopPropagation(); prev() }}
+        style={{ position: 'absolute', left: 16, width: 48, height: 48 }}
+        title="Previous"
+      >
+        <ChevronLeft size={24} />
+      </button>
+
+      {/* Image */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        width: '100%', height: '100%',
+        padding: '72px 80px',
+        boxSizing: 'border-box',
+        overflow: 'hidden',
+      }}>
+        {/* Loading spinner */}
+        {!loaded && (
+          <div style={{
+            position: 'absolute',
+            width: 40, height: 40,
+            borderRadius: '50%',
+            border: '3px solid rgba(255,255,255,0.12)',
+            borderTopColor: '#D4B483',
+            animation: 'lb-spin 0.75s linear infinite',
+          }} />
+        )}
+        <img
+          key={images[index]}
+          src={images[index]}
+          alt={`${projectName} — image ${index + 1}`}
+          onLoad={() => setLoaded(true)}
+          onClick={e => { e.stopPropagation(); setZoomed(z => !z) }}
+          style={{
+            maxWidth: '100%',
+            maxHeight: '100%',
+            objectFit: 'contain',
+            borderRadius: 6,
+            opacity: loaded ? 1 : 0,
+            transform: zoomed ? 'scale(1.65)' : 'scale(1)',
+            transition: 'opacity 0.25s ease, transform 0.35s ease',
+            cursor: zoomed ? 'zoom-out' : 'zoom-in',
+            userSelect: 'none',
+          }}
+        />
+      </div>
+
+      {/* Next arrow */}
+      <button
+        className="lb-btn"
+        onClick={e => { e.stopPropagation(); next() }}
+        style={{ position: 'absolute', right: 16, width: 48, height: 48 }}
+        title="Next"
+      >
+        <ChevronRight size={24} />
+      </button>
+
+      {/* Bottom dot indicators (max 15 shown) */}
+      {images.length <= 20 && (
+        <div style={{
+          position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)',
+          display: 'flex', gap: 6, alignItems: 'center',
+        }}>
+          {images.map((_, i) => (
+            <button
+              key={i}
+              onClick={e => { e.stopPropagation(); setIndex(i); setLoaded(false); setZoomed(false) }}
+              style={{
+                width: i === index ? 20 : 7,
+                height: 7,
+                borderRadius: 4,
+                background: i === index ? '#D4B483' : 'rgba(255,255,255,0.28)',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                transition: 'all 0.25s ease',
+              }}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
 export default function ProjectDetail() {
   const { id } = useParams<{ id: string }>()
   const project = getProjectById(id || '')
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+
+  const openLightbox = useCallback((i: number) => setLightboxIndex(i), [])
+  const closeLightbox = useCallback(() => setLightboxIndex(null), [])
 
   if (!project) {
     return (
@@ -22,10 +226,14 @@ export default function ProjectDetail() {
     )
   }
 
+  // Gallery images: filter valid, pad to complete grid rows
+  const rawGallery = project.images.slice(1).filter(img => img && img.trim() !== '')
+  const galleryImages = getPaddedGallery(rawGallery)
+
   return (
     <div style={{ background: '#FFFCF7' }} className="pt-20">
 
-      {/* Hero — crisp image, gradient only behind text */}
+      {/* Hero */}
       <div className="relative overflow-hidden" style={{ height: '70vh' }}>
         <img
           src={project.images[0]}
@@ -33,7 +241,6 @@ export default function ProjectDetail() {
           className="w-full h-full object-cover"
           style={{ filter: 'contrast(1.07) saturate(1.05)' }}
         />
-        {/* Gradient only behind the bottom text area — keeps image vibrant above */}
         <div className="absolute inset-0" style={{
           background: 'linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.52) 100%)',
         }} />
@@ -63,7 +270,7 @@ export default function ProjectDetail() {
         </div>
       </div>
 
-      {/* Concept & Intent — white background */}
+      {/* Concept & Intent */}
       <div style={{ background: '#FFFCF7' }}>
         <div className="max-w-7xl mx-auto px-6 py-20">
           <div className="grid lg:grid-cols-2 gap-20">
@@ -99,7 +306,7 @@ export default function ProjectDetail() {
         </div>
       </div>
 
-      {/* Image Gallery — cream background */}
+      {/* Image Gallery */}
       <div style={{ background: '#F7F2EA' }}>
         <style>{`
           .gallery-grid {
@@ -111,6 +318,13 @@ export default function ProjectDetail() {
           .gallery-item-normal { grid-column: span 1; }
           .gallery-img-wide { aspect-ratio: 16/9; }
           .gallery-img-normal { aspect-ratio: 4/3; }
+          .gallery-thumb {
+            display: block;
+            width: 100%;
+            cursor: pointer;
+            transition: transform 0.4s ease, opacity 0.3s ease;
+          }
+          .gallery-thumb:hover { transform: scale(1.03); opacity: 0.88; }
           @media (max-width: 767px) {
             .gallery-grid {
               grid-template-columns: repeat(2, 1fr);
@@ -132,25 +346,29 @@ export default function ProjectDetail() {
             </p>
           </FadeIn>
           <div className="gallery-grid">
-            {project.images.slice(1).map((img, i) => {
+            {galleryImages.map((img, i) => {
               const isFeatured = [0, 5, 11].includes(i)
+              const rawIndex = i % rawGallery.length
               return (
                 <FadeIn
-                  key={i}
+                  key={`${i}-${img}`}
                   delay={Math.min(i * 0.07, 0.5)}
                   className={isFeatured ? 'gallery-item-wide' : 'gallery-item-normal'}
                 >
-                  <div style={{
-                    borderRadius: 12,
-                    overflow: 'hidden',
-                    border: '1px solid #E9DED0',
-                    boxShadow: '0 2px 12px rgba(46,42,38,0.06)',
-                    height: '100%',
-                  }}>
+                  <div
+                    style={{
+                      borderRadius: 12,
+                      overflow: 'hidden',
+                      border: '1px solid #E9DED0',
+                      boxShadow: '0 2px 12px rgba(46,42,38,0.06)',
+                      height: '100%',
+                    }}
+                    onClick={() => openLightbox(rawIndex)}
+                  >
                     <img
                       src={img}
                       alt={`${project.name} — view ${i + 2}`}
-                      className={`w-full object-cover ${isFeatured ? 'gallery-img-wide' : 'gallery-img-normal'}`}
+                      className={`gallery-thumb object-cover ${isFeatured ? 'gallery-img-wide' : 'gallery-img-normal'}`}
                       style={{ display: 'block' }}
                       loading="lazy"
                     />
@@ -162,7 +380,7 @@ export default function ProjectDetail() {
         </div>
       </div>
 
-      {/* CTA — white background */}
+      {/* CTA */}
       <div style={{ background: '#FFFCF7' }}>
         <div className="max-w-7xl mx-auto px-6">
           <FadeIn className="text-center py-24" style={{ borderTop: '1px solid #E9DED0' }}>
@@ -199,6 +417,16 @@ export default function ProjectDetail() {
           </FadeIn>
         </div>
       </div>
+
+      {/* Lightbox */}
+      {lightboxIndex !== null && (
+        <Lightbox
+          images={rawGallery}
+          startIndex={lightboxIndex}
+          projectName={project.name}
+          onClose={closeLightbox}
+        />
+      )}
 
     </div>
   )
